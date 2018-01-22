@@ -14,6 +14,8 @@ import {color} from '../utils'
 import './dashboard.less'
 import cookie from 'react-cookies'
 
+const axios = require('axios');
+import { axiosrequest } from './axiosrequest';
 const styles = {
     textAlign: {
         textAlign: 'right'
@@ -166,7 +168,12 @@ class Admin_dashboard extends React.Component {
 
 	constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = initialState,{
+      devicelist:'',
+      itemslist:'',
+      userslist:''
+
+    };
   }
 
   zoom(){
@@ -212,9 +219,25 @@ class Admin_dashboard extends React.Component {
       bottom: 'dataMin+50'
     }) );
   }
-
+  countlist = (params = {}) => {
+      var cookies = cookie.load('sessionid');
+      var company_id = cookie.load('company_id');
+      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
+        responseType: 'json'
+      }).then(response => {
+    // alert( response.data.result)
+      var counts = response.data.result;
+            this.setState({devicelist: counts.devices,itemslist: counts.items,userslist: counts.users,  loading:false});
+        })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  componentDidMount(){
+    this.countlist()
+  }
   render() {
-    const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2, bottom2 } = this.state;
+    const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2,userslist,devicelist,itemslist, bottom2 } = this.state;
 
     return (
       <div className="dashboard-3">
@@ -225,8 +248,8 @@ class Admin_dashboard extends React.Component {
 
         <Col span={12}>
 
-        <i className="fa fa-building-o fa-5x text-primary"></i></Col>
-       <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>10</span><br />
+        <i className="fa fa-code-fork fa-5x text-primary"></i></Col>
+       <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.devicelist}</span><br />
        <span className="text-primary" style={{ fontSize: 20 }}>No. of Devices </span>
 
        </Col>
@@ -236,8 +259,8 @@ class Admin_dashboard extends React.Component {
       <Col lg={8} md={8}>
 
       <Card className="bleedblue" style={{ padding: '30px' }}>
-        <Col span={12}><i className="fa fa-users fa-5x text-primary"></i></Col>
-      <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>20</span><br />
+        <Col span={12}><i className="fa fa-cubes fa-5x text-primary"></i></Col>
+      <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.itemslist}</span><br />
       <span style={{ fontSize: 20 }} className="text-primary">No. of Items </span></Col>
       </Card>
       </Col>
@@ -245,8 +268,8 @@ class Admin_dashboard extends React.Component {
       <Col lg={8} md={8}>
 
       <Card className="bleedblue" style={{ padding: '30px' }}>
-        <Col span={12}><i className="fa fa-usd fa-5x text-primary"></i></Col>
-      <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>3200</span><br />
+        <Col span={12}><i className="fa fa-users fa-5x text-primary"></i></Col>
+      <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.userslist}</span><br />
       <span style={{ fontSize: 20 }} className="text-primary">No. of Users </span></Col>
       </Card>
       </Col>

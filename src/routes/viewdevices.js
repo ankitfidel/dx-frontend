@@ -167,7 +167,7 @@ render(){
        <div>
 
 <Row>
-    <Col span={12} offset={6}>
+    <Col span={12} offset={6} xs={24} sm={24} md={12}>
 <Card noHovering="false">
 <h2 style={{textAlign: 'center'}}>View Device</h2>
 

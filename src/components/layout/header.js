@@ -60,17 +60,17 @@ adminmenu = <Menus location={this.props.location}  navOpenKeys={this.props.navOp
           onVisibleChange={this.props.switchMenuPopover}
           visible={this.props.menuPopoverVisible}
           overlayClassName={styles.popovermenu + " menu_"+ this.props.menuTheme }
-          trigger='click'
+          trigger='hover'
           content={adminmenu}>
-          <div className={styles.siderbutton}>
-            <Icon type='bars'/>
+          <div className={styles.siderbutton} style={{'width':'50px', 'float':'left', 'padding':'14px 20px', 'color': '#fff'}}>
+            <Icon type='bars' className="fa-1x"/>
           </div>
         </Popover>
       : null}
 
       <Menu style={{'backgroundColor': headercolor}} mode='horizontal'  onClick={this.props.handleClickMenu}>
 
-        <BadgeBox pr={this.props}  style={{'float':'left'}}  />
+        <BadgeBox pr={this.props}  style={{'float':'right'}}  />
 
 
       </Menu>
