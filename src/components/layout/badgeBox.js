@@ -4,13 +4,15 @@ import { Link } from 'dva/router'
 import styles from './BadgeBox.less'
 import screenfull from 'screenfull';
 const axios = require('axios');
-import { browserHistory } from 'dva/router';
+import { axiosrequest } from '../../routes/axiosrequest';
+import { hashHistory, browserHistory } from 'dva/router';
 
 import cookie from 'react-cookies'
 class BadgeBox extends React.Component {
 
    constructor(props) {
       super(props);
+       this.loggout = this.loggout.bind(this)
    }
 
 
@@ -22,25 +24,27 @@ class BadgeBox extends React.Component {
      screenfull.request();
    }
  }
-
  loggout(){
- var cookies = cookie.load('sessionid');
 
-alert(cookies)
-   axios.post('http://localhost:8080/dataexchange/api/logout', {
-     session_id:cookies,
- })
- .then(function (response) {
-   //alert("successfully logout")
-
-  //  var cookies = cookie.load('sessionid');
-    cookie.remove('sessionid');
-//alert(cookies)
-  browserHistory.push("/login");
- })
- .catch(function (error) {
-   console.log(error);
- });
+   var cookies = cookie.remove('sessionid');
+   // const username = document.getElementById('username').value;
+   // const password = document.getElementById('password').value;
+ axios.post(axios.defaults.baseURL + '/api/logout', {
+      session_id:cookies,
+  })
+  .then(function (response) {
+  // cookie.remove('');
+   cookie.remove('sessionid', { path: '/' })
+//  hashHistory.push('/login');
+  var url ="/login";
+  window.location.href = ("#/login");
+  // window.
+  //window.location.reload();
+//  alert(cookies)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
  }
 render(){

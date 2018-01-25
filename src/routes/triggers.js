@@ -6,7 +6,7 @@ import reqwest from 'reqwest';
 import styles from './common.less'
 const axios = require('axios');
 import cookie from 'react-cookies'
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 import { axiosrequest } from './axiosrequest';
 
 
@@ -64,7 +64,7 @@ editTrigger:false,
      triggerlist = (params = {}) => {
          var cookies = cookie.load('sessionid');
          var device_id = cookie.load('device_id');
-         axios.get(axios.defaults.baseURL + '/dataexchange/api/front/trigger/' + cookies + '/device/'+ device_id + '?sort=DESC',{
+         axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/device/'+ device_id + '?sort=DESC',{
            responseType: 'json'
          }).then(response => {
            //alert(JSON.stringify(response.data.result))
@@ -103,7 +103,7 @@ editTrigger:false,
     // console.log('params:', params);
     //  this.setState({ loading: true });
       var cookies = cookie.load('sessionid');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/severity/' + cookies,{
+      axios.get(axios.defaults.baseURL + '/api/front/severity/' + cookies,{
         responseType: 'json'
       }) .then(response => {
     //    var severitymap = ;
@@ -123,7 +123,7 @@ editTrigger:false,
     // console.log('params:', params);
     //  this.setState({ loading: true });
       var cookies = cookie.load('sessionid');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/expression/' + cookies,{
+      axios.get(axios.defaults.baseURL + '/api/front/expression/' + cookies,{
         responseType: 'json'
       }) .then(response => {
       //  alert(response.data.result)
@@ -141,7 +141,7 @@ editTrigger:false,
   fetchItem = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var device_id = cookie.load('device_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/item/' + cookies + '/device/' + device_id,{
+      axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies + '/device/' + device_id,{
         responseType: 'json'
       }) .then(response => {
         var items = response.data.result.items;
@@ -173,7 +173,7 @@ editTrigger:false,
   var cookies = cookie.load('sessionid');
   cookie.save('id', id);
   var device_id = cookie.load('device_id');
-     axios.get(axios.defaults.baseURL + '/dataexchange/api/front/trigger/' + cookies + '/'+ id ,{
+     axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/'+ id ,{
     responseType: 'json'
   }).then(response => {
     //alert(JSON.stringify(response.data.result))
@@ -196,7 +196,7 @@ editTrigger:false,
      const expressId = document.getElementById('expressId').value;
      const severityId = document.getElementById('severityId').value;
    // const isRetailer = document.getElementById('isRetailer').checked = true;
-    axios.put(axios.defaults.baseURL + '/dataexchange/api/front/trigger/'+ id, {
+    axios.put(axios.defaults.baseURL + '/api/front/trigger/'+ id, {
       session_id:cookies,
          name:name,
          description:description,
@@ -231,7 +231,7 @@ editTrigger:false,
     const severityId = document.getElementById('severityId').value;
 console.log(cookies, trigger_value, name, description, itemId, expressId, severityId);
 
-    axios.post(axios.defaults.baseURL + '/dataexchange/api/front/trigger', {
+    axios.post(axios.defaults.baseURL + '/api/front/trigger', {
      session_id:cookies,
      name:name,
      description:description,
@@ -418,7 +418,7 @@ const hasSelected = selectedRowKeys.length > 0;
 
 
  <Button type="primary" onClick={this.addItems}>Add Trigger</Button> &nbsp; <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1200}} rowKey="id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="id" rowSelection={rowSelection} columns={[
 
 {
    title: 'Name',

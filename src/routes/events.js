@@ -7,7 +7,7 @@ import reqwest from 'reqwest';
 import styles from './common.less'
 const axios = require('axios');
 import cookie from 'react-cookies'
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 import { axiosrequest } from './axiosrequest';
 
 
@@ -58,7 +58,7 @@ visible: false,
     //alert(dateString)
   //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
    //'/severity/'+ 0 + '/start_date/' + '2018-01-01 12:12:12' + '/end_date/' + '2018-01-20 20:20:20' + '?page=1&per_page=100',{
-    axios.get(axios.defaults.baseURL + '/dataexchange/api/front/trigger/history/' + cookies + '/severity/'+ 0 +'/start_date/'+dateFrom+'/end_date/' + dateTo +'?page=1&per_page=100',{
+    axios.get(axios.defaults.baseURL + '/api/front/trigger/history/' + cookies + '/severity/'+ 0 +'/start_date/'+dateFrom+'/end_date/' + dateTo +'?page=1&per_page=100',{
       responseType: 'json'
     }).then(response => {
     //  alert("go api")
@@ -104,7 +104,7 @@ visible: false,
          var cookies = cookie.load('sessionid');
          var device_id = cookie.load('device_id');
          //962af983-c90c-44fe-b939-a20052409b8f/severity/0/start_date/2018-01-01%2012%3A12%3A12/end_date/2018-01-20%2020%3A20%3A20?page=1&per_page=100
-         axios.get(axios.defaults.baseURL + '/dataexchange/api/front/trigger/history/' + cookies + '/severity/'+ 0 + '/start_date/' + '2018-01-01 12:12:12' + '/end_date/' + '2018-01-20 20:20:20' + '?page=1&per_page=100',{
+         axios.get(axios.defaults.baseURL + '/api/front/trigger/history/' + cookies + '/severity/'+ 0 + '/start_date/' + '2018-01-01 12:12:12' + '/end_date/' + '2018-01-20 20:20:20' + '?page=1&per_page=100',{
            responseType: 'json'
          }).then(response => {
            //alert(JSON.stringify(response.data.result))
@@ -143,7 +143,7 @@ visible: false,
     // console.log('params:', params);
     //  this.setState({ loading: true });
       var cookies = cookie.load('sessionid');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/severity/' + cookies,{
+      axios.get(axios.defaults.baseURL + '/api/front/severity/' + cookies,{
         responseType: 'json'
       }) .then(response => {
     //    var severitymap = ;
@@ -163,7 +163,7 @@ visible: false,
     // console.log('params:', params);
     //  this.setState({ loading: true });
       var cookies = cookie.load('sessionid');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/expression/' + cookies,{
+      axios.get(axios.defaults.baseURL + '/api/front/expression/' + cookies,{
         responseType: 'json'
       }) .then(response => {
       //  alert(response.data.result)
@@ -181,7 +181,7 @@ visible: false,
   fetchItem = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var device_id = cookie.load('device_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/item/' + cookies + '/device/' + device_id,{
+      axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies + '/device/' + device_id,{
         responseType: 'json'
       }) .then(response => {
         var items = response.data.result.items;
@@ -269,7 +269,7 @@ const hasSelected = selectedRowKeys.length > 0;
  onChange={this.changeHistoryData}
  />
  </FormItem> <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1200}} rowKey="id" loading={loading} rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="id" loading={loading} rowSelection={rowSelection} columns={[
 
 {
    title: 'Name',

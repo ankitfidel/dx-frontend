@@ -10,7 +10,7 @@ const axios = require('axios');
 import cookie from 'react-cookies'
 import { axiosrequest } from './axiosrequest';
 
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 const data = [];
 
 
@@ -55,7 +55,7 @@ class Viewdevices extends React.Component {
     //  this.fetchcompany();
     var cookies = cookie.load('sessionid');
     var company_id = cookie.load('company_id');
-    axios.get(axios.defaults.baseURL + '/dataexchange/api/front/group/' + cookies + '/company/' + company_id,{
+    axios.get(axios.defaults.baseURL + '/api/front/group/' + cookies + '/company/' + company_id,{
       responseType: 'json'
     }) .then(response => {
        let grouplist = response.data.result.map((group,i) => {
@@ -74,7 +74,7 @@ class Viewdevices extends React.Component {
     var cookies = cookie.load('sessionid');
     var device_id = cookie.load('deviceid');
   //  alert("device_id"+device_id)
-    axios.get(axios.defaults.baseURL + '/dataexchange/api/front/device/' + cookies +'/'+ device_id,{
+    axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies +'/'+ device_id,{
       responseType: 'json'
     }).then(response => {
       var companydata = response.data.result;
@@ -112,7 +112,7 @@ class Viewdevices extends React.Component {
    //
    // }
    cancelDevices(){
-      browserHistory.push("/devices");
+      hashHistory.push("/devices");
    }
    updatedevices(){
         const cookies = cookie.load('sessionid');
@@ -122,7 +122,7 @@ class Viewdevices extends React.Component {
         const ip = document.getElementById('ip').value;
         const groupid = document.getElementById('selectedGroupId').value;
        // const isRetailer = document.getElementById('isRetailer').checked = true;
-        axios.put(axios.defaults.baseURL + '/dataexchange/api/front/device/'+ device_id, {
+        axios.put(axios.defaults.baseURL + '/api/front/device/'+ device_id, {
          session_id:cookies,
          device_name:devicename,
          device_port:port,
@@ -139,7 +139,7 @@ class Viewdevices extends React.Component {
          }
          if(response.data.status == true){
                console.log(JSON.stringify(response.data.result));
-               browserHistory.push("/devices");
+               hashHistory.push("/devices");
              }
         })
         .catch(function (error) {

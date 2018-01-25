@@ -1,0 +1,487 @@
+:global {
+    .cardProgress .ant-progress-circle-path {
+        stroke: #fff!important;
+    }
+    .cardProgress .ant-progress-circle-trail{
+        stroke: rgba(0, 0, 0, 0.1)!important
+    }
+    .extraButtons button{
+        margin-left: 10px
+    }
+    .ant-card {
+        border-radius: 0;
+    }
+    .dashboard-2 .ant-card {
+        border-radius: 0;
+        border: solid 1px rgba(64, 63, 76, 0.12);
+    }
+    .quoteCard .ant-card {
+        border-radius: 0;
+        margin-bottom: 24px;
+    }
+
+    .dashboard-3 .ant-card-body {
+        padding: 0;
+    }
+    .dashboard-3 .ant-card-head{
+        border:0;
+        padding: 5px 20px;
+    }
+    .dashboard-3 .ant-card-head-title{
+        color: #454a5d;
+        font-size: 1.6em;
+    }
+    .dashboard-3 .ui.feed > .event > .content .summary, .dashboard-3 .ui.feed > .event > .content .summary .date, .dashboard-3 .ui.feed > .event > .content .meta a {
+        color: #fff;
+    }
+
+
+}
+
+.textAlign{text-align: right !important;}
+.horizontal-gradient (@startColor: #eee, @endColor: white) {
+    background-color: @startColor;
+    background-image: -webkit-gradient(linear, left top, right top, from(@startColor), to(@endColor));
+    background-image: -webkit-linear-gradient(left, @startColor, @endColor);
+    background-image: -moz-linear-gradient(left, @startColor, @endColor);
+    background-image: -ms-linear-gradient(left, @startColor, @endColor);
+    background-image: -o-linear-gradient(left, @startColor, @endColor);
+}
+
+.weather {
+    &:hover {
+        box-shadow: 4px 4px 40px rgba(143, 201, 251, .6);
+    }
+    .horizontal-gradient(#46b05b, #0abac1);
+}
+
+.quote {
+    margin-bottom: 24px;
+    &:hover {
+        box-shadow: 4px 4px 40px rgba(246, 152, 153, .6);
+    }
+    .horizontal-gradient(#623fb8, #1a8ed1);
+}
+
+.imageWrap {
+    &:hover {
+        box-shadow: 4px 4px 40px rgba(246, 152, 153, .6);
+    }
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-image: linear-gradient(to bottom right, #002f4b, #dc4225);
+        opacity: .6;
+    }
+}
+
+.parapgraph {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 40px;
+    margin-left: 20px;
+    color: #fff;
+}
+
+.parapgraph div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.parapgraph h1 {
+    margin-left: 10px;
+    color: #fff
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+    border: solid 1px #fff;
+    margin-right: 10px;
+}
+
+
+body{
+	margin: 0;
+	padding: 0;
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-attachment:fixed;
+	background-size:cover;
+}
+
+.divide{
+	clear: both;
+}
+
+.disablelink{
+	color:#B1B1B1;
+}
+header img{
+	width:100%;
+}
+
+.headtop{
+	padding-top: 2px;
+	padding-bottom: 25px;
+	width: 96%;
+	margin: auto;
+}
+
+.headtop .lefthead{
+	width: 100%;
+	text-align: left;
+	color: #191919;
+	font-size: 1.6em;
+}
+
+.headtop .flippage{
+	padding-top:0.6em;
+}
+
+.headtop .flippage ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.headtop .flippage ul li{
+	display: block;
+	font-size: 0.9em;
+	float: left;
+	padding-right: 2em;
+	font-weight: bold;
+}
+
+.headtop .flippage ul li a{
+	color: #777777;
+	text-decoration: none;
+}
+
+.headtop .flippage ul li a:hover{
+	color: #191919;
+	text-decoration: none;
+}
+
+.headtop .flippage ul li .pselected{
+	color: #191919;
+	text-decoration: none;
+}
+
+section{
+	background-position: top left;
+	background-repeat: repeat;
+	box-shadow: 0 0px 2px 0 #a1a1a0;
+	min-height: 90px;
+	padding-bottom: 2px;
+
+}
+
+.timefilter{
+	padding-top: 6px;
+	width:96%;
+	margin: auto;
+}
+
+.timefilter ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.timefilter ul li{
+	float: left;
+	padding-right: 5px;
+}
+
+.timefilter li a{
+	text-decoration: none;
+	background-color: #e4dac6;
+	padding-top: 5px;
+	padding-bottom: 4px;
+	display: block;
+	color: #474747;
+	font-size: 0.7em;
+	text-align: center;
+	width: 7.5em;
+	border-radius: 60px;
+}
+
+.timefilter li a:hover{
+	background-color: #a99471;
+}
+
+.timefilter li .timeSelected{
+	background-color: #a99471;
+}
+
+.flipsection{
+	font-size: 0.8em;
+	text-align: center;
+	padding: 10px;
+}
+
+.flipsection span{
+	padding-right:6px;
+}
+
+.flipsection select{
+	width: 110px;
+	height: 18px;
+	color: #777777;
+	font-size: 0.7em;
+}
+
+section .pool{
+	text-align: center;
+	justify-content: center;
+	width: 96%;
+	margin: auto;
+}
+section .pool img{
+	width: 40%;
+}
+
+#midsection{
+	padding-bottom: 20px;
+	padding-top: 30px;
+	width: 95%;
+	margin: auto;
+	justify-content: center;
+	vertical-align: top;
+}
+
+#midsection .partleft{
+	display: inline-block;
+	width: 30%;
+	margin: auto;
+	background: #f2eee9;
+	box-shadow: 0 0 4px 0px #777;
+	height: 13.66em;
+	vertical-align: top;
+}
+
+#midsection .partcenter{
+	display: inline-block;
+	width: 30%;
+	background: #f2eee9;
+	box-shadow: 0 0 4px 0px #777;
+	height: 13.66em;
+	margin: auto;
+	margin-left: 4%;
+	margin-right: 4%;
+	vertical-align: top;
+}
+
+#midsection .partright{
+	display: inline-block;
+	width: 30%;
+	height: 13.66em;
+	background: #f2eee9;
+	box-shadow: 0 0 4px 0px #777;
+	margin: auto;
+	vertical-align: top;
+}
+
+#midsection .IndLeft{
+	display: inline-block;
+	width: 30%;
+	margin: auto;
+	background: #f2eee9;
+	box-shadow: 0 0 4px 0px #777;
+	vertical-align: top;
+	height: 22.25em;
+}
+
+#midsection .partcorner{
+	display: inline-block;
+	width: 67%;
+	margin: auto;
+	height: 22.25em;
+	margin-left: 2%;
+	vertical-align: top;
+}
+#midsection table{
+	width:98%;
+	margin: auto;
+	border-spacing: 0;
+	font-size: 0.8em;
+	color: #474646;
+}
+
+#midsection .sumhead{
+	background: #474646;
+	padding: 5px;
+	font-size: 0.8em;
+	padding-top: 10px;
+	padding-bottom: 8px;
+	text-transform:uppercase;
+	color:#fafafa;
+}
+
+#midsection table td{
+	padding-top: 1em;
+	font-size: 0.9em;
+	padding-bottom: 0.9em;
+	border-bottom:1px solid #d1d1d1;
+}
+
+#midsection .IdvlTab td{
+	padding-top: 1.4em;
+	font-size: 0.9em;
+	padding-bottom: 1.3em;
+	border-bottom:1px solid #d1d1d1;
+}
+
+
+#midsection .midHead{
+	color: #333333;
+	font-size: 0.8em;
+	padding-left: 30px;
+	padding-top: 10px;
+	padding-bottom: 3em;
+}
+
+.graph{
+	text-align: center;
+}
+.partcenter img{
+	width: 95%;
+}
+
+.partright img{
+	width: 95%;
+}
+
+#midsection .graphBox{
+	display: inline-block;
+	width: 47%;
+	background: #f2eee9;
+	box-shadow: 0 0 4px 0px #777;
+	margin: auto;
+	height: 10.5em;
+	vertical-align: top;
+	margin-bottom: 20px;
+	margin-left: 2%;
+}
+
+.partcorner img{
+	width: 90%;
+}
+
+#midsection .GrHead{
+	color: #333333;
+	font-size: 0.8em;
+	padding-left: 30px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+
+
+/*Performance RS*/
+
+.DigitalContainer{
+	margin-top: 15px;
+	margin-left: 20px;
+	background-color: #e5dbc9;
+	width: 70%;
+	box-shadow: 0 0 1px 0 #000;
+	min-height: 150px;
+	margin-bottom: 15px;
+}
+
+.DigitalContainer .DigitHead{
+	text-align: center;
+	text-transform: uppercase;
+	color: #191919;
+	font-size: 0.7em;
+	padding: 4px;
+	font-weight: bold;
+	border-bottom: 1px solid #a99471;
+}
+
+.DigitalContainer .digitaldata{
+	padding: 10px;
+	padding-left:25px;
+}
+
+.digitaldata ul{
+	margin:0;
+	padding: 0;
+	list-style: none;
+}
+
+.digitaldata ul li{
+	float: left;
+	display: block;
+	padding-right: 30px;
+	color: #191919;
+	font-size: 0.9em;
+	text-align: left;
+	vertical-align: center;
+}
+
+.digitaldata .digitBox{
+	background-color: #67625a;
+	padding: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 1.6em;
+	color: #f58025;
+	margin-top: 5px;
+	width: 120px;
+	box-shadow: inset 0 -1px 1px rgba(0,0,0,0.5), /*bottom internal shadow*/
+inset 0 1px 1px rgba(255,255,255,1); /*top internal highlight*/
+}
+
+.digitaldata .digitBoxSm{
+	background-color: #67625a;
+	padding: 3px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 0.8em;
+	color: #fafafa;
+	margin-top: 5px;
+	width: 55px;
+	box-shadow: inset 0 -1px 1px rgba(0,0,0,0.5), /*bottom internal shadow*/
+inset 0 1px 1px rgba(255,255,255,1); /*top internal highlight*/
+}
+
+.lineup{
+	padding-top: 8px;
+	width: 35px;
+}
+
+.linesm{
+	padding-right: 0;
+}
+
+.graphsheet{
+	width: 96%;
+	margin: auto;
+	padding-top: 20px;
+	text-align: center;
+}
+
+.graphsheet .graphblk{
+	padding-bottom: 30px;
+
+}
+
+.graphsheet .graphtopic{
+	padding-left: 80px;
+	font-size: 0.8em;
+	text-align: left;
+}
+.graphsheet img{
+	width: 95%;
+}

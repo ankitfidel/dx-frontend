@@ -9,6 +9,7 @@ const axios = require('axios');
 import cookie from 'react-cookies'
 import RightSider from '../components/layout/rightSider';
 import { axiosrequest } from './axiosrequest';
+import {hashHistory, browserHistory} from 'dva/router';
 
 
 class Themes extends React.Component {
@@ -42,7 +43,7 @@ headerTheme(themess){
 
   // var content1 = cookie.load('content1');
   // var content2 = cookie.load('content2');
-  axios.put(axios.defaults.baseURL + '/dataexchange/api/front/theme/'+company_id, {
+  axios.put(axios.defaults.baseURL + '/api/front/theme/'+company_id, {
     session_id: cookies,
     header_color_class: themess
   })
@@ -55,7 +56,8 @@ headerTheme(themess){
   cookie.save('headercolor', response.data.result.header_color_class, { path: '/' })
   cookie.save('content1', response.data.result.content_1, { path: '/' })
   cookie.save('content2', response.data.result.content_2, { path: '/' })
-  browserHistory.push("/themes")
+  window.location.reload()
+  hashHistory.push("/themes")
   }
 
   })
@@ -77,7 +79,7 @@ var company_id = cookie.load('company_id');
 // var headercolor = cookie.load('headercolor');
 // var content1 = cookie.load('content1');
 // var content2 = cookie.load('content2');
-axios.put(axios.defaults.baseURL + '/dataexchange/api/front/theme/'+company_id, {
+axios.put(axios.defaults.baseURL + '/api/front/theme/'+company_id, {
   session_id: cookies,
   sidebar_color_class: sidethemeColor
 })
@@ -90,7 +92,8 @@ cookie.save('sidebarcolor', response.data.result.sidebar_color_class, { path: '/
 cookie.save('headercolor', response.data.result.header_color_class, { path: '/' })
 cookie.save('content1', response.data.result.content_1, { path: '/' })
 cookie.save('content2', response.data.result.content_2, { path: '/' })
-  window.location.reload()
+window.location.reload()
+hashHistory.push("/themes")
 }
 
 })
@@ -130,7 +133,7 @@ render(){
 
   return (
 <div>
-<Card bordered={false} title="Navbar Colors" className="rightSidebarCard">
+<Card bordered={false} noHovering="false" title="Themes" className="rightSidebarCard">
 <Col span={12}>
 <ul className="menuColorList">
   <p>Header Colors</p>
@@ -205,7 +208,7 @@ render(){
 
 
 
-<div style={{'overflow':'auto'}}>
+<div style={{'overflow':'hidden'}}>
 
      <div className={styles.deviceWrap, styles.ipadLandscape}>
         <div className={styles.device, styles.desktoplayout} style={{'backgroundImage': 'url("assets/laptop.png")', 'backgroundSize': "cover"}}>
@@ -228,7 +231,7 @@ render(){
                 </div>
               </Content>
               <Footer style={{ textAlign: 'center' }}>
-                Ant Design ©2016 Created by Ant UED
+                Footer © 2018
               </Footer>
             </Layout>
           </Layout>

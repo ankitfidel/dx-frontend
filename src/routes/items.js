@@ -8,7 +8,7 @@ import reqwest from 'reqwest';
 import styles from './common.less'
 const axios = require('axios');
 import cookie from 'react-cookies'
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 import { axiosrequest } from './axiosrequest';
 
 const {  RangePicker } = DatePicker;
@@ -127,7 +127,7 @@ class Users extends React.Component {
      var dateFrom=dateString[0];
      var dateTo=dateString[1];
    //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
-     axios.get(axios.defaults.baseURL + '/dataexchange/api/front/item/values/' + cookies+'/'+itemid+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
+     axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+itemid+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
        responseType: 'json'
      }).then(response => {
        var item_values = response.data.result.item_values;
@@ -352,7 +352,7 @@ filterselectDate(value){
 
   var cookies = cookie.load('sessionid');
   var id = cookie.load('itemid');
-  axios.get(axios.defaults.baseURL + '/dataexchange/api/front/item/values/' + cookies+'/'+id+'/start_date/'+fromDate+'/end_date/' +todate ,{
+  axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+fromDate+'/end_date/' +todate ,{
     responseType: 'json'
   }).then(response => {
     var item_values = response.data.result.item_values;
@@ -385,7 +385,7 @@ filterselectDate(value){
 deleteItem(id){
   var cookies = cookie.load('sessionid');
   //alert(device_id)
-  axios.delete(axios.defaults.baseURL + '/dataexchange/api/front/item/'+ cookies +'/'+id, {
+  axios.delete(axios.defaults.baseURL + '/api/front/item/'+ cookies +'/'+id, {
   id:id
   })
   .then(function (response) {
@@ -426,7 +426,7 @@ deleteItem(id){
           // var dateFrom="2018-01-09 12:00:00";
           // var dateTo="2018-01-09 24:00:00";
         //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
-          axios.get(axios.defaults.baseURL + '/dataexchange/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
+          axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
             responseType: 'json'
           }).then(response => {
             var item_values = response.data.result.item_values;
@@ -459,7 +459,7 @@ deleteItem(id){
           var device_id = cookie.load('device_id');
         //  const cookies = cookie.load('sessionid');
 
-          axios.get(axios.defaults.baseURL + '/dataexchange/api/front/item/' + cookies +'/'+ id,{
+          axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies +'/'+ id,{
             responseType: 'json'
           }).then(response => {
             //alert(JSON.stringify(response.data.result))
@@ -482,7 +482,7 @@ deleteItem(id){
      itemslist = (params = {}) => {
          var cookies = cookie.load('sessionid');
          var device_id = cookie.load('device_id');
-         axios.get(axios.defaults.baseURL + '/dataexchange/api/front/item/' + cookies + '/device/'+ device_id,{
+         axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies + '/device/'+ device_id,{
            responseType: 'json'
          }).then(response => {
            //alert(JSON.stringify(response.data.result))
@@ -528,7 +528,7 @@ deleteItem(id){
     const item_oid = document.getElementById('item_oid').value;
     const intervalTime = document.getElementById('intervalTime').value;
    // const isRetailer = document.getElementById('isRetailer').checked = true;
-    axios.post(axios.defaults.baseURL + '/dataexchange/api/front/item', {
+    axios.post(axios.defaults.baseURL + '/api/front/item', {
      session_id:cookies,
      item_name:item_name,
      item_unit:item_unit,
@@ -577,7 +577,7 @@ editItem: true,
 var cookies = cookie.load('sessionid');
   var id = cookie.load('id');
 var device_id = cookie.load('device_id');
-  axios.get(axios.defaults.baseURL + '/dataexchange/api/front/item/' +cookies+"/"+ id,{
+  axios.get(axios.defaults.baseURL + '/api/front/item/' +cookies+"/"+ id,{
   responseType: 'json'
 }).then(response => {
   //alert(JSON.stringify(response.data.result))
@@ -597,7 +597,7 @@ editItemssave(){
   const item_oid = document.getElementById('item_oid').value;
     const intervalTime = document.getElementById('intervalTime').value;
  // const isRetailer = document.getElementById('isRetailer').checked = true;
-  axios.put(axios.defaults.baseURL + '/dataexchange/api/front/item/'+ id, {
+  axios.put(axios.defaults.baseURL + '/api/front/item/'+ id, {
    session_id:cookies,
    item_id:id,
    item_name:item_name,
@@ -821,7 +821,7 @@ const hasSelected = selectedRowKeys.length > 0;
 
 {addItems}
 <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1200}} loading={loading} rowKey="id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} loading={loading} rowKey="id" rowSelection={rowSelection} columns={[
 
 {
    title: 'Item Name',

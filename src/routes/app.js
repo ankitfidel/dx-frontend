@@ -1,14 +1,12 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'dva'
-import Login from './login'
+import Loginpage from './loginpage'
 import Adminlogin from './adminlogin'
-
-
 import Header from '../components/layout/header'
+import LockPage from '../routes/pages/lockscreen'
 import Bread from '../components/layout/bread'
 import Footer from '../components/layout/footer'
 import CustomSider from '../components/layout/sider'
-import Menu from '../components/layout/menu'
 import styles from '../components/layout/main.less'
 import { Spin, LocaleProvider, Switch } from 'antd'
 import { classnames, config } from '../utils'
@@ -16,38 +14,40 @@ import '../components/layout/common.less'
 import enUS from 'antd/lib/locale-provider/en_US';
 import RightSider from '../components/layout/rightSider';
 import { Layout } from 'antd';
-import { BackTop } from 'antd';
-import moment from 'moment';
-//import 'moment/locale/en_US';
 import cookie from 'react-cookies'
 const axios = require('axios');
-import { browserHistory } from 'dva/router';
+import { hashHistory, browserHistory } from 'dva/router';
+import { BackTop } from 'antd';
 
 const { Sider, Content } = Layout;
 
+
 var cookies = cookie.load('sessionid');
 var user_role = cookie.load('user_role');
-
-if(cookies==null || cookies == undefined ||cookies == ''){
-  browserHistory.push("/login");
-}else{
-  if(user_role=='dashboard_user'){
-    browserHistory.push("/dashboard");
-  }else if(user_role=='dashboard_admin'){
-     browserHistory.push("/admindashboard");
+var sidebarcolor = cookie.load('sidebarcolor');
+var headercolor = cookie.load('headercolor');
+var content1 = cookie.load('content1');
+var content2 = cookie.load('content2');
+  //alert("cookies:"+cookies);
+  if(cookies==null || cookies == undefined || cookies == ''){
+  //  alert("hi");
+    hashHistory.push("/login");
+  }else{
+    if(user_role=='dashboard_user'){
+      hashHistory.push("/dashboard");
+    }else if(user_role=='dashboard_admin'){
+       hashHistory.push("/admindashboard");
+    }
   }
-}
-
-//alert("userRole:::::::::"+userRole);                <Bread location={location} />
 
 function App({ children, location, dispatch, app }) {
 
-  var sidebarcolor = cookie.load('sidebarcolor');
-  var headercolor = cookie.load('headercolor');
-  var content1 = cookie.load('content1');
-  var content2 = cookie.load('content2');
+
+
+
+
   const {
-    login,adminlogin,
+    login,
     loading,
     loginButtonLoading,
     user,
@@ -60,20 +60,14 @@ function App({ children, location, dispatch, app }) {
     navOpenKeys,
     lock,
     SignUp,
-    headerTheme,
+    menuTheme,
+    headerTheme
   } = app
   const loginProps = {
     loading,
     loginButtonLoading,
     onOk(data) {
       dispatch({ type: 'app/login', payload: data })
-    }
-  }
-  const adminloginProps = {
-    loading,
-    loginButtonLoading,
-    onOks(datas) {
-      dispatch({ type: 'app/adminlogin', payload: datas })
     }
   }
 
@@ -120,13 +114,14 @@ function App({ children, location, dispatch, app }) {
       dispatch({ type: 'app/changeThemeHeader' , payload: {  theme: value  }})
     },
     headerTheme,
-    headercolor
+    menuTheme
   }
 
   const siderProps = {
     siderFold,
-    location,sidebarcolor,
+    location,
     navOpenKeys,
+    menuTheme,
     changeTheme() {
       dispatch({ type: 'app/changeTheme' })
     },
@@ -149,8 +144,6 @@ function App({ children, location, dispatch, app }) {
       //console.log(value)
       dispatch({ type: 'app/changeTheme' , payload: {  theme: value  }})
     },
-    headerTheme,
-    sidebarcolor
   }
 
 
@@ -166,52 +159,39 @@ function App({ children, location, dispatch, app }) {
   } else if (lock) {
     return (
       <div>
-        Page Not Found
+        <LockPage />
       </div>
     )
 
   } else if (config.needLogin) {
-    if (login) {
+    if (!login) {
       return (
         <div>
 
           <div className={styles.spin}>
-            <Login {...loginProps} />
-
+            <Loginpage {...loginProps} />
           </div>
 
         </div>
       )
-    }else if (adminlogin) {
-        return (
-          <div>
-
-            <div className={styles.spin}>
-              <Adminlogin {...adminloginProps} />
-
-            </div>
-
-          </div>
-        )
-      }
+    }
   }
 
-  if (login) {
-
+  if ((login || !config.needLogin)) {
     return (
       <LocaleProvider locale={enUS}>
       <div
         className={classnames(styles.layout, { [styles.fold]: isNavbar ? true : siderFold  }, {  [styles.withnavbar]: isNavbar  })}>
         {!isNavbar  ? <aside
             className={classnames(styles.sider )} style={{'backgroundColor': sidebarcolor}}>
-<CustomSider {...siderProps}  style={{'backgroundColor': sidebarcolor}} />
+<CustomSider {...siderProps}  style={{'backgroundColor': headercolor}} />
 
           </aside>
           : ''}
         <div id="main_content" className={classnames(styles.main)}>
           <div className={styles.spin} >
             <Spin tip='Loading...' spinning={loading} size='large'>
-              <Header {...headerProps} style={{'backgroundColor': headercolor}} />
+              <Header {...headerProps} style={{'backgroundColor': 'brown'}} />
 
                 <div className={styles.container}>
                   <div className={styles.content} id="spin">
@@ -229,10 +209,6 @@ function App({ children, location, dispatch, app }) {
       </LocaleProvider>
     )
   }
-
-
-
-
 }
 
 App.propTypes = {

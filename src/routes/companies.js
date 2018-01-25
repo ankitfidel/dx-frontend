@@ -61,7 +61,7 @@ class Companies extends React.Component {
 //alert(header)
 
 console.log(header),
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/company/' + cookies,{
+      axios.get(axios.defaults.baseURL + '/api/front/company/' + cookies,{
 header,
             responseType: 'json'
           }).then(response => {
@@ -186,7 +186,7 @@ const hasSelected = selectedRowKeys.length > 0;
 <Card noHovering="false">
 
 
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1200}} rowKey="company_id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} rowKey="company_id" rowSelection={rowSelection} columns={[
    {
      title: 'Logo',
      dataIndex: 'logo',
@@ -212,12 +212,7 @@ const hasSelected = selectedRowKeys.length > 0;
  dataIndex: 'is_retailer',
   render: is_retailer => <p>{is_retailer === true ? "yes" :"no"}</p>
 },
-{
- title: 'Devices Link',
- dataIndex: 'company_id',
-  render: company_id => <Button onClick={() => this.gotoco(company_id)}>Devices</Button>
 
-}
 
 
 ]} dataSource={tableData}  />

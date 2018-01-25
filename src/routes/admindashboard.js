@@ -222,7 +222,7 @@ class Admin_dashboard extends React.Component {
   countlist = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
+      axios.get(axios.defaults.baseURL + '/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
         responseType: 'json'
       }).then(response => {
     // alert( response.data.result)

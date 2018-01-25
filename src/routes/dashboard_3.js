@@ -110,7 +110,7 @@ class Dashboard_3 extends React.Component {
   activetriggerslist = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/trigger/' + cookies + '/severity/' + 0 + '/active/' + 1 ,{
+      axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/severity/' + 0 + '/active/' + 1 ,{
         responseType: 'json'
       }).then(response => {
             this.setState({triggerlist: response.data.result, loading:false});
@@ -122,7 +122,7 @@ class Dashboard_3 extends React.Component {
   countlist = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
+      axios.get(axios.defaults.baseURL + '/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
         responseType: 'json'
       }).then(response => {
       //  alert( response.data.result)
@@ -137,7 +137,8 @@ class Dashboard_3 extends React.Component {
   Disasterslist = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/trigger/' + cookies + '/severity/' + 9 + '/active/' + 1 ,{
+
+      axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/severity/' + 9 + '/active/' + 1 ,{
         responseType: 'json'
       }).then(response => {
             this.setState({disaster: response.data.result.length, loading:false});
@@ -149,7 +150,7 @@ class Dashboard_3 extends React.Component {
   Warningslist = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/trigger/' + cookies + '/severity/' + 6 + '/active/' + 1 ,{
+      axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/severity/' + 6 + '/active/' + 1 ,{
         responseType: 'json'
       }).then(response => {
             this.setState({warnings: response.data.result.length, loading:false});
@@ -161,7 +162,7 @@ class Dashboard_3 extends React.Component {
   Informationallist = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/trigger/' + cookies + '/severity/' + 5 + '/active/' + 1 ,{
+      axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/severity/' + 5 + '/active/' + 1 ,{
         responseType: 'json'
       }).then(response => {
             this.setState({informational: response.data.result.length, loading:false});
@@ -354,7 +355,7 @@ class Dashboard_3 extends React.Component {
         <Row gutter={24}>
         <Card style={{ padding: 0}}>
           <Col lg={24} md={24}>
-           <Table rowSelection={rowSelection} rowKey="id" scroll={{ x: 1200}} columns={[
+           <Table rowSelection={rowSelection} rowKey="id" scroll={{ x: 900}} columns={[
              {
              title: 'active_time',
              dataIndex: 'active_time',

@@ -6,7 +6,7 @@ import { config } from '../utils'
 import styles from './login.less'
 import cookie from 'react-cookies'
 const axios = require('axios');
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 import { axiosrequest } from './axiosrequest';
 
 const FormItem = Form.Item
@@ -25,12 +25,12 @@ class Header extends React.Component {
      this.setState({modal1Visible})
    };
    login(){
-     browserHistory.push("/login")
+     hashHistory.push("/login")
    }
    forgetpassord () {
 
      const email_id = document.getElementById('email_id').value;
-         axios.post(axios.defaults.baseURL + '/dataexchange/api/forget_password', {
+         axios.post(axios.defaults.baseURL + '/api/forget_password', {
            email_id:email_id
        })
        .then(function (response) {

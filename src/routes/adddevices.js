@@ -10,7 +10,7 @@ const axios = require('axios');
 import cookie from 'react-cookies'
 import { axiosrequest } from './axiosrequest';
 
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 const data = [];
 
 
@@ -51,7 +51,7 @@ class Adddevices extends React.Component {
     //  this.fetchcompany();
     var cookies = cookie.load('sessionid');
     var company_id = cookie.load('company_id');
-    axios.get(axios.defaults.baseURL + '/dataexchange/api/front/group/' + cookies + '/company/' + company_id,{
+    axios.get(axios.defaults.baseURL + '/api/front/group/' + cookies + '/company/' + company_id,{
       responseType: 'json'
     }) .then(response => {
        let grouplist = response.data.result.map((group,i) => {
@@ -99,7 +99,7 @@ class Adddevices extends React.Component {
         const ip = document.getElementById('ip').value;
         const groupid = document.getElementById('selectedGroupId').value;
        // const isRetailer = document.getElementById('isRetailer').checked = true;
-        axios.post(axios.defaults.baseURL + '/dataexchange/api/front/device', {
+        axios.post(axios.defaults.baseURL + '/api/front/device', {
          session_id:cookies,
          device_name:devicename,
          device_port:port,
@@ -130,7 +130,7 @@ class Adddevices extends React.Component {
          }
          if(response.data.status == true){
                console.log(JSON.stringify(response.data.result));
-               browserHistory.push("/devices");
+               hashHistory.push("/devices");
              }
         })
         .catch(function (error) {

@@ -41,6 +41,8 @@ class Groups extends React.Component {
            result:[],
            loading: true,
            visible: false,
+           canceleditgroup:false,
+           handleChange:false,
            editgroups: false,
            pagination: {},
            size: 'default',
@@ -58,7 +60,7 @@ class Groups extends React.Component {
      grouplist = (params = {}) => {
          var cookies = cookie.load('sessionid');
          var company_id = cookie.load('company_id');
-         axios.get(axios.defaults.baseURL + '/dataexchange/api/front/group/' + cookies + '/company/'+ company_id,{
+         axios.get(axios.defaults.baseURL + '/api/front/group/' + cookies + '/company/'+ company_id,{
            responseType: 'json'
          }).then(response => {
                this.setState({ groupData: response.data.result,  loading:false});
@@ -85,7 +87,7 @@ class Groups extends React.Component {
   var user_id = cookie.load('user_id');
   var company_id = cookie.load('company_id');
   //alert(user_id);
-  axios.get(axios.defaults.baseURL + '/dataexchange/api/front/group/'+ cookies + '/company/' + company_id,{
+  axios.get(axios.defaults.baseURL + '/api/front/group/'+ cookies + '/company/' + company_id,{
     responseType: 'json'
   }).then(response => {
     var userdata = response.data.result[0];
@@ -99,7 +101,7 @@ class Groups extends React.Component {
     const cookies = cookie.load('sessionid');
     var id = cookie.load('id');
 var group_name = document.getElementById('group_name').value;
-    axios.put(axios.defaults.baseURL + '/dataexchange/api/front/group/'+ id , {
+    axios.put(axios.defaults.baseURL + '/api/front/group/'+ id , {
       session_id:cookies,
       group_name:group_name,
     }).then(function (response) {
@@ -117,7 +119,7 @@ var group_name = document.getElementById('group_name').value;
     const cookies = cookie.load('sessionid');
     var company_id = cookie.load('company_id');
     var group_name = document.getElementById('group_name').value;
-    axios.post(axios.defaults.baseURL + '/dataexchange/api/front/group', {
+    axios.post(axios.defaults.baseURL + '/api/front/group', {
      session_id:cookies,
      group_name:group_name,
      company_id:company_id,
@@ -134,16 +136,16 @@ var group_name = document.getElementById('group_name').value;
     });
 
 }
-handleCancel = (e) => {
+handleCancels = (e) => {
 console.log(e);
 this.setState({
-visible: false,
+editgroups: false,
 });
 }
 canceleditgroup = (e) => {
 console.log(e);
 this.setState({
-editgroups: false,
+visible: false,
 });
 }
 
@@ -217,10 +219,10 @@ const hasSelected = selectedRowKeys.length > 0;
          onCancel={this.canceleditgroup}
        >
        <Card noHovering="false" bordered={false}>
-       <h2 style={{textAlign: 'center'}}>Add items</h2>
+       <h2 style={{textAlign: 'center'}}>Add Group</h2>
 
-       <FormItem label="group_name:">
-           <Input placeholder="group_name" defaultValue="" id="group_name"/>
+       <FormItem label="Group Name:">
+           <Input placeholder="Enter Group Name" defaultValue="" id="group_name"/>
        </FormItem>
 
         </Card>
@@ -228,33 +230,33 @@ const hasSelected = selectedRowKeys.length > 0;
        <Modal
          visible={this.state.editgroups}
          onOk={this.editgroupsave}
-         onCancel={this.handleCancel}
+         onCancel={this.handleCancels}
        >
        <Card noHovering="false" bordered={false}>
-       <h2 style={{textAlign: 'center'}}>Add items</h2>
+       <h2 style={{textAlign: 'center'}}>Edit Groups</h2>
 
-       <FormItem label="group_name:">
-           <Input placeholder="group_name"value={name} id="group_name" onChange={e => this.onTodoChange_groupname(e.target.value)}/>
+       <FormItem label="Group Name:">
+           <Input placeholder="Enter Group Name"value={name} id="group_name" onChange={e => this.onTodoChange_groupname(e.target.value)}/>
        </FormItem>
 
         </Card>
        </Modal>
 <Card noHovering="false">
 
-{addgroup}
+{addgroup} <br /><br />
 
  <Table pagination={{ pageSize: 10,  showSizeChanger:true}} loading={loading} rowKey="id" rowSelection={rowSelection} columns={[
 
 {
-   title: 'name',
+   title: 'Name',
    dataIndex: 'name',
  },
  {
-    title: 'templates',
+    title: 'Template',
     dataIndex: 'templates',
   },
   {
-     title: 'id',
+     title: 'Action',
      dataIndex: 'id',
      render: id => <Button size="small" type="primary" onClick={() => this.groupeditData(id)}>edit</Button>
    },

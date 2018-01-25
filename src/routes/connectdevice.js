@@ -88,7 +88,7 @@ this.connectdevice = this.connectdevice.bind(this);
        //  this.setState({ loading: true });
          var cookies = cookie.load('sessionid');
          var company_id = cookie.load('company_id');
-         axios.get(axios.defaults.baseURL + '/dataexchange/api/front/device/' + cookies + '/company/' + company_id + '/connect/' + false,{
+         axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/company/' + company_id + '/connect/' + false,{
            responseType: 'json'
          }) .then(response => {
 
@@ -117,7 +117,7 @@ this.connectdevice = this.connectdevice.bind(this);
               var cookies = cookie.load('sessionid');
             //var device_id = cookie.load('device_id');
           //  console.log("device id = "+ device_id);
-              axios.get(axios.defaults.baseURL + '/dataexchange/api/front/device/connect/' + cookies + '/' + selectDeviceId,{
+              axios.get(axios.defaults.baseURL + '/api/front/device/connect/' + cookies + '/' + selectDeviceId,{
                 responseType: 'json'
               }).then(response => {
                // alert("response"+response)
@@ -198,11 +198,7 @@ render(){
 
          </Card>
        </div>
-       <div>
-<Card noHovering="false">
 
-         </Card>
-       </div>
        </div>
      );
 

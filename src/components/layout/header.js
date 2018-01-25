@@ -33,7 +33,7 @@ class Header extends React.Component {
 
 
 
-  handleClickMenu = e => e.key === 'logout' && logout()
+  handleClickMenu = e => e.key === 'logout'
 
 
 render(){

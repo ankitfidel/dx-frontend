@@ -5,7 +5,7 @@ import {ComposedChart, CartesianGrid, LineChart, Line, AreaChart, Area, Brush, X
 const {Header, Content, Footer, Sider} = Layout;
 const axios = require('axios');
 import cookie from 'react-cookies'
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 import styles from './common.less';
 import { axiosrequest } from './axiosrequest';
 // <Button type="danger"   onClick={this.start}
@@ -64,7 +64,7 @@ class Devices extends React.Component {
   devicelistparam = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
-      axios.get(axios.defaults.baseURL + '/dataexchange/api/front/device/' + cookies + '/company/'+ company_id,{
+      axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/company/'+ company_id,{
         responseType: 'json'
       }).then(response => {
             this.setState({devicelist: response.data.result, connected:response.data.result.is_connected, loading:false});
@@ -79,18 +79,18 @@ class Devices extends React.Component {
 
 }
 adddevices(){
-    browserHistory.push("/adddevices");
+    hashHistory.push("/adddevices");
 }
 editdevice(device_id){
   console.log("company_id:" + device_id)
   cookie.save('deviceid', device_id);
   console.log("from cookies company_id:" + cookie.load('deviceid'))
-  browserHistory.push("/Viewdevices")
+  hashHistory.push("/viewdevices")
 }
 deletedevice(device_id){
   var cookies = cookie.load('sessionid');
   //alert(device_id)
-  axios.delete(axios.defaults.baseURL + '/dataexchange/api/front/device/'+ cookies +'/'+device_id, {
+  axios.delete(axios.defaults.baseURL + '/api/front/device/'+ cookies +'/'+device_id, {
   device_id:device_id
   })
   .then(function (response) {
@@ -111,12 +111,12 @@ deletedevice(device_id){
   itemlist(device_id){
     console.log("device id"+ device_id);
       cookie.save('device_id', device_id, { path: '/' });
-    browserHistory.push("/items");
+    hashHistory.push("/items");
   }
   triggerslist(device_id){
     console.log("device id"+ device_id);
       cookie.save('device_id', device_id, { path: '/' });
-    browserHistory.push("/triggers");
+    hashHistory.push("/triggers");
   }
 
  handleChange(value, key, column) {
@@ -212,7 +212,7 @@ addDevices = null
  <Card noHovering="false">
 
 {addDevices}&nbsp;<br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true }} scroll={{ x: 1200}} rowKey="device_id" loading={loading} rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true }} scroll={{ x: 900}} rowKey="device_id" loading={loading} rowSelection={rowSelection} columns={[
    {
    title: 'Device Name',
    dataIndex: 'device_name',

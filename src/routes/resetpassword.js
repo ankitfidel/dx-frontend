@@ -6,7 +6,7 @@ import { config } from '../utils'
 import styles from './login.less'
 import cookie from 'react-cookies'
 const axios = require('axios');
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 import { axiosrequest } from './axiosrequest';
 
 const FormItem = Form.Item
@@ -31,7 +31,7 @@ componentWillReceiveProps(token){
    //this.props.params.token;
  //alert("token password")
  const email_id = document.getElementById('email_id').value;
-         axios.post(axios.defaults.baseURL + '/dataexchange/api/forget_password/'+token, {
+         axios.post(axios.defaults.baseURL + '/api/forget_password/'+token, {
            email_id:email_id
        })
        .then(function (response) {
@@ -55,7 +55,7 @@ alert("please check mail")
      this.setState({modal1Visible})
    };
    login(){
-     browserHistory.push("/login")
+     hashHistory.push("/login")
    }
 //    forgetpassord () {
 //

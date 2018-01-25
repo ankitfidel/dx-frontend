@@ -91,10 +91,10 @@ export default {
                 weather.city = data.channel.location.city
                  yield put({type: 'queryWeatherSuccess', payload: {weather}})
             }catch(e){
-              //  console.log("Error weather update")
+                console.log("Error weather update")
            }
-
-
+               
+                    
         }
     },
     reducers : {

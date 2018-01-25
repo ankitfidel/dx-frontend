@@ -6,7 +6,7 @@ import reqwest from 'reqwest';
 import styles from './common.less'
 const axios = require('axios');
 import cookie from 'react-cookies'
-import { browserHistory } from 'dva/router';
+import { browserHistory, hashHistory } from 'dva/router';
 import { axiosrequest } from './axiosrequest';
 
 
@@ -64,7 +64,7 @@ class Users extends React.Component {
                   //  this.setState({ loading: true });
                     var cookies = cookie.load('sessionid');
                     var company_id = cookie.load('company_id');
-                    axios.get(axios.defaults.baseURL + '/dataexchange/api/front/user/' + cookies + '/company_id/'+ company_id,{
+                    axios.get(axios.defaults.baseURL + '/api/front/user/' + cookies + '/company_id/'+ company_id,{
                       responseType: 'json'
                     }).then(response => {
                           this.setState({ userData: response.data.result});
@@ -97,7 +97,7 @@ class Users extends React.Component {
          // console.log('params:', params);
          //  this.setState({ loading: true });
            var cookies = cookie.load('sessionid');
-           axios.get(axios.defaults.baseURL + '/dataexchange/api/front/company/' + cookies,{
+           axios.get(axios.defaults.baseURL + '/api/front/company/' + cookies,{
              responseType: 'json'
            }) .then(response => {
               let comapnyrole = response.data.result.map((pic,i) => {
@@ -125,7 +125,7 @@ class Users extends React.Component {
 var cookies = cookie.load('sessionid');
 var user_id = cookie.load('user_id');
 //alert(user_id);
-axios.get(axios.defaults.baseURL + '/dataexchange/api/front/user/'+ cookies + '/user_id/' + user_id,{
+axios.get(axios.defaults.baseURL + '/api/front/user/'+ cookies + '/user_id/' + user_id,{
   responseType: 'json'
 }).then(response => {
   var userdata = response.data.result;
@@ -148,7 +148,7 @@ axios.get(axios.defaults.baseURL + '/dataexchange/api/front/user/'+ cookies + '/
     const first_name = document.getElementById('first_name').value;
     const email_id = document.getElementById('email_id').value;
 
-    axios.put(axios.defaults.baseURL + '/dataexchange/api/front/user/'+user_id, {
+    axios.put(axios.defaults.baseURL + '/api/front/user/'+user_id, {
      session_id:cookies,
      username:username,
      password:password,
@@ -176,7 +176,7 @@ axios.get(axios.defaults.baseURL + '/dataexchange/api/front/user/'+ cookies + '/
    this.setState({ loading: true });
    // ajax request after empty completing
    var cookies = cookie.load('sessionid');
-   axios.delete(axios.defaults.baseURL + '/dataexchange/api/front/user/'+ cookies +'/'+user_id, {
+   axios.delete(axios.defaults.baseURL + '/api/front/user/'+ cookies +'/'+user_id, {
      user_id:user_id
    })
    .then(function (response) {
@@ -222,7 +222,7 @@ axios.get(axios.defaults.baseURL + '/dataexchange/api/front/user/'+ cookies + '/
          const companyId = document.getElementById('companyId').value;
 
          // const isRetailer = document.getElementById('isRetailer').checked = true;
-          axios.post(axios.defaults.baseURL + '/dataexchange/api/front/user', {
+          axios.post(axios.defaults.baseURL + '/api/front/user', {
            session_id:cookies,
            username:username,
            password:password,
@@ -399,7 +399,7 @@ const hasSelected = selectedRowKeys.length > 0;
 <Card noHovering="false"> &nbsp; &nbsp;
  <Button type="primary" onClick={this.addusers}>Add Users</Button> &nbsp;
  <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1200}} rowKey="user_id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="user_id" rowSelection={rowSelection} columns={[
 
 {
    title: 'Username',

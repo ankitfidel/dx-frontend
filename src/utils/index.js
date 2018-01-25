@@ -1,17 +1,9 @@
 import config from './config'
 import menu from './menu'
-import adminmenu from './adminmenu'
 import request from './request'
 import classnames from 'classnames'
 import {color} from './theme'
 require('./mock.js')
-import cookie from 'react-cookies'
-//
-// var sidebarcolor = cookie.load('sidebarcolor');
-// var headercolor = cookie.load('headercolor');
-// var content1 = cookie.load('content1');
-// var content2 = cookie.load('content2');
-
 
 String.prototype.hyphenToHump = function () {
   return this.replace(/-(\w)/g, function () {
@@ -50,9 +42,8 @@ Date.prototype.format = function (format) {
 }
 
 module.exports = {
-
   config,
-  menu,adminmenu,
+  menu,
   request,
   color,
   classnames

@@ -1,11 +1,9 @@
 .bg{
-background-image: url("../../assets/bg.png");
-background-size: cover;
-background-repeat: no-repeat;
+  background: url("../../assets/bg.png");
     width: 100%;
     position: absolute;
     top: 0;
-    z-index: 99999;
+    z-index: 99999; background-position: 0 0; background-size: cover;
     height: 100%;
     right: 0;
     left: 0;
@@ -14,11 +12,12 @@ background-repeat: no-repeat;
 
 .form {
   position: absolute;
-  top: 50%;
+  top: 50%;background: #fff;
   left: 50%;
   margin: -160px 0 0 -160px;
   width: 320px;
   padding: 36px;
+  box-shadow: 0 0 100px rgba(0,0,0,.08);
 
   button {
     width: 100%;
@@ -39,12 +38,13 @@ background-repeat: no-repeat;
 
 .logo {
   text-align: center;
+  height: 40px;
   line-height: 40px;
   cursor: pointer;
   margin-bottom: 24px;
 
   img {
-    width: 150px;
+    width: 160px;
     margin-right: 8px;
   }
 
