@@ -186,7 +186,7 @@ const hasSelected = selectedRowKeys.length > 0;
 <Card noHovering="false">
 
 
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} rowKey="company_id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="company_id" rowSelection={rowSelection} columns={[
    {
      title: 'Logo',
      dataIndex: 'logo',
@@ -211,8 +211,7 @@ const hasSelected = selectedRowKeys.length > 0;
  title: 'Is Retailer',
  dataIndex: 'is_retailer',
   render: is_retailer => <p>{is_retailer === true ? "yes" :"no"}</p>
-},
-
+}
 
 
 ]} dataSource={tableData}  />

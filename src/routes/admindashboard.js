@@ -250,7 +250,7 @@ class Admin_dashboard extends React.Component {
 
         <i className="fa fa-code-fork fa-5x text-primary"></i></Col>
        <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.devicelist}</span><br />
-       <span className="text-primary" style={{ fontSize: 20 }}>No. of Devices </span>
+       <span className="text-primary" style={{ fontSize: 18 }}>No. of Devices </span>
 
        </Col>
       </Card>
@@ -261,7 +261,7 @@ class Admin_dashboard extends React.Component {
       <Card className="bleedblue" style={{ padding: '30px' }}>
         <Col span={12}><i className="fa fa-cubes fa-5x text-primary"></i></Col>
       <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.itemslist}</span><br />
-      <span style={{ fontSize: 20 }} className="text-primary">No. of Items </span></Col>
+      <span style={{ fontSize: 18 }} className="text-primary">No. of Items </span></Col>
       </Card>
       </Col>
 
@@ -270,7 +270,7 @@ class Admin_dashboard extends React.Component {
       <Card className="bleedblue" style={{ padding: '30px' }}>
         <Col span={12}><i className="fa fa-users fa-5x text-primary"></i></Col>
       <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.userslist}</span><br />
-      <span style={{ fontSize: 20 }} className="text-primary">No. of Users </span></Col>
+      <span style={{ fontSize: 18 }} className="text-primary">No. of Users </span></Col>
       </Card>
       </Col>
       </Row>

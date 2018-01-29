@@ -1,6 +1,6 @@
 const webpack = require('atool-build/lib/webpack')
 
-module.exports = function (webpackConfig, env) {
+module.exports = function (webpackConfig, NODE_ENV) {
   webpackConfig.babel.plugins.push('transform-runtime')
   module: {
     loaders: [
@@ -9,14 +9,15 @@ module.exports = function (webpackConfig, env) {
         loader: 'json-loader'
       }
     ]
+
   }
   webpackConfig.babel.plugins.push(['import', {
     libraryName: 'antd',
     style: true
   }])
- 
+
   // Support hmr
-  if (env === 'development') {
+  if (NODE_ENV = 'development') {
     webpackConfig.devtool = '#eval'
     webpackConfig.babel.plugins.push(['dva-hmr', {
       entries: [
@@ -52,7 +53,6 @@ module.exports = function (webpackConfig, env) {
       loader.test = /\.css$/
     }
   })
-	
+
   return webpackConfig
 }
-

@@ -137,7 +137,6 @@ class Dashboard_3 extends React.Component {
   Disasterslist = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
-
       axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/severity/' + 9 + '/active/' + 1 ,{
         responseType: 'json'
       }).then(response => {

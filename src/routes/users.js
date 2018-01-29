@@ -335,20 +335,20 @@ const hasSelected = selectedRowKeys.length > 0;
            </Button>,
          ]}
        >
-       <FormItem label="username:">
-           <Input placeholder="username" defaultValue="" id="username"/>
+       <FormItem label="Username:">
+           <Input placeholder="Enter Username" defaultValue="" id="username"/>
        </FormItem>
-       <FormItem label="password:">
-           <Input placeholder="password" defaultValue="" id="password"/>
+       <FormItem label="Password:">
+           <Input placeholder="Enter Password" defaultValue="" id="password"/>
        </FormItem>
-       <FormItem label="firstName:">
-           <Input placeholder="firstName" defaultValue="" id="firstName"/>
+       <FormItem label="First Name:">
+           <Input placeholder="Enter First Name" defaultValue="" id="firstName"/>
        </FormItem>
-       <FormItem label="lastName:">
-           <Input placeholder="lastName" defaultValue="" id="lastName"/>
+       <FormItem label="Last Name:">
+           <Input placeholder="Enter Last Name" defaultValue="" id="lastName"/>
        </FormItem>
-       <FormItem label="emailId:">
-           <Input placeholder="emailId" defaultValue="" id="emailId"/>
+       <FormItem label="Email Id:">
+           <Input placeholder="Enter Email Id" defaultValue="" id="emailId"/>
        </FormItem>
        <FormItem label="User Role:">
        <select style={{ width: 200  }} className={styles.selectopt} id="userRoleId">

@@ -82,7 +82,7 @@ class Loginpage extends React.Component {
                 cookie.save('headercolor', response.data.result.theme.header_color_class, { path: '/' })
                 cookie.save('content1', response.data.result.theme.content_1, { path: '/' })
                 cookie.save('content2', response.data.result.theme.content_2, { path: '/' })
-                window.location.reload()
+
                 hashHistory.push("/admindashboard");
                //window.location.reload()
             }else if (response.data.result.user_role=="dashboard_user"){
@@ -97,9 +97,8 @@ class Loginpage extends React.Component {
                 cookie.save('headercolor', response.data.result.theme.header_color_class, { path: '/' })
                 cookie.save('content1', response.data.result.theme.content_1, { path: '/' })
                 cookie.save('content2', response.data.result.theme.content_2, { path: '/' })
-                  window.location.reload()
                 hashHistory.push("/dashboard");
-           //  window.location.reload()
+                window.location.reload()
             }
          }
 

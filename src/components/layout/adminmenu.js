@@ -102,33 +102,33 @@ function MenusAdmin({
       defaultOpenKeys={['sub1']}
       mode="inline">
 
-      <Menu.Item key="dashboard" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link to="/admindashboard" activeClassName="selected"> <Icon type="rocket" /> Dashboard</Link>
+      <Menu.Item key="dashboard" className="menulink" >
+         <Link to="/admindashboard" activeStyle={{ 'background': headercolor }} style={{'padding': '0px 20px'}}> <Icon type="rocket" /> Dashboard</Link>
       </Menu.Item>
       <Menu.Item key="themes" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link to="/themes" activeClassName="selected"> <Icon type="setting" /> Themes</Link>
+         <Link to="/themes" activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}}> <Icon type="setting" /> Themes</Link>
       </Menu.Item>
 
 
       <SubMenu  style={{'backgroundColor': sidebarcolor}} key="shub1" title={<span><Icon type="appstore" /><span>Devices</span></span>}>
-          <Menu.Item key="deviceslist" style={{'backgroundColor': sidebarcolor}}> <Link activeClassName="selected"  to="/devices">  <Icon type="cloud-o" /> Devices list</Link> </Menu.Item>
-          <Menu.Item key="adddevices" style={{'backgroundColor': sidebarcolor}}><Link activeClassName="selected"  to="/adddevices">  <Icon type="cloud-o" />  Add devices</Link></Menu.Item>
+          <Menu.Item key="deviceslist" activeStyle={{ background: headercolor }} style={{'backgroundColor': sidebarcolor}}> <Link activeClassName="selected" activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}} to="/devices">  <Icon type="cloud-o" /> Devices list</Link> </Menu.Item>
+          <Menu.Item key="adddevices" activeStyle={{ background: headercolor }} style={{'backgroundColor': sidebarcolor}}><Link activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}} to="/adddevices">  <Icon type="cloud-o" />  Add devices</Link></Menu.Item>
         </SubMenu>
       <Menu.Item key="companies" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/companies"> <Icon type="team" />Company List</Link>
+         <Link activeClassName="selected"  to="/companies" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }} > <Icon type="team" />Company List</Link>
       </Menu.Item>
-      <Menu.Item key="items" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/items"> <Icon type="hdd" /> Items List</Link>
+      <Menu.Item key="items" className="menulink"  style={{'overflow': 'hidden'}}>
+         <Link activeClassName="selected"  to="/items" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="hdd" /> Items List</Link>
       </Menu.Item>
 
-      <Menu.Item key="users" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/users"> <Icon type="user" /> Users List</Link>
+      <Menu.Item key="users" className="menulink"  style={{'overflow': 'hidden'}}>
+         <Link activeClassName="selected"  to="/users" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="user" /> Users List</Link>
       </Menu.Item>
       <Menu.Item key="connectdevice" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/connect-device"> <Icon type="cloud-upload-o" /> Connect Device</Link>
+         <Link activeClassName="selected"  to="/connect-device" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="cloud-upload-o" /> Connect Device</Link>
       </Menu.Item>
       <Menu.Item key="groups" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/groups">  <Icon type="cloud-o" /> Groups</Link>
+         <Link activeClassName="selected"  to="/groups" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}>  <Icon type="cloud-o" /> Groups</Link>
       </Menu.Item>
 
 

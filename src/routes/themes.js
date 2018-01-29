@@ -56,8 +56,8 @@ headerTheme(themess){
   cookie.save('headercolor', response.data.result.header_color_class, { path: '/' })
   cookie.save('content1', response.data.result.content_1, { path: '/' })
   cookie.save('content2', response.data.result.content_2, { path: '/' })
-  window.location.reload()
-  hashHistory.push("/themes")
+//  hashHistory.push("/themes")
+ window.location.reload()
   }
 
   })
@@ -92,8 +92,8 @@ cookie.save('sidebarcolor', response.data.result.sidebar_color_class, { path: '/
 cookie.save('headercolor', response.data.result.header_color_class, { path: '/' })
 cookie.save('content1', response.data.result.content_1, { path: '/' })
 cookie.save('content2', response.data.result.content_2, { path: '/' })
-window.location.reload()
-hashHistory.push("/themes")
+  window.location.reload()
+//hashHistory.push("/themes")
 }
 
 })
@@ -133,7 +133,7 @@ render(){
 
   return (
 <div>
-<Card bordered={false} noHovering="false" title="Themes" className="rightSidebarCard">
+<Card bordered={false} title="Navbar Colors" className="rightSidebarCard">
 <Col span={12}>
 <ul className="menuColorList">
   <p>Header Colors</p>
@@ -208,7 +208,7 @@ render(){
 
 
 
-<div style={{'overflow':'hidden'}}>
+<div style={{'overflow':'auto'}}>
 
      <div className={styles.deviceWrap, styles.ipadLandscape}>
         <div className={styles.device, styles.desktoplayout} style={{'backgroundImage': 'url("assets/laptop.png")', 'backgroundSize': "cover"}}>
@@ -231,7 +231,7 @@ render(){
                 </div>
               </Content>
               <Footer style={{ textAlign: 'center' }}>
-                Footer © 2018
+                Ant Design ©2016 Created by Ant UED
               </Footer>
             </Layout>
           </Layout>
