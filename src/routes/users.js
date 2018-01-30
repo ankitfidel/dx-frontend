@@ -380,9 +380,7 @@ const hasSelected = selectedRowKeys.length > 0;
        <FormItem label="username:">
                <Input placeholder="username" value={username} id="username" onChange={e => this.onTodoChange_username(e.target.value)}/>
         </FormItem>
-        <FormItem label="password:">
-            <Input placeholder="password" value={this.state.password} id="password" onChange={e => this.onTodoChange_password(e.target.value)}/>
-        </FormItem>
+
         <FormItem label="first_name:">
             <Input placeholder="first_name" value={this.state.first_name} id="first_name" onChange={e => this.onTodoChange_first_name(e.target.value)}/>
         </FormItem>
@@ -400,11 +398,7 @@ const hasSelected = selectedRowKeys.length > 0;
  <Button type="primary" onClick={this.addusers}>Add Users</Button> &nbsp;
  <br /><br />
  <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="user_id" rowSelection={rowSelection} columns={[
-
-{
-   title: 'Username',
-   dataIndex: 'username',
- }, {
+ {
    title: 'First Name',
    dataIndex: 'first_name',
  }, {

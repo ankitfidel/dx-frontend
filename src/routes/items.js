@@ -754,7 +754,7 @@ const hasSelected = selectedRowKeys.length > 0;
          onOk={this.addItemssave}
          onCancel={this.handleCancel}
          footer={[
-           <Button key="back" onClick={this.handleCancel}>Cancel & Close</Button>,
+           <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
            <Button key="submit" type="primary" loading={loading} onClick={this.addItemssave}>
              Save Item
            </Button>,

@@ -111,31 +111,26 @@ function MenusAdmin({
       <Menu.Item key="dashboard" className="menulink" >
          <Link to="/admindashboard" onClick={clicked(changeOpenKeys)} activeStyle={{ 'background': headercolor }} style={{'padding': '0px 20px'}}> <Icon type="rocket" /> Dashboard</Link>
       </Menu.Item>
-      <Menu.Item key="themes" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link to="/themes" activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}}> <Icon type="setting" /> Themes</Link>
+      <Menu.Item key="devices" className="menulink" style={{'overflow': 'hidden'}}>
+         <Link to="/devices" activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}}> <Icon type="setting" /> Devices</Link>
       </Menu.Item>
-
-
-      <SubMenu  style={{'backgroundColor': sidebarcolor}} key="shub1" title={<span><Icon type="appstore" /><span>Devices</span></span>}>
-          <Menu.Item key="deviceslist" activeStyle={{ background: headercolor }} > <Link activeClassName="selected" activeStyle={{ background: headercolor }} style={{'padding': '0px 20px', backgroundColor: sidebarcolor}} to="/devices">  <Icon type="cloud-o" /> Devices list</Link> </Menu.Item>
-          <Menu.Item key="adddevices" activeStyle={{ background: headercolor }} ><Link activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px',backgroundColor: sidebarcolor}} to="/adddevices">  <Icon type="cloud-o" />  Add devices</Link></Menu.Item>
-        </SubMenu>
-      <Menu.Item key="companies" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/companies" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }} > <Icon type="team" />Company List</Link>
-      </Menu.Item>
-      <Menu.Item key="items" className="menulink"  style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/items" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="hdd" /> Items List</Link>
-      </Menu.Item>
-
       <Menu.Item key="users" className="menulink"  style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/users" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="user" /> Users List</Link>
-      </Menu.Item>
-      <Menu.Item key="connectdevice" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/connect-device" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="cloud-upload-o" /> Connect Device</Link>
+         <Link activeClassName="selected"  to="/users" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="user" /> Users</Link>
       </Menu.Item>
       <Menu.Item key="groups" className="menulink" style={{'overflow': 'hidden'}}>
          <Link activeClassName="selected"  to="/groups" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}>  <Icon type="cloud-o" /> Groups</Link>
       </Menu.Item>
+      <Menu.Item key="companies" className="menulink" style={{'overflow': 'hidden'}}>
+         <Link activeClassName="selected"  to="/companies" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }} > <Icon type="team" />Companies</Link>
+      </Menu.Item>
+      <Menu.Item key="themes" className="menulink" style={{'overflow': 'hidden'}}>
+         <Link to="/themes" activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}}> <Icon type="setting" /> Theme</Link>
+      </Menu.Item>
+
+      <Menu.Item key="connectdevice" className="menulink" style={{'overflow': 'hidden'}}>
+         <Link activeClassName="selected"  to="/connect-device" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="cloud-upload-o" /> Connect Device</Link>
+      </Menu.Item>
+
 
 
 

@@ -53,37 +53,7 @@ class Viewdevices extends React.Component {
 
      componentDidMount() {
     //  this.fetchcompany();
-    var cookies = cookie.load('sessionid');
-    var company_id = cookie.load('company_id');
-    axios.get(axios.defaults.baseURL + '/api/front/group/' + cookies + '/company/' + company_id,{
-      responseType: 'json'
-    }) .then(response => {
-       let grouplist = response.data.result.map((group,i) => {
-         return(
-    <option key={i.toString()} value={group.id}>{group.name}</option>
-         )
-       })
-         this.setState({grouplist:grouplist});
-       //  console.log("state:", this.state.grouplist[4].props.children)
-     })
-    .catch(function (error) {
-      console.log(error);
-    })
-
-
-    var cookies = cookie.load('sessionid');
-    var device_id = cookie.load('deviceid');
-  //  alert("device_id"+device_id)
-    axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies +'/'+ device_id,{
-      responseType: 'json'
-    }).then(response => {
-      var companydata = response.data.result;
-      console.log( "device edit"+ JSON.stringify(response.data.result))
-          this.setState({device_name: companydata.device_name, device_ip:companydata.device_ip, device_port:companydata.device_port});
-      })
-    .catch(function (error) {
-      console.log(error);
-    });
+  
    }
 
    // fetchcompany = (params = {}) => {

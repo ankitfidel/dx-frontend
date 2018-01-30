@@ -1,7 +1,8 @@
 import React from 'react'
-import {Menu, Icon, Popover,Layout, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal, Input, Popconfirm} from 'antd'
+import {Menu, Icon, Popover,Layout, Badge, M,Avatar,Row, Col,Tag, Button,Card, Table, Modal, Form, Input, Popconfirm} from 'antd'
 import {ComposedChart, CartesianGrid, LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,Legend, Bar, Tooltip, ResponsiveContainer} from 'recharts';
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
+const FormItem = Form.Item;
 const {Header, Content, Footer, Sider} = Layout;
 const axios = require('axios');
 import cookie from 'react-cookies'
@@ -34,14 +35,24 @@ class Devices extends React.Component {
           device_id:'',
           device_name:'',
           device_port:'',
+          device_key:'',
           device_ip:'',
           group_name:'',
           connected:'',
           is_connected:''
         }],
-        loading:true
+        loading:true,
+        visible:false,
+        connected:'',
+        editDevice:false,
               };
       this.cacheData = data.map(item => ({ ...item }));
+      this.addDevicesssave = this.addDevicesssave.bind(this);
+      this.onTodoChange_device_name = this.onTodoChange_device_name.bind(this)
+      this.onTodoChange_device_port = this.onTodoChange_device_port.bind(this)
+      this.onTodoChange_device_ip = this.onTodoChange_device_ip.bind(this)
+      this.onTodoChange_group_id = this.onTodoChange_group_id.bind(this)
+
  }
 
 
@@ -73,19 +84,137 @@ class Devices extends React.Component {
         console.log(error);
       });
  }
+ adddevices = () => {
+   this.setState({
+   visible: true,
+ });
+ // browserHistory.push("/addusers");
+ }
+ editDevicesssave(){
+   const cookies = cookie.load('sessionid');
+   var device_id = cookie.load('deviceid');
+   const devicename = document.getElementById('devicename').value;
+   const port = document.getElementById('port').value;
+   const ip = document.getElementById('ip').value;
+   const groupid = document.getElementById('selectedGroupId').value;
+  // const isRetailer = document.getElementById('isRetailer').checked = true;
+   axios.put(axios.defaults.baseURL + '/api/front/device/'+ device_id, {
+    session_id:cookies,
+    device_name:devicename,
+    device_port:port,
+    is_connected:false,
+    group_id:groupid,
+    device_ip:ip,
+ //   company_id:companyId
+  //  isRetailer:isRetailer
+   })
+   .then(function (response) {
+      if(response.data.status == false){
+        //alert()
+      error(response.data.result)
+    }
+    if(response.data.status == true){
+          console.log(JSON.stringify(response.data.result));
+           window.location.reload()
+        }
+   })
+   .catch(function (error) {
+     console.log(error);
+   });
+ }
+ addDevicesssave = (e) => {
+   const cookies = cookie.load('sessionid');
+   const devicename = document.getElementById('devicename').value;
+   const port = document.getElementById('port').value;
+   const ip = document.getElementById('ip').value;
+   const groupid = document.getElementById('selectedGroupId').value;
+  // const isRetailer = document.getElementById('isRetailer').checked = true;
+   axios.post(axios.defaults.baseURL + '/api/front/device', {
+    session_id:cookies,
+    device_name:devicename,
+    device_port:port,
+    is_connected:false,
+    group_id:groupid,
+    device_ip:ip,
+ //   company_id:companyId
+  //  isRetailer:isRetailer
+   })
+   // .then(function (response) {
+   //  alert(JSON.stringify(response));
+   //   if(response.data.result.status == false){
+   //   //  alert("error");
+   //  error()
+   //     }else{
+   //   //    console.log(JSON. stringify(response.data.result));
+   //       alert("device added")
+   //     //  console.log(JSON.stringify(response.data.result));
+   //     //  console.log(cookies);
+   //   browserHistory.push("/devices");
+   //  }
+   //
+   // })
+   .then(function (response) {
+      if(response.data.status == false){
+        //alert()
+      error(response.data.result)
+    }
+    if(response.data.status == true){
+          console.log(JSON.stringify(response.data.result));
+        //  hashHistory.push("/devices");
+        window.location.reload()
+        }
+   })
+   .catch(function (error) {
+     console.log(error);
+   });
 
+}
   componentDidMount() {
    this.devicelistparam();
+   var cookies = cookie.load('sessionid');
+   var company_id = cookie.load('company_id');
+   axios.get(axios.defaults.baseURL + '/api/front/group/' + cookies + '/company/' + company_id,{
+     responseType: 'json'
+   }) .then(response => {
+      let grouplist = response.data.result.map((group,i) => {
+        return(
+   <option key={i.toString()} value={group.id}>{group.name}</option>
+        )
+      })
+        this.setState({grouplist:grouplist});
+      //  console.log("state:", this.state.grouplist[4].props.children)
+    })
+   .catch(function (error) {
+     console.log(error);
+   })
+
+
 
 }
-adddevices(){
-    hashHistory.push("/adddevices");
-}
+// (){
+//     hashHistory.push("/adddevices");
+// }
 editdevice(device_id){
   console.log("company_id:" + device_id)
   cookie.save('deviceid', device_id);
   console.log("from cookies company_id:" + cookie.load('deviceid'))
-  hashHistory.push("/viewdevices")
+//  hashHistory.push("/viewdevices")
+var cookies = cookie.load('sessionid');
+var device_id = cookie.load('deviceid');
+//  alert("device_id"+device_id)
+axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies +'/'+ device_id,{
+  responseType: 'json'
+}).then(response => {
+  var companydata = response.data.result;
+  console.log( "device edit"+ JSON.stringify(response.data.result))
+      this.setState({device_name: companydata.device_name, device_ip:companydata.device_ip, device_port:companydata.device_port});
+  })
+.catch(function (error) {
+  console.log(error);
+});
+this.setState({
+editDevice: true,
+});
 }
 deletedevice(device_id){
   var cookies = cookie.load('sessionid');
@@ -153,7 +282,35 @@ deletedevice(device_id){
      this.setState({ data: newData });
    }
  }
-
+ onTodoChange_device_name(value){
+   this.setState({device_name: value});
+ }
+ onTodoChange_device_port(value){
+   this.setState({device_port: value});
+ }
+ onTodoChange_device_ip(value){
+   this.setState({device_ip: value});
+ }
+ onTodoChange_group_id(value){
+   this.setState({group_id: value});
+ }
+ handleCancel = (e) => {
+ console.log(e);
+ this.setState({
+ visible: false,
+ });
+ }
+ editCancel = (e) => {
+ console.log(e);
+ this.setState({
+ editDevice: false,
+ });
+ }
+ connected(device_key){
+   alert(JSON.stringify(device_key));
+  // alert("device_key " + JSON.stringify(device_key))
+//  console.log(" :::" + JSON.stringify(device_key));
+ }
 render(){
   var user_role = cookie.load('user_role');
 let addDevices = null;
@@ -164,7 +321,7 @@ addDevices =  <Button type="primary" onClick={this.adddevices}>Add Device</Butto
 addDevices = null
 }
   // let buttondisabled = null;
-  const { selectedRowKeys, devicelist,loading, companyId } = this.state;
+  const { selectedRowKeys, devicelist,loading, companyId,device_ip, device_name, device_port } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -209,41 +366,110 @@ addDevices = null
 //const hasSelected = selectedRowKeys.length > 0;
   return (
     <div>
+    <Modal
+      visible={this.state.editDevice}
+      onOk={this.editDevicesssave}
+      onCancel={this.editCancel}
+      footer={[
+        <Button key="back" onClick={this.editCancel}>Cancel & Close</Button>,
+        <Button key="submit" type="primary" loading={loading} onClick={this.editDevicesssave}>
+          Save Item
+        </Button>,
+      ]}
+    >
+
+<Card noHovering="false">
+<h2 style={{textAlign: 'center'}}>View Device</h2>
+
+       <FormItem label="Device Name:">
+           <Input placeholder="Enter device Name.." value={this.state.device_name} id="devicename" onChange={e => this.onTodoChange_device_name(e.target.value)}/>
+       </FormItem>
+       <FormItem label="Port:">
+           <Input placeholder="Enter Port.."  value={this.state.device_port} id="port"  onChange={e => this.onTodoChange_device_port(e.target.value)}/>
+       </FormItem>
+       <FormItem label="IP:">
+           <Input placeholder="ip"  value={this.state.device_ip} id="ip" onChange={e => this.onTodoChange_device_ip(e.target.value)}/>
+       </FormItem>
+       <FormItem label="Select Groups:">
+       <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}  onChange={e => this.onTodoChange_group_id(e.target.value)}>
+    { this.state.grouplist }
+      </select>
+       </FormItem>
+
+
+
+
+
+ </Card>
+    </Modal>
+    <Modal
+      visible={this.state.visible}
+      onOk={this.addDevicesssave}
+      onCancel={this.handleCancel}
+      footer={[
+        <Button key="back" onClick={this.handleCancel}>Cancel & Close</Button>,
+        <Button key="submit" type="primary" loading={loading} onClick={this.addDevicesssave}>
+          Save Item
+        </Button>,
+      ]}
+    >
+    <Card noHovering="false">
+    <h2 style={{textAlign: 'center'}}>Add Devices</h2>
+
+           <FormItem label="Device Name:">
+               <Input placeholder="Enter device Name.." defaultValue="" id="devicename"/>
+           </FormItem>
+           <FormItem label="Port:">
+               <Input placeholder="Enter Port.." defaultValue="" id="port"/>
+           </FormItem>
+           <FormItem label="IP:">
+               <Input placeholder="ip" defaultValue="" id="ip"/>
+           </FormItem>
+           <FormItem label="Select Groups:">
+           <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}>
+        { this.state.grouplist }
+          </select>
+           </FormItem>
+
+
+
+     </Card>
+    </Modal>
  <Card noHovering="false">
 
 {addDevices}&nbsp;<br /><br />
  <Table pagination={{ pageSize: 10,  showSizeChanger:true }} scroll={{ x: 900}} rowKey="device_id" loading={loading} rowSelection={rowSelection} columns={[
    {
-   title: 'Device Name',
+   title: 'Name',
    dataIndex: 'device_name',
    width:300,
     className: styles.textleft
    },
 {
- title: 'Device IP',
+ title: 'IP',
  dataIndex: 'device_ip',
   className: styles.textleft
 },  {
- title: 'Device Port',
+ title: 'Port',
  dataIndex: 'device_port',
   className: styles.textleft
 },
 {
-title: 'Group Name',
+title: 'Name',
 dataIndex: 'group_name',
  className: styles.textleft
 },
 {
-title: 'Connected Device',
+title: 'Status',
 dataIndex: 'is_connected',
-render: is_connected => <p>{is_connected == true ? "True" : "False"}</p>,
+render: is_connected => <p>{is_connected == true ? <Tag color="#01910d">Connected</Tag> : <Tag color="#d30a0a ">Not connected</Tag>}</p>,
  className: styles.textleft
 },
 
 {
-title: 'Action',
-dataIndex: 'device_id',
- render: device_id  => <div><a href="javascript:void(0)" onClick={() => this.editdevice(device_id)}><Icon title="Edit Device" type="edit" /></a> &nbsp; | &nbsp; <a href="javascript:void(0)" onClick={() => this.deletedevice(device_id)}><Icon title="Delete Device" type="delete" /></a>&nbsp; | &nbsp;  <a href="javascript:void(0)" onClick={() => this.itemlist(device_id)}><Icon type="pushpin-o" title="Items" /></a>&nbsp; | &nbsp; <a href="javascript:void(0)" onClick={() => this.triggerslist(device_id)}><Icon type="notification" title="Triggers" /></a></div>
+title: '',
+dataIndex:'device_id',
+ render: device_id  => <div><Tag color="blue" onClick={() => this.editdevice(device_id)}>Edit</Tag>| &nbsp; <Tag color="#d30a0a"  onClick={() => this.deletedevice(device_id)}>Delete</Tag>| &nbsp; <Tag color="blue"  onClick={() => this.itemlist(device_id)}>Items</Tag> | &nbsp;<Tag color="blue"  onClick={() => this.triggerslist(device_id)}>Triggers</Tag></div>
 },
 
  ]} dataSource={devicelist}  />
