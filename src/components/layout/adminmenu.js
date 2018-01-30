@@ -42,7 +42,10 @@ import cookie from 'react-cookies'
 //     }
 //   })
 // }
-
+function clicked(changeOpenKeys){
+  //alert(!changeOpenKeys)
+//  this.props.navOpenKeys = false
+}
 function MenusAdmin({
   siderFold,
   darkTheme,
@@ -88,6 +91,9 @@ function MenusAdmin({
   //       mode: value ? 'vertical' : 'inline',
   //     });
   //   }
+
+
+
   var sidebarcolor = cookie.load('sidebarcolor');
   var headercolor = cookie.load('headercolor');
   var content1 = cookie.load('content1');
@@ -103,7 +109,7 @@ function MenusAdmin({
       mode="inline">
 
       <Menu.Item key="dashboard" className="menulink" >
-         <Link to="/admindashboard" activeStyle={{ 'background': headercolor }} style={{'padding': '0px 20px'}}> <Icon type="rocket" /> Dashboard</Link>
+         <Link to="/admindashboard" onClick={clicked(changeOpenKeys)} activeStyle={{ 'background': headercolor }} style={{'padding': '0px 20px'}}> <Icon type="rocket" /> Dashboard</Link>
       </Menu.Item>
       <Menu.Item key="themes" className="menulink" style={{'overflow': 'hidden'}}>
          <Link to="/themes" activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}}> <Icon type="setting" /> Themes</Link>
@@ -111,8 +117,8 @@ function MenusAdmin({
 
 
       <SubMenu  style={{'backgroundColor': sidebarcolor}} key="shub1" title={<span><Icon type="appstore" /><span>Devices</span></span>}>
-          <Menu.Item key="deviceslist" activeStyle={{ background: headercolor }} style={{'backgroundColor': sidebarcolor}}> <Link activeClassName="selected" activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}} to="/devices">  <Icon type="cloud-o" /> Devices list</Link> </Menu.Item>
-          <Menu.Item key="adddevices" activeStyle={{ background: headercolor }} style={{'backgroundColor': sidebarcolor}}><Link activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}} to="/adddevices">  <Icon type="cloud-o" />  Add devices</Link></Menu.Item>
+          <Menu.Item key="deviceslist" activeStyle={{ background: headercolor }} > <Link activeClassName="selected" activeStyle={{ background: headercolor }} style={{'padding': '0px 20px', backgroundColor: sidebarcolor}} to="/devices">  <Icon type="cloud-o" /> Devices list</Link> </Menu.Item>
+          <Menu.Item key="adddevices" activeStyle={{ background: headercolor }} ><Link activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px',backgroundColor: sidebarcolor}} to="/adddevices">  <Icon type="cloud-o" />  Add devices</Link></Menu.Item>
         </SubMenu>
       <Menu.Item key="companies" className="menulink" style={{'overflow': 'hidden'}}>
          <Link activeClassName="selected"  to="/companies" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }} > <Icon type="team" />Company List</Link>

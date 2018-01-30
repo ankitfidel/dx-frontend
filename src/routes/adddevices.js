@@ -146,7 +146,7 @@ render(){
        <div>
 
 <Row>
-    <Col span={12} offset={6}>
+    <Col lg={{ span: 12, offset: 6 }}>
 <Card noHovering="false">
 <h2 style={{textAlign: 'center'}}>Add Devices</h2>
 
