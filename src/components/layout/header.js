@@ -27,7 +27,7 @@ class Header extends React.Component {
       this.state = {
          headerColor: localStorage.getItem('berrAdminHeaderColor') ,
          headerBackColor: localStorage.getItem('berrAdminHeaderBackColor'),
-         isOpened: true
+        // email_id: ''
       }
     //  this.toggle = this.toggle.bind(this);
    }
@@ -47,14 +47,15 @@ class Header extends React.Component {
 // }
 //
 render(){
-
   var sidebarcolor = cookie.load('sidebarcolor');
   var headercolor = cookie.load('headercolor');
   var content1 = cookie.load('content1');
   var content2 = cookie.load('content2');
 ///    let styleclass = {}
   var user_role = cookie.load('user_role');
-
+  var email_id = cookie.load('email_id');
+  var company_name = cookie.load('company_name');
+//alert(email_id)
 let adminmenu = null;
 // alert("user_role"+user_role)
 if(user_role === "dashboard_admin"){
@@ -77,13 +78,14 @@ adminmenu = <Menus location={this.props.location} navOpenKeys={!this.props.navOp
         </Popover>
 
       : null}
+      <Menu style={{'backgroundColor': headercolor}} mode='horizontal'   onClick={this.props.handleClickMenu}>
 
-      <Menu style={{'backgroundColor': headercolor}} mode='horizontal'  onClick={this.props.handleClickMenu}>
+      
 
-        <BadgeBox pr={this.props}  style={{'float':'right'}}  />
+             <BadgeBox pr={this.props} />
 
+           </Menu>
 
-      </Menu>
 
 
 

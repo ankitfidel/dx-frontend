@@ -25,6 +25,11 @@ const EditableCell = ({ editable, value, onChange }) => (
   }
 </div>
 );
+function error(msg) {
+  const modal = Modal.error({
+    content: msg
+  });
+}
 class Devices extends React.Component {
 
   constructor(props) {
@@ -308,6 +313,19 @@ deletedevice(device_id){
  }
  connected(device_key){
    alert(JSON.stringify(device_key));
+   var cookies = cookie.load('sessionid');
+   axios.get(axios.defaults.baseURL + '/api/front/device/connect/' + cookies + '/' + device_key,{
+     responseType: 'json'
+   }).then(response => {
+    // alert("response"+response)
+    alert(response.data.result)
+  //  console.log(JSON.stringify(response.data.result))
+       //var company_id = cookie.load('company_id');
+       hashHistory.push("/devices")
+     })
+   .catch(function (error) {
+     console.log(error);
+   });
   // alert("device_key " + JSON.stringify(device_key))
 //  console.log(" :::" + JSON.stringify(device_key));
  }
@@ -463,6 +481,12 @@ dataIndex: 'group_name',
 title: 'Status',
 dataIndex: 'is_connected',
 render: is_connected => <p>{is_connected == true ? <Tag color="#01910d">Connected</Tag> : <Tag color="#d30a0a ">Not connected</Tag>}</p>,
+ className: styles.textleft
+},
+{
+title: 'Status',
+dataIndex: 'device_key',
+render: device_key => <p><Tag color="blue" onClick={() => this.connected(device_key)}>Connect device</Tag></p>,
  className: styles.textleft
 },
 

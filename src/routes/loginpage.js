@@ -64,6 +64,8 @@ class Loginpage extends React.Component {
          const sessionid = response.data.result.session_id;
          const company_id = response.data.result.company_id;
          const user_role = response.data.result.user_role;
+         const company_name = response.data.result.company_name;
+         const email_id = response.data.result.email_id;
        //   const sidebarcolor = response.data.result.theme.sidebar_color_class;
        // const headercolor =  response.data.result.theme.header_color_class;
        //   const content1 =  response.data.result.theme.content_1;
@@ -77,11 +79,14 @@ class Loginpage extends React.Component {
                 cookie.save('sessionid', sessionid)
                 cookie.save('company_id', company_id, { path: '/' })
                 cookie.save('user_role', user_role, { path: '/' })
+                cookie.save('company_name', company_name, { path: '/' })
+                cookie.save('email_id', email_id, { path: '/' })
              //   cookie.save('theme', theme, { path: '/' })
                 cookie.save('sidebarcolor', response.data.result.theme.sidebar_color_class, { path: '/' })
                 cookie.save('headercolor', response.data.result.theme.header_color_class, { path: '/' })
                 cookie.save('content1', response.data.result.theme.content_1, { path: '/' })
                 cookie.save('content2', response.data.result.theme.content_2, { path: '/' })
+
 
                 hashHistory.push("/admindashboard");
                //window.location.reload()
@@ -90,7 +95,8 @@ class Loginpage extends React.Component {
                 cookie.save('sessionid', sessionid)
                 cookie.save('company_id', company_id, { path: '/' })
                 cookie.save('user_role', user_role, { path: '/' })
-
+                cookie.save('company_name', company_name, { path: '/' })
+                cookie.save('email_id', email_id, { path: '/' })
                // cookie.save('theme', theme, { path: '/' })
 
                 cookie.save('sidebarcolor', response.data.result.theme.sidebar_color_class, { path: '/' })
