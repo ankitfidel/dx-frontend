@@ -66,7 +66,8 @@ class Loginpage extends React.Component {
          const user_role = response.data.result.user_role;
          const company_name = response.data.result.company_name;
          const email_id = response.data.result.email_id;
-       //   const sidebarcolor = response.data.result.theme.sidebar_color_class;
+         const username = response.data.result.username;
+         const user_id = response.data.result.user_id;
        // const headercolor =  response.data.result.theme.header_color_class;
        //   const content1 =  response.data.result.theme.content_1;
        //   const content2 =  response.data.result.theme.content_2;
@@ -86,10 +87,10 @@ class Loginpage extends React.Component {
                 cookie.save('headercolor', response.data.result.theme.header_color_class, { path: '/' })
                 cookie.save('content1', response.data.result.theme.content_1, { path: '/' })
                 cookie.save('content2', response.data.result.theme.content_2, { path: '/' })
-
-
+                cookie.save('username', response.data.result.username, { path: '/' })
+                cookie.save('user_id', response.data.result.user_id, { path: '/' })
                 hashHistory.push("/admindashboard");
-               //window.location.reload()
+               window.location.reload()
             }else if (response.data.result.user_role=="dashboard_user"){
              //   alert("userRole is dashboard");
                 cookie.save('sessionid', sessionid)
@@ -98,7 +99,8 @@ class Loginpage extends React.Component {
                 cookie.save('company_name', company_name, { path: '/' })
                 cookie.save('email_id', email_id, { path: '/' })
                // cookie.save('theme', theme, { path: '/' })
-
+               cookie.save('username', response.data.result.username, { path: '/' })
+               cookie.save('user_id', response.data.result.user_id, { path: '/' })
                 cookie.save('sidebarcolor', response.data.result.theme.sidebar_color_class, { path: '/' })
                 cookie.save('headercolor', response.data.result.theme.header_color_class, { path: '/' })
                 cookie.save('content1', response.data.result.theme.content_1, { path: '/' })

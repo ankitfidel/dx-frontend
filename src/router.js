@@ -86,7 +86,7 @@ export default function ({ app}) {
              },
              {
                  path: '/admindashboard',
-                 name: '/admindashboard',
+                 name: 'admindashboard',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/admindashboard'))
@@ -141,7 +141,7 @@ export default function ({ app}) {
              },
              {
                  path: '/themes',
-                 name: '/themes',
+                 name: 'themes',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/themes'))
@@ -159,7 +159,7 @@ export default function ({ app}) {
              },
              {
                  path: '/users',
-                 name: '/users',
+                 name: 'users',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/users'))
@@ -178,7 +178,7 @@ export default function ({ app}) {
              },
              {
                  path: '/devices',
-                 name: '/devices',
+                 name: 'devices',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/devices'))
@@ -187,7 +187,7 @@ export default function ({ app}) {
              },
              {
                  path: '/connect-device',
-                 name: '/connectdevice',
+                 name: 'connectdevice',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/connectdevice'))
@@ -196,7 +196,7 @@ export default function ({ app}) {
              },
              {
                  path: '/groups',
-                 name: '/groups',
+                 name: 'groups',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/groups'))
@@ -207,7 +207,7 @@ export default function ({ app}) {
 
              {
                  path: '/items',
-                 name: '/items',
+                 name: 'items',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/items'))
@@ -216,7 +216,7 @@ export default function ({ app}) {
              },
              {
                  path: '/triggers',
-                 name: '/triggers',
+                 name: 'triggers',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/triggers'))
@@ -226,7 +226,7 @@ export default function ({ app}) {
 
              {
                  path: '/companies',
-                 name: '/companies',
+                 name: 'companies',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/companies'))
@@ -235,7 +235,7 @@ export default function ({ app}) {
              },
              {
                  path: '/adddevices',
-                 name: '/adddevices',
+                 name: 'adddevices',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/adddevices'))
@@ -244,7 +244,7 @@ export default function ({ app}) {
              },
              {
                  path: '/viewdevices',
-                 name: '/viewdevices',
+                 name: 'viewdevices',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/viewdevices'))
@@ -255,7 +255,7 @@ export default function ({ app}) {
 
              {
                  path: '/devicedetails',
-                 name: '/devicedetails',
+                 name: 'devicedetails',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/devicedetails'))
@@ -264,7 +264,7 @@ export default function ({ app}) {
              },
              {
                  path: '/events',
-                 name: '/events',
+                 name: 'events',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/events'))
@@ -282,7 +282,7 @@ export default function ({ app}) {
              },
              {
                  path: '/templates',
-                 name: '/templates',
+                 name: 'templates',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/templates'))

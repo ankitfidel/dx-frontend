@@ -50,6 +50,8 @@ render(){
   var headercolor = cookie.load('headercolor');
   var content1 = cookie.load('content1');
   var content2 = cookie.load('content2');
+var username = cookie.load('username');
+var user_id = cookie.load('user_id');
 
   return (
 <div>
@@ -61,8 +63,9 @@ render(){
                     <img src="./assets/3.jpg"/>
                 </div>
                 <div className="profileInfo">
-                    <h1 style={{'fontSize': '1.5em'}}>{email_id}</h1>
-                    <p>{company_name}</p>
+                    <h1 style={{'fontSize': '1.5em', 'textTransform':'capitalize'}}>{username}</h1>
+                    <p style={{'textTransform':'none'}}>{email_id}</p>
+                      <p style={{'textTransform':'none'}}>{company_name}</p>
 
                     <h1 className="profileIntro">INTRO</h1>
                     <p className="profileAbout">User experinces become more inportant than products;

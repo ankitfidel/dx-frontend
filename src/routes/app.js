@@ -29,14 +29,28 @@ var headercolor = cookie.load('headercolor');
 var content1 = cookie.load('content1');
 var content2 = cookie.load('content2');
   //alert("cookies:"+cookies);
+
   if(cookies==null || cookies == undefined || cookies == ''){
-  //  alert("hi");
     hashHistory.push("/login");
   }else{
     if(user_role=='dashboard_user'){
-      hashHistory.push("/dashboard");
+    //  hashHistory.push("/dashboard");
+    var url=window.location.href;
+    var count =0;
+    count =(url.match(/\//g) || []).length;
+    console.log(count)
+    if(url.includes("dashboard") || count==3 ){
+       hashHistory.push("/dashboard");
+    }
     }else if(user_role=='dashboard_admin'){
-       hashHistory.push("/admindashboard");
+      var url=window.location.href;
+      var count =0;
+      count =(url.match(/\//g) || []).length;
+      console.log(count)
+      if(url.includes("admindashboard") || count==3 ){
+         hashHistory.push("/admindashboard");
+      }
+
     }
   }
 
@@ -192,7 +206,7 @@ function App({ children, location, dispatch, app }) {
           <div className={styles.spin} >
             <Spin tip='Loading...' spinning={loading} size='large'>
               <Header {...headerProps} style={{'backgroundColor': 'brown'}} />
-
+ <Bread location={location} />
                 <div className={styles.container}>
                   <div className={styles.content} id="spin">
                   <BackTop target={() => document.getElementById('main_content')} />

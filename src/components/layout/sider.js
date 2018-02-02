@@ -53,6 +53,8 @@ function Sider({siderFold, menuTheme,sidebarcolor, darkTheme,location, changeThe
       var navlinks;
       var email_id = cookie.load('email_id');
       var company_name = cookie.load('company_name');
+      var username = cookie.load('username');
+      var user_id = cookie.load('user_id');
   const Sider3 = React.createClass({
     getInitialState() {
       return {theme: 'dark',mode: 'inline', current: '1', cookies: cookie.loadAll(), is_retailer:'', theme:''};
@@ -70,7 +72,8 @@ function Sider({siderFold, menuTheme,sidebarcolor, darkTheme,location, changeThe
       var headercolor = cookie.load('headercolor');
       var content1 = cookie.load('content1');
       var content2 = cookie.load('content2');
-
+      var username = cookie.load('username');
+      var user_id = cookie.load('user_id');
 //var sidebar_color_class = cookie.load('sidebar_color_class');
     },
 
@@ -102,8 +105,8 @@ let adminmenu = null;
 <div className={styles.logo} style={{'backgroundColor': sidebarcolor}}>
 <img src={config.logoSrc}/> {siderFold ? '' : <span className="logoText"></span>}
 </div>
-<div><h5 style={{'padding':'10px 0 10px 10px', 'color': 'white'}}>{email_id}</h5>
-<h6 style={{'padding':'0 0 10px 10px', 'color': 'white', 'fontSize': '14px !important'}}>{company_name}</h6></div>
+<div><h5 style={{'padding':'10px 0 10px 10px', 'color': 'white'}}>{username}</h5>
+<h6 style={{'padding':'0 0 10px 10px', 'color': 'white', 'fontSize': '14px !important'}}>{email_id}</h6></div>
 <Sider3 style={{'backgroundColor': sidebarcolor}} />
 
 

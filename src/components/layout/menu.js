@@ -115,19 +115,17 @@ var content2 = cookie.load('content2');
       mode="inline">
 
       <Menu.Item key="dashboard" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link to="/dashboard" activeClassName="selected"> <Icon type="rocket" /> Dashboard</Link>
+         <Link to="/dashboard" activeClassName="selected" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="rocket" /> Dashboard</Link>
       </Menu.Item>
-    <Menu.Item key="deviceslist">
-     <Link activeClassName="selected"  to="/devices">  <Icon type="cloud-o" /> Devices</Link>
+    <Menu.Item key="deviceslist"  className="menulink" style={{'overflow': 'hidden'}}>
+     <Link activeClassName="selected"  to="/devices" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}>  <Icon type="cloud-o" /> Devices</Link>
    </Menu.Item>
 
 
 
 
-
-
       <Menu.Item key="Events" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link activeClassName="selected"  to="/events">  <Icon type="notification" /> Events</Link>
+         <Link activeClassName="selected"  to="/events" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}>  <Icon type="notification" /> Events</Link>
       </Menu.Item>
 
 

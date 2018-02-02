@@ -24,6 +24,7 @@ function error(msg) {
 }
 
 
+
 class Groups extends React.Component {
 
   constructor(props) {
@@ -53,6 +54,7 @@ class Groups extends React.Component {
        this.onTodoChange_groupname = this.onTodoChange_groupname.bind(this);
 
    }
+
      onSelectChange = (selectedRowKeys) => {
        console.log('selectedRowKeys changed: ', selectedRowKeys);
        this.setState({ selectedRowKeys });
@@ -91,7 +93,7 @@ class Groups extends React.Component {
     responseType: 'json'
   }).then(response => {
     var userdata = response.data.result[0];
-        this.setState({name: userdata.name});
+        this.setState({group_name: userdata.name});
     })
   .catch(function (error) {
     console.log(error);
@@ -156,9 +158,15 @@ visible: false,
     //  alert();
         }
         onTodoChange_groupname(value){
-            this.setState({name: value});
+            this.setState({group_name: value});
         }
 render(){
+  // var cookies = cookie.load('sessionid');
+  // alert("cookies: "+cookies)
+  // if(cookies==null || cookies == undefined || cookies == ''){
+  //   alert("hi");
+  //   browserHistory.push("/login");
+  // }
   var user_role = cookie.load('user_role');
 let addgroup = null;
 // alert("user_role"+user_role)
@@ -236,7 +244,7 @@ const hasSelected = selectedRowKeys.length > 0;
        <h2 style={{textAlign: 'center'}}>Edit Groups</h2>
 
        <FormItem label="Group Name:">
-           <Input placeholder="Enter Group Name"value={name} id="group_name" onChange={e => this.onTodoChange_groupname(e.target.value)}/>
+           <Input placeholder="Enter Group Name"value={group_name} id="group_name" onChange={e => this.onTodoChange_groupname(e.target.value)}/>
        </FormItem>
 
         </Card>

@@ -4,6 +4,8 @@ import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 import reqwest from 'reqwest';
+import cookie from 'react-cookies'
+import { browserHistory, hashHistory } from 'dva/router';
 
 const triggersdata = [{
   key: '1',
@@ -70,69 +72,10 @@ componentWillMount(){
 }
      componentDidMount() {
     //
+    var device_id = cookie.load("device_id");
+    alert(device_id)
 
-    fetch("https://randomuser.me/api/?results=10")
-    .then(results =>{
-      return results.json();
-    }).then(data => {
-//alert("fetching");
-  //  this.fetchtable();
-      let hostss = data.results.map((pic,i,demo) => {
-  //    const jsObj = [];
-
-    // for (var i = 1; i <= 12; i++) {
-    //     jsObj['key' + i] = 'example ' + 1;
-    // }
-        //  const i = 0;
-      //  alert("demoo table")
-      const hostsdetailstables = [
-        {
-          title: 'Images',
-          dataIndex: 'picture',
-          render: picture => <img src={picture.thumbnail} />,
-        },{
-        title: 'Name',
-        dataIndex: 'name',
-        sorter: true,
-        render: name => `${name.title}. ${name.first} ${name.last}`,
-        width: '20%',
-      }, {
-        title: 'Gender',
-        dataIndex: 'gender',
-        filters: [
-          { text: 'Male', value: 'male' },
-          { text: 'Female', value: 'female' },
-        ],
-        width: '20%',
-      }, {
-        title: 'Contact no.',
-        dataIndex: 'phone',
-      },
-
-      {
-        title: 'E-mail',
-        dataIndex: 'email',
-      }];
-        return(
-
-
-        <TabPane tab={<span><Icon type="clock-circle" /> {pic.email}</span>} key={i}>
-        <Card noHovering="false" bodyStyle={{ padding: 0 }}>
-        <Table columns={pic.hostsdetailstables}
-       rowKey={record => record.registered}
-       dataSource={this.state.data}
-       pagination={this.state.pagination}
-       loading={this.state.loading}
-       onChange={this.handleTableChange}
-       />
-                 </Card>
-        </TabPane>
-        )
-      });
-
-        this.setState({hostss:hostss});
-        console.log("state:", this.state.hostss)
-    })
+  
 
      }
 

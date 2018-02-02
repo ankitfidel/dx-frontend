@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { Breadcrumb, Icon } from 'antd'
 import styles from './main.less'
 import { menu } from '../../utils'
+import cookie from 'react-cookies'
 
 let pathSet = []
 const getPathSet = function (menuArray, parentPath) {
@@ -42,13 +43,17 @@ function Bread ({ location }) {
       </Breadcrumb.Item>
     )
   })
-
+  var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Home</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Home</span></Breadcrumb.Item>
+}
   return (
     <div className={styles.bread}>
       <Breadcrumb>
-        <Breadcrumb.Item href='#/'><Icon type='home' />
-          <span>Home</span>
-        </Breadcrumb.Item>
+{adminmenu}
         {breads}
       </Breadcrumb>
     </div>

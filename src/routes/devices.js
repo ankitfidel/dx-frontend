@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover,Layout, Badge, M,Avatar,Row, Col,Tag, Button,Card, Table, Modal, Form, Input, Popconfirm} from 'antd'
+import {Menu, Icon, Popover,Layout, Badge, M,Avatar,Row, Col,Tag, Button,Card,message, Table, Modal,notification, Form, Input, Popconfirm} from 'antd'
 import {ComposedChart, CartesianGrid, LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,Legend, Bar, Tooltip, ResponsiveContainer} from 'recharts';
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
@@ -30,6 +30,19 @@ function error(msg) {
     content: msg
   });
 }
+function errorr(msg) {
+  const modal = Modal.error({
+    content: msg
+  });
+}
+
+const openNotification = (msg) => {
+  notification.open({
+    message: msg,
+    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+    duration:2
+  });
+};
 class Devices extends React.Component {
 
   constructor(props) {
@@ -84,6 +97,37 @@ class Devices extends React.Component {
         responseType: 'json'
       }).then(response => {
             this.setState({devicelist: response.data.result, connected:response.data.result.is_connected, loading:false});
+
+            var deviceKey = cookie.load('deviceKey');
+            var deviceMsg = null;
+            for (var i = 0; i < response.data.result.length; i++) {
+              if(response.data.result[i].device_key==deviceKey){
+
+                if(response.data.result[i].is_connected==false){
+                    deviceMsg = response.data.result[i].device_name +" is disconnected";
+                }else{
+                    deviceMsg = response.data.result[i].device_name +" is connected";
+                }
+              }
+            }
+            if(deviceKey == null){
+              return false;
+            }
+              openNotification(deviceMsg);
+              cookie.remove('deviceKey');
+            // if(){
+            //
+            // }
+
+      //  var connectedDevices = response.data.result
+      //   key.map(connectedDevices){
+      //       if(connectedDevices.is_connected == true){
+      //           openNotification(connectedDevices)
+      //       }
+      // };
+          //  console.log()
+          //  alert(ponse.data.result[0].is_connected)
+
         })
       .catch(function (error) {
         console.log(error);
@@ -310,34 +354,96 @@ deletedevice(device_id){
  this.setState({
  editDevice: false,
  });
+};
+
+ componentWillUpdate(){
+//this.success()
  }
+
  connected(device_key){
-   alert(JSON.stringify(device_key));
-   var cookies = cookie.load('sessionid');
-   axios.get(axios.defaults.baseURL + '/api/front/device/connect/' + cookies + '/' + device_key,{
+   //alert(is_connected)
+//   alert(JSON.stringify(device_key));
+ var cookies = cookie.load('sessionid');
+ cookie.save("deviceKey",device_key);
+
+axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + device_key,{
      responseType: 'json'
    }).then(response => {
-    // alert("response"+response)
-    alert(response.data.result)
-  //  console.log(JSON.stringify(response.data.result))
-       //var company_id = cookie.load('company_id');
-       hashHistory.push("/devices")
+  //   alert(response.data.result.is_connected)
+   if(response.data.result.is_connected == true){
+    //  alert(response.data.result.is_connected)
+      axios.get(axios.defaults.baseURL + '/api/front/device/disconnect/' + cookies + '/' + device_key,{
+          responseType: 'json'
+        }).then(response => {
+      //  alert("disconnect successfully")
+  //    errorr()
+    window.location.reload()
+    //  window.location.reload()
+          })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+   }else{
+     axios.get(axios.defaults.baseURL + '/api/front/device/connect/' + cookies + '/' + device_key,{
+      responseType: 'json'
+    }).then(response => {
+  //    alert("connect successfully")
+  //  window.location.reload()
+//success()
+ window.location.reload()
+//window.location.reload()
+        })
+      .catch(function (error) {
+        console.log(error);
+      });
+   }
      })
    .catch(function (error) {
      console.log(error);
    });
-  // alert("device_key " + JSON.stringify(device_key))
-//  console.log(" :::" + JSON.stringify(device_key));
+
+
  }
+ devicedetails(device){
+  // alert(" ::: "+ JSON.stringify(device_id1))
+
+   var device_id = device.device_id;
+   alert(device_id)
+   cookie.save("device_id", device_id);
+   hashHistory.push("/devicedetails")
+ }
+ error() {
+   message.error('This is a message of error');
+ };
+success() {
+message.success('Connect successfully', 10);
+};
+
+closed(){
+  window.location.reload()
+}
 render(){
+
+  var sidebarcolor = cookie.load('sidebarcolor');
+  var headercolor = cookie.load('headercolor');
+  var content1 = cookie.load('content1');
+  var content2 = cookie.load('content2');
   var user_role = cookie.load('user_role');
+  var style = {
+        color: 'white',
+        'background': headercolor,
+        borderColor:headercolor
+      };
+
 let addDevices = null;
 // alert("user_role"+user_role)
 if(user_role === "dashboard_admin"){
-addDevices =  <Button type="primary" onClick={this.adddevices}>Add Device</Button>
+addDevices =  <Button type="primary" style={style} onClick={this.adddevices}>Add Device</Button>
 }else{
 addDevices = null
 }
+
   // let buttondisabled = null;
   const { selectedRowKeys, devicelist,loading, companyId,device_ip, device_name, device_port } = this.state;
   const rowSelection = {
@@ -384,6 +490,7 @@ addDevices = null
 //const hasSelected = selectedRowKeys.length > 0;
   return (
     <div>
+
     <Modal
       visible={this.state.editDevice}
       onOk={this.editDevicesssave}
@@ -456,44 +563,51 @@ addDevices = null
  <Card noHovering="false">
 
 {addDevices}&nbsp;<br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true }} scroll={{ x: 900}} rowKey="device_id" loading={loading} rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10, showSizeChanger:true }} scroll={{ x: 900}} rowKey="device_id" loading={loading} columns={[
    {
    title: 'Name',
    dataIndex: 'device_name',
-   width:300,
-    className: styles.textleft
+   width:320,
+   key:'device',
+   className: styles.textleft,
+   render: (device_name, device) => <a href="javascript:void(0)" onClick={() => this.devicedetails(device)}>{device_name}</a>
    },
 {
  title: 'IP',
  dataIndex: 'device_ip',
+  width:120,
   className: styles.textleft
 },  {
  title: 'Port',
  dataIndex: 'device_port',
+  width:120,
   className: styles.textleft
 },
 {
 title: 'Name',
 dataIndex: 'group_name',
+ width:120,
  className: styles.textleft
 },
 {
 title: 'Status',
 dataIndex: 'is_connected',
+ width:100,
 render: is_connected => <p>{is_connected == true ? <Tag color="#01910d">Connected</Tag> : <Tag color="#d30a0a ">Not connected</Tag>}</p>,
  className: styles.textleft
 },
 {
 title: 'Status',
 dataIndex: 'device_key',
-render: device_key => <p><Tag color="blue" onClick={() => this.connected(device_key)}>Connect device</Tag></p>,
+ width:100,
+render: device_key => <p><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.connected(device_key)}>Connect device</Tag></p>,
  className: styles.textleft
 },
 
 {
 title: '',
 dataIndex:'device_id',
- render: device_id  => <div><Tag color="blue" onClick={() => this.editdevice(device_id)}>Edit</Tag>| &nbsp; <Tag color="#d30a0a"  onClick={() => this.deletedevice(device_id)}>Delete</Tag>| &nbsp; <Tag color="blue"  onClick={() => this.itemlist(device_id)}>Items</Tag> | &nbsp;<Tag color="blue"  onClick={() => this.triggerslist(device_id)}>Triggers</Tag></div>
+ render: device_id  => <div><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.editdevice(device_id)}>Edit</Tag>| &nbsp; <Tag color="#ff0000"  onClick={() => this.deletedevice(device_id)}>Delete</Tag>| &nbsp; <Tag style={{'backgroundColor':headercolor, 'color': 'white'}}  onClick={() => this.itemlist(device_id)}>Items</Tag> | &nbsp;<Tag style={{'backgroundColor':headercolor, 'color': 'white'}}  onClick={() => this.triggerslist(device_id)}>Triggers</Tag></div>
 },
 
  ]} dataSource={devicelist}  />
