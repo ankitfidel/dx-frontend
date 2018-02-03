@@ -8,6 +8,7 @@ const axios = require('axios');
 import cookie from 'react-cookies'
 import { browserHistory, hashHistory } from 'dva/router';
 import styles from './common.less';
+import Style from 'style-it';
 import { axiosrequest } from './axiosrequest';
 // <Button type="danger"   onClick={this.start}
 //         disabled={!hasSelected}>Delete Company</Button>
@@ -51,6 +52,7 @@ class Devices extends React.Component {
       this.state = { data,
         devicelist: [{
           device_id:'',
+          background_image_url:'',
           device_name:'',
           device_port:'',
           device_key:'',
@@ -70,6 +72,7 @@ class Devices extends React.Component {
       this.onTodoChange_device_port = this.onTodoChange_device_port.bind(this)
       this.onTodoChange_device_ip = this.onTodoChange_device_ip.bind(this)
       this.onTodoChange_group_id = this.onTodoChange_group_id.bind(this)
+      this.onTodoChange_background_image_url = this.onTodoChange_background_image_url.bind(this)
 
  }
 
@@ -143,6 +146,8 @@ class Devices extends React.Component {
    const cookies = cookie.load('sessionid');
    var device_id = cookie.load('deviceid');
    const devicename = document.getElementById('devicename').value;
+   const background_image_url = document.getElementById('background_image_url').value;
+
    const port = document.getElementById('port').value;
    const ip = document.getElementById('ip').value;
    const groupid = document.getElementById('selectedGroupId').value;
@@ -150,6 +155,7 @@ class Devices extends React.Component {
    axios.put(axios.defaults.baseURL + '/api/front/device/'+ device_id, {
     session_id:cookies,
     device_name:devicename,
+    background_image_url:background_image_url,
     device_port:port,
     is_connected:false,
     group_id:groupid,
@@ -174,6 +180,7 @@ class Devices extends React.Component {
  addDevicesssave = (e) => {
    const cookies = cookie.load('sessionid');
    const devicename = document.getElementById('devicename').value;
+   const background_image_url = document.getElementById('background_image_url').value;
    const port = document.getElementById('port').value;
    const ip = document.getElementById('ip').value;
    const groupid = document.getElementById('selectedGroupId').value;
@@ -181,6 +188,7 @@ class Devices extends React.Component {
    axios.post(axios.defaults.baseURL + '/api/front/device', {
     session_id:cookies,
     device_name:devicename,
+    background_image_url:background_image_url,
     device_port:port,
     is_connected:false,
     group_id:groupid,
@@ -256,7 +264,7 @@ axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies +'/'+ device_i
 }).then(response => {
   var companydata = response.data.result;
   console.log( "device edit"+ JSON.stringify(response.data.result))
-      this.setState({device_name: companydata.device_name, device_ip:companydata.device_ip, device_port:companydata.device_port});
+      this.setState({device_name: companydata.device_name, device_ip:companydata.device_ip, background_image_url:companydata.background_image_url,  device_port:companydata.device_port});
   })
 .catch(function (error) {
   console.log(error);
@@ -343,6 +351,9 @@ deletedevice(device_id){
  onTodoChange_group_id(value){
    this.setState({group_id: value});
  }
+ onTodoChange_background_image_url(value){
+   this.setState({background_image_url: value});
+ }
  handleCancel = (e) => {
  console.log(e);
  this.setState({
@@ -409,7 +420,7 @@ axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + de
   // alert(" ::: "+ JSON.stringify(device_id1))
 
    var device_id = device.device_id;
-   alert(device_id)
+   //alert(device_id)
    cookie.save("device_id", device_id);
    hashHistory.push("/devicedetails")
  }
@@ -490,13 +501,20 @@ addDevices = null
 //const hasSelected = selectedRowKeys.length > 0;
   return (
     <div>
-
+    <Style>
+    {` .ant-pagination-item-active:focus, .ant-pagination-item-active:hover{ background: ` + sidebarcolor + `}
+    .ant-pagination-item-active{background: ` + sidebarcolor + `}
+         .intro {
+           background: ` + headercolor + `
+         }
+      `}
+  </Style>
     <Modal
       visible={this.state.editDevice}
       onOk={this.editDevicesssave}
       onCancel={this.editCancel}
       footer={[
-        <Button key="back" onClick={this.editCancel}>Cancel & Close</Button>,
+        <Button key="back" onClick={this.editCancel}>Cancel</Button>,
         <Button key="submit" type="primary" loading={loading} onClick={this.editDevicesssave}>
           Save Item
         </Button>,
@@ -506,6 +524,9 @@ addDevices = null
 <Card noHovering="false">
 <h2 style={{textAlign: 'center'}}>View Device</h2>
 
+<FormItem label="Device Name:">
+    <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
+</FormItem>
        <FormItem label="Device Name:">
            <Input placeholder="Enter device Name.." value={this.state.device_name} id="devicename" onChange={e => this.onTodoChange_device_name(e.target.value)}/>
        </FormItem>
@@ -540,7 +561,9 @@ addDevices = null
     >
     <Card noHovering="false">
     <h2 style={{textAlign: 'center'}}>Add Devices</h2>
-
+    <FormItem label="Device Name:">
+        <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
+    </FormItem>
            <FormItem label="Device Name:">
                <Input placeholder="Enter device Name.." defaultValue="" id="devicename"/>
            </FormItem>
@@ -572,6 +595,7 @@ addDevices = null
    className: styles.textleft,
    render: (device_name, device) => <a href="javascript:void(0)" onClick={() => this.devicedetails(device)}>{device_name}</a>
    },
+
 {
  title: 'IP',
  dataIndex: 'device_ip',
