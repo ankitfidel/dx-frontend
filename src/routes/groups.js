@@ -32,7 +32,7 @@ class Groups extends React.Component {
       this.state = {
         groupData: [{
           name:'',
-          templates:'',
+
           id:'',
           group_name:''
                }],
@@ -98,6 +98,28 @@ class Groups extends React.Component {
   .catch(function (error) {
     console.log(error);
   });
+  }
+  deleteGroup(groupId){
+    var cookies = cookie.load('sessionid');
+  //  var application_id = cookie.load('application_id');
+
+    //alert(device_id)
+    axios.delete(axios.defaults.baseURL + '/api/front/group/'+ cookies +'/'+groupId, {
+    groupId:groupId
+    })
+    .then(function (response) {
+        //alert(device_id)
+    if(response.data.status == false){
+    //  alert("eerrre:   "+device_id)
+    error(response.data.result)
+      }else{
+      //  alert(device_id)
+     window.location.reload();
+      }
+    })
+    .catch(function (error) {
+    console.log(error);
+    });
   }
   editgroupsave(){
     const cookies = cookie.load('sessionid');
@@ -253,20 +275,19 @@ const hasSelected = selectedRowKeys.length > 0;
 
 {addgroup} <br /><br />
 
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} loading={loading} rowKey="id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} loading={loading} rowKey="id"  columns={[
 
 {
-   title: 'Name',
+   title: 'Group Name',
    dataIndex: 'name',
+     className: styles.textleft
  },
- {
-    title: 'Template',
-    dataIndex: 'templates',
-  },
+
   {
      title: 'Action',
      dataIndex: 'id',
-     render: id => <Button size="small" type="primary" onClick={() => this.groupeditData(id)}>edit</Button>
+       className: styles.textleft,
+     render: id => <div> <Button size="small" type="primary" onClick={() => this.groupeditData(id)}><Icon type="edit" /> Edit</Button> &nbsp;&nbsp;<Button size="small" type="primary" onClick={() => this.deleteGroup(id)}><Icon type="delete" /> Delete</Button></div>
    },
 
 

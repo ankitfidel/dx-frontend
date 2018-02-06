@@ -126,7 +126,9 @@ function MenusAdmin({
       <Menu.Item key="themes" className="menulink" style={{'overflow': 'hidden'}}>
          <Link to="/themes" activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}}> <Icon type="setting" /> Theme</Link>
       </Menu.Item>
-
+      <Menu.Item key="applications" className="menulink" style={{'overflow': 'hidden'}}>
+         <Link activeClassName="selected"  to="/applications" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="cloud-upload-o" /> Application</Link>
+      </Menu.Item>
       <Menu.Item key="connectdevice" className="menulink" style={{'overflow': 'hidden'}}>
          <Link activeClassName="selected"  to="/connect-device" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="cloud-upload-o" /> Connect Device</Link>
       </Menu.Item>

@@ -19,6 +19,10 @@ const {  RangePicker } = DatePicker;
 // </FormItem>
 
 
+function handleChange(device_id) {
+  //console.log(`selected );
+//  alert("device_id" + device_id)
+}
 
 function error(msg) {
   const modal = Modal.error({
@@ -88,6 +92,8 @@ class Users extends React.Component {
           item_name:'',
           item_unit:'',
           item_oid:'',
+          application_ids:'',
+          application_name:'',
           id:'',
           item_values:'',
           interval_time:'',
@@ -192,80 +198,82 @@ filterselectDate(value){
        fromDate = formattedDate(fromDate);
        todate = formattedDate(todate);
   }
-  //gdfgdfg
+
   if (value == 'last 3 hours') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getHours() - 3);
+    time_fromDate.setHours(time_fromDate.getHours() - 3);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
-    todate = formattedDate(todate);
+    todate = formattedDate(todate)
+    alert("fromDate: "+fromDate);
+    alert("todate: "+fromDate);
   }
   if (value == 'last 6 hours') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getHours() - 6);
+    time_fromDate.setHours(time_fromDate.getHours() - 6);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 12 hours') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getHours() - 12);
+    time_fromDate.setHours(time_fromDate.getHours() - 12);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 1 days') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getDate() - 1);
+    time_fromDate.setDate(time_fromDate.getDate() - 1);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 1 weeks') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getDate() - 7);
+    time_fromDate.setDate(time_fromDate.getDate() - 7);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 2 weeks') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getDate() - 14);
+    time_fromDate.setDate(time_fromDate.getDate() - 14);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 1 months') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getMonth() - 1);
+    time_fromDate.setMonth(time_fromDate.getMonth() - 1);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 3 months') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getMonth() - 3);
+    time_fromDate.setMonth(time_fromDate.getMonth() - 3);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 6 months') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getMonth() - 6);
+    time_fromDate.setMonth(time_fromDate.getMonth() - 6);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 1 years') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getFullYear() - 1);
+    time_fromDate.setFullYear(time_fromDate.getFullYear() - 1);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
   }
   if (value == 'last 2 years') {
     var time_fromDate = new Date();
-    time_fromDate.setMinutes(time_fromDate.getFullYear() - 2);
+    time_fromDate.setFullYear(time_fromDate.getFullYear() - 2);
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate);
@@ -487,14 +495,36 @@ deleteItem(id){
          }).then(response => {
            //alert(JSON.stringify(response.data.result))
           // console.log(response.data.result.items[0]);
-           var items = response.data.result.items;
+           var items = response.data.result.items[0];
+        //   var applicationResponses = response.data.result.items[0];
                this.setState({ itemsData: response.data.result.items,  loading:false});
            })
          .catch(function (error) {
            console.log(error);
          });
     }
+    listapps = (params = {}) => {
+      // console.log('params:', params);
+      //  this.setState({ loading: true });
+        var cookies = cookie.load('sessionid');
+        var company_id = cookie.load('company_id');
+        axios.get(axios.defaults.baseURL + '/api/front/application/' + cookies + '/company/' + company_id ,{
+          responseType: 'json'
+        }) .then(response => {
 
+           let comapnyrole = response.data.result.map((pic,i) => {
+             return(
+        <option key={i.toString()} value={pic.application_id}>{pic.application_name}</option>
+             )
+           })
+             this.setState({comapnyrole:comapnyrole});
+             //console.log("state:"+ JSON.stringify(response.data.result[0].device_id))
+         //  cookie.save('device_id', this.state.device_id, { path: '/' });
+         })
+        .catch(function (error) {
+          console.log(error);
+        })
+    }
     handleTableChange = (pagination, filters, sorter) => {
        const pager = { ...this.state.pagination };
        pager.current = pagination.current;
@@ -510,7 +540,7 @@ deleteItem(id){
        });
      }
       componentDidMount() {
-
+this.listapps();
          this.itemslist();
   }
 
@@ -527,14 +557,15 @@ deleteItem(id){
     const item_unit = document.getElementById('item_unit').value;
     const item_oid = document.getElementById('item_oid').value;
     const intervalTime = document.getElementById('intervalTime').value;
-   // const isRetailer = document.getElementById('isRetailer').checked = true;
+    const application_ids = document.getElementById('application_ids').value;
     axios.post(axios.defaults.baseURL + '/api/front/item', {
      session_id:cookies,
      item_name:item_name,
      item_unit:item_unit,
      item_oid:item_oid,
      device_id:device_id,
-     interval_time:intervalTime
+     interval_time:intervalTime,
+     application_ids:[application_ids]
    //  isRetailer:isRetailer
     })
     .then(function (response) {
@@ -596,6 +627,7 @@ editItemssave(){
   const item_unit = document.getElementById('item_unit').value;
   const item_oid = document.getElementById('item_oid').value;
     const intervalTime = document.getElementById('intervalTime').value;
+    const application_ids = document.getElementById('application_ids').value;
  // const isRetailer = document.getElementById('isRetailer').checked = true;
   axios.put(axios.defaults.baseURL + '/api/front/item/'+ id, {
    session_id:cookies,
@@ -603,7 +635,8 @@ editItemssave(){
    item_name:item_name,
    item_unit:item_unit,
    item_oid:item_oid,
-   interval_time:intervalTime
+   interval_time:intervalTime,
+   application_ids:[application_ids]
 //   company_id:companyId
  //  isRetailer:isRetailer
   })
@@ -645,7 +678,7 @@ addItems = <Button type="primary" onClick={this.addItems}>Add Items</Button>
 }else{
 addItems = null
 }
-  var {chartgraph, selectedRowKeys, itemsData,item_unit,item_oid, interval_time,item_name, loading } = this.state;
+  var {chartgraph, selectedRowKeys, itemsData,item_unit,item_oid, application_id, interval_time,item_name, loading } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -710,7 +743,7 @@ const hasSelected = selectedRowKeys.length > 0;
    />
    </FormItem>
     <FormItem label="Select time:" >
-   <Select className={styles.selectopt} onChange={e => this.filterselectDate(e.target.value)} id="gettime" style={{'margin':'5px 20px'}}>
+   <Select className={styles.selectopt} onSelect={(value, event) => this.filterselectDate(value, event)}  id="gettime" defaultValue="last 12 hours" style={{'margin':'5px 20px', 'width':'300px'}}>
     <Option value="last 5 mins">last 5 mins</Option>
     <Option value="last 15 mins">last 15 mins</Option>
     <Option value="last 30 mins">last 30 mins</Option>
@@ -756,12 +789,12 @@ const hasSelected = selectedRowKeys.length > 0;
          footer={[
            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
            <Button key="submit" type="primary" loading={loading} onClick={this.addItemssave}>
-             Save Item
+             Add Item
            </Button>,
          ]}
        >
        <Card noHovering="false" bordered={false}>
-       <h2 style={{textAlign: 'center'}}>Add items</h2>
+       <h2 style={{textAlign: 'center'}}>Add Item</h2>
 
        <FormItem label="Item Name:">
            <Input placeholder="Enter Item Name" defaultValue="" id="item_name"/>
@@ -780,6 +813,13 @@ const hasSelected = selectedRowKeys.length > 0;
             <option value="3600">3600</option>
            </select>
        </FormItem>
+       <FormItem label="Select Applications:">
+       <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select Applications"
+        onChange={handleChange}
+       >
+       { this.state.comapnyrole }
+       </select>
+       </FormItem>
 
 
         </Card>
@@ -789,14 +829,14 @@ const hasSelected = selectedRowKeys.length > 0;
          onOk={this.editItemssave}
          onCancel={this.editCancel}
          footer={[
-           <Button key="back" onClick={this.editCancel}>Cancel & Close</Button>,
+           <Button key="back" onClick={this.editCancel}>Cancel</Button>,
            <Button key="submit" type="primary" loading={loading} onClick={this.editItemssave}>
-             Save Item
+             Update Item
            </Button>,
          ]}
        >
        <Card noHovering="false" bordered={false}>
-       <h2 style={{textAlign: 'center'}}>edit items</h2>
+       <h2 style={{textAlign: 'center'}}>Edit Item</h2>
 
        <FormItem label="Item Name:">
            <Input placeholder="Enter Item Name" value={this.state.item_name} onChange={e => this.onTodoChange_item_name(e.target.value)} id="item_name"/>
@@ -815,18 +855,30 @@ const hasSelected = selectedRowKeys.length > 0;
             <option value="3600">3600</option>
            </select>
        </FormItem>
+       <FormItem label="Set Interval Time (in seconds):">
+       <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select a Device"
+        onChange={handleChange}
+       >
+       { this.state.comapnyrole }
+       </select>
+       </FormItem>
         </Card>
        </Modal>
 <Card noHovering="false">
 
 {addItems}
 <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} loading={loading} rowKey="id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} loading={loading} rowKey="id"  columns={[
 
+{
+   title: 'Application Name',
+   dataIndex: 'applicationResponses[0].application_name',
+   width:200,
+    className: styles.textleft
+ },
 {
    title: 'Item Name',
    dataIndex: 'item_name',
-   width:'200',
     className: styles.textleft
  }, {
    title: 'Item Unit',
@@ -845,7 +897,7 @@ const hasSelected = selectedRowKeys.length > 0;
 },
 
 {
- title: '',
+ title: 'Action',
  dataIndex: 'id',
  render: (id) => <div><a href="javascript:void(0)" onClick={() => this.deleteItem(id)}><Icon title="Delete Item" type="delete" /></a>&nbsp; &nbsp; | &nbsp; &nbsp; <a href="javascript:void(0)" onClick={() => this.edititem(id)}><Icon title="Edit Item" type="edit" /></a> &nbsp; &nbsp; | &nbsp; &nbsp; <a href="javascript:void(0)" onClick={() => this.showGraph(id)}><Icon type="area-chart" /></a></div>
 }

@@ -5,6 +5,11 @@ module.exports = [
         icon: 'laptop',
     },
     {
+        key: 'applications',
+        name: 'Applications',
+        icon: 'laptop',
+    },
+    {
         key: 'admindashboard',
         name: 'Admin Dashboard',
         icon: 'laptop',

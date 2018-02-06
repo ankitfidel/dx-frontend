@@ -516,15 +516,15 @@ addDevices = null
       footer={[
         <Button key="back" onClick={this.editCancel}>Cancel</Button>,
         <Button key="submit" type="primary" loading={loading} onClick={this.editDevicesssave}>
-          Save Item
+          Update Device
         </Button>,
       ]}
     >
 
-<Card noHovering="false">
-<h2 style={{textAlign: 'center'}}>View Device</h2>
+<Card noHovering="false" bordered={false}>
+<h2 style={{textAlign: 'center'}}>Update Device</h2>
 
-<FormItem label="Device Name:">
+<FormItem label="Device Background URL:">
     <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
 </FormItem>
        <FormItem label="Device Name:">
@@ -553,15 +553,15 @@ addDevices = null
       onOk={this.addDevicesssave}
       onCancel={this.handleCancel}
       footer={[
-        <Button key="back" onClick={this.handleCancel}>Cancel & Close</Button>,
+        <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
         <Button key="submit" type="primary" loading={loading} onClick={this.addDevicesssave}>
-          Save Item
+          Add Device
         </Button>,
       ]}
     >
-    <Card noHovering="false">
-    <h2 style={{textAlign: 'center'}}>Add Devices</h2>
-    <FormItem label="Device Name:">
+    <Card noHovering="false" bordered={false}>
+    <h2 style={{textAlign: 'center'}}>Add Device</h2>
+    <FormItem label="Device Background URL:">
         <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
     </FormItem>
            <FormItem label="Device Name:">
@@ -571,7 +571,7 @@ addDevices = null
                <Input placeholder="Enter Port.." defaultValue="" id="port"/>
            </FormItem>
            <FormItem label="IP:">
-               <Input placeholder="ip" defaultValue="" id="ip"/>
+               <Input placeholder="Enter IP.." defaultValue="" id="ip"/>
            </FormItem>
            <FormItem label="Select Groups:">
            <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}>
@@ -590,7 +590,6 @@ addDevices = null
    {
    title: 'Name',
    dataIndex: 'device_name',
-   width:320,
    key:'device',
    className: styles.textleft,
    render: (device_name, device) => <a href="javascript:void(0)" onClick={() => this.devicedetails(device)}>{device_name}</a>
@@ -599,32 +598,27 @@ addDevices = null
 {
  title: 'IP',
  dataIndex: 'device_ip',
-  width:120,
   className: styles.textleft
 },  {
  title: 'Port',
  dataIndex: 'device_port',
-  width:120,
   className: styles.textleft
 },
 {
 title: 'Name',
 dataIndex: 'group_name',
- width:120,
  className: styles.textleft
 },
 {
 title: 'Status',
 dataIndex: 'is_connected',
- width:100,
 render: is_connected => <p>{is_connected == true ? <Tag color="#01910d">Connected</Tag> : <Tag color="#d30a0a ">Not connected</Tag>}</p>,
  className: styles.textleft
 },
 {
 title: 'Status',
 dataIndex: 'device_key',
- width:100,
-render: device_key => <p><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.connected(device_key)}>Connect device</Tag></p>,
+render: device_key => <p><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.connected(device_key)}>Connect / Disconnect</Tag></p>,
  className: styles.textleft
 },
 

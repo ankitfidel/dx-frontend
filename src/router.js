@@ -203,6 +203,15 @@ export default function ({ app}) {
                      })
                  }
              },
+             {
+                 path: '/applications',
+                 name: 'applications',
+                 getComponent(nextState, cb) {
+                     require.ensure([], require => {
+                         cb(null, require('./routes/applications'))
+                     })
+                 }
+             },
 
 
              {
