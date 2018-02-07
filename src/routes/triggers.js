@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form, Pagination } from 'antd'
+import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card,Breadcrumb, Table, Modal, Switch,Input, Radio, Form, Pagination } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import reqwest from 'reqwest';
@@ -12,7 +12,7 @@ import { axiosrequest } from './axiosrequest';
 
 
 function error(msg) {
-  const modal = Modal.error({
+  const modal = Modal.warning({
     content: msg
   });
 }
@@ -35,6 +35,7 @@ class Triggers extends React.Component {
            name:'',
            data:[],
            result:[],
+           device_name:'',
            loading: false,
 visible: false,
 editTrigger:false,
@@ -64,13 +65,26 @@ editTrigger:false,
      triggerlist = (params = {}) => {
          var cookies = cookie.load('sessionid');
          var device_id = cookie.load('device_id');
-         axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/device/'+ device_id + '?sort=DESC',{
+         //get device data by device Id
+         axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/'+ device_id ,{
            responseType: 'json'
          }).then(response => {
            //alert(JSON.stringify(response.data.result))
+
+               this.setState({device_name:response.data.result.device_name});
+
+           })
+         .catch(function (error) {
+           console.log(error);
+         });
+
+         axios.get(axios.defaults.baseURL + '/api/front/trigger/' + cookies + '/device/'+ device_id + '?sort=DESC',{
+           responseType: 'json'
+         }).then(response => {
+          // alert(JSON.stringify(response.data.result))
           // console.log(response.data.result.items[0]);
       //     var items = response.data.result.items;
-      //alert(JSON.stringify(response.data.result))
+      //alert(JSON.stringify(response.data.result)
                this.setState({ triggerData: response.data.result});
               // alert(JSON.stringify(response.data.result))
            })
@@ -294,7 +308,7 @@ editTrigger: false,
         // this.onTodoChange_expression_id = this.onTodoChange_expression_id.bind(this);
 render(){
 
-  const { selectedRowKeys, triggerData, name } = this.state;
+  const { selectedRowKeys, triggerData,device_name, name } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -337,8 +351,20 @@ render(){
        onSelection: this.onSelection,
      };
 const hasSelected = selectedRowKeys.length > 0;
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
      return (
        <div>
+       <Breadcrumb>
+          {adminmenu}
+          <Breadcrumb.Item><a href="#/devices">Device: {this.state.device_name}</a></Breadcrumb.Item>
+        </Breadcrumb>
+        <br />
        <Modal
          visible={this.state.visible}
          onOk={this.addTriggersave}
@@ -418,7 +444,7 @@ const hasSelected = selectedRowKeys.length > 0;
 
 
  <Button type="primary" onClick={this.addItems}>Add Trigger</Button> &nbsp; <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="id" columns={[
 
 {
    title: 'Name',

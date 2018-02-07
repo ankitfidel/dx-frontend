@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form, Pagination } from 'antd'
+import {Menu, Icon, Popover, Badge, M,Avatar,Row,Breadcrumb, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form, Pagination } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,ResponsiveContainer, CartesianGrid, Tooltip} from 'recharts';
@@ -240,9 +240,19 @@ addgroup = null
        onSelection: this.onSelection,
      };
 const hasSelected = selectedRowKeys.length > 0;
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
      return (
        <div>
+       <Breadcrumb>
+          {adminmenu}
 
+        </Breadcrumb><br />
        <Modal
          visible={this.state.visible}
          onOk={this.addgroupsave}
@@ -271,7 +281,7 @@ const hasSelected = selectedRowKeys.length > 0;
 
         </Card>
        </Modal>
-<Card noHovering="false">
+<Card noHovering="false" bordered={false}>
 
 {addgroup} <br /><br />
 

@@ -113,7 +113,7 @@ handleOk = () => {
     console.log(error);
   });
 }else{
-  alert("confirm pass fst")
+  alert("confirm password first")
 }
 }
 changepassword = () =>{

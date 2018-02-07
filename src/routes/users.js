@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal, Switch, Radio, Form, Input, Pagination } from 'antd'
+import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col,Breadcrumb, Button,Card, Table,Tag, Modal, Switch, Radio, Form, Input, Pagination } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import reqwest from 'reqwest';
@@ -12,7 +12,7 @@ import { axiosrequest } from './axiosrequest';
 
 const data =[]
 function error(msg) {
-  const modal = Modal.error({
+  const modal = Modal.warning({
     content: msg
   });
 }
@@ -321,10 +321,22 @@ render(){
        onSelection: this.onSelection,
      };
 const hasSelected = selectedRowKeys.length > 0;
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
      return (
+
        <div>
+       <Breadcrumb>
+          {adminmenu}
+
+        </Breadcrumb><br />
        <Modal
-         title="Add Users"
+         title="Add User"
          visible={this.state.visible}
          onOk={this.adduserssave}
          onCancel={this.handleCancel}
@@ -336,19 +348,19 @@ const hasSelected = selectedRowKeys.length > 0;
          ]}
        >
        <FormItem label="Username:">
-           <Input placeholder="Enter Username" defaultValue="" id="username"/>
+           <Input placeholder="Enter Username.." defaultValue="" id="username"/>
        </FormItem>
        <FormItem label="Password:">
-           <Input placeholder="Enter Password" defaultValue="" id="password"/>
+           <Input placeholder="Enter Password.." defaultValue="" id="password"/>
        </FormItem>
        <FormItem label="First Name:">
-           <Input placeholder="Enter First Name" defaultValue="" id="firstName"/>
+           <Input placeholder="Enter First Name.." defaultValue="" id="firstName"/>
        </FormItem>
        <FormItem label="Last Name:">
-           <Input placeholder="Enter Last Name" defaultValue="" id="lastName"/>
+           <Input placeholder="Enter Last Name.." defaultValue="" id="lastName"/>
        </FormItem>
        <FormItem label="Email Id:">
-           <Input placeholder="Enter Email Id" defaultValue="" id="emailId"/>
+           <Input placeholder="Enter Email Id.." defaultValue="" id="emailId"/>
        </FormItem>
        <FormItem label="User Role:">
        <select style={{ width: 200  }} className={styles.selectopt} id="userRoleId">
@@ -366,57 +378,62 @@ const hasSelected = selectedRowKeys.length > 0;
 
        </Modal>
        <Modal
-         title="Edit users"
+         title="Edit user"
          visible={this.state.updateUser}
          onOk={this.updateUsersData}
          onCancel={this.updateUserclose}
          footer={[
            <Button key="back" onClick={this.updateUserclose}> Close</Button>,
            <Button key="submit" type="primary" loading={loading} onClick={this.updateUsersData}>
-             Save User
+             Update User
            </Button>,
          ]}
        >
-       <FormItem label="username:">
-               <Input placeholder="username" value={username} id="username" onChange={e => this.onTodoChange_username(e.target.value)}/>
+       <FormItem label="Username:">
+               <Input placeholder="Enter Username" value={username} id="username" onChange={e => this.onTodoChange_username(e.target.value)}/>
         </FormItem>
 
-        <FormItem label="first_name:">
-            <Input placeholder="first_name" value={this.state.first_name} id="first_name" onChange={e => this.onTodoChange_first_name(e.target.value)}/>
+        <FormItem label="First Name:">
+            <Input placeholder="Enter First Name.." value={this.state.first_name} id="first_name" onChange={e => this.onTodoChange_first_name(e.target.value)}/>
         </FormItem>
-        <FormItem label="last_name:">
-            <Input placeholder="last_name"value={this.state.last_name} id="last_name" onChange={e => this.onTodoChange_last_name(e.target.value)}/>
+        <FormItem label="Last Name:">
+            <Input placeholder="Enter Last Name.."value={this.state.last_name} id="last_name" onChange={e => this.onTodoChange_last_name(e.target.value)}/>
         </FormItem>
-        <FormItem label="email_id:">
-            <Input placeholder="email_id" value={this.state.email_id} id="email_id" onChange={e => this.onTodoChange_email_id(e.target.value)}/>
+        <FormItem label="Email Id:">
+            <Input placeholder="Enter Email id.." value={this.state.email_id} id="email_id" onChange={e => this.onTodoChange_email_id(e.target.value)}/>
         </FormItem>
 
 
 
        </Modal>
-<Card noHovering="false"> &nbsp; &nbsp;
- <Button type="primary" onClick={this.addusers}>Add Users</Button> &nbsp;
+<Card noHovering="false" bordered={false}>
+ <Button type="primary" onClick={this.addusers}>Add User</Button> &nbsp;
  <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="user_id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="user_id" columns={[
  {
    title: 'First Name',
    dataIndex: 'first_name',
+    className: styles.textleft
  }, {
    title: 'Last Name',
    dataIndex: 'last_name',
+    className: styles.textleft
  },
  {
   title: 'Company Name',
-  dataIndex: 'company_name'
+  dataIndex: 'company_name',
+   className: styles.textleft
 },
 {
  title: 'Email Id',
- dataIndex: 'email_id'
+ dataIndex: 'email_id',
+  className: styles.textleft
 },
 {
  title: 'Action',
  dataIndex: 'user_id',
- render: user_id =><div> <a href="javascript:void(0)" onClick={() => this.start(user_id)}> <Icon title="Delete User" type="delete" /> </a>&nbsp;&nbsp; |&nbsp;&nbsp; <a href="javascript:void(0)"  onClick={() => this.usereditData(user_id)}><Icon title="Edit User" type="edit" /></a></div>
+  className: styles.textleft,
+ render: user_id =><div>  <a href="javascript:void(0)"  onClick={() => this.usereditData(user_id)}><Icon title="Edit User" type="edit" /> Edit</a> &nbsp; | &nbsp; <a href="javascript:void(0)"  onClick={() => this.start(user_id)}><Icon title="Delete User" type="delete" /> Delete</a>&nbsp;&nbsp;</div>
 }
 
 

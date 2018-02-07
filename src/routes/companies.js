@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal, Switch, Radio, Form, Pagination } from 'antd'
+import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col,Breadcrumb, Button,Card, Table, Modal, Switch, Radio, Form, Pagination } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import reqwest from 'reqwest';
@@ -136,7 +136,9 @@ header,
         }
 
 render(){
-
+  var textLeft = {
+    textAlign: 'left',
+  };
   const { selectedRowKeys, tableData } = this.state;
   const rowSelection = {
        selectedRowKeys,
@@ -180,37 +182,53 @@ render(){
        onSelection: this.onSelection,
      };
 const hasSelected = selectedRowKeys.length > 0;
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
      return (
        <div>
+       <Breadcrumb>
+          {adminmenu}
 
-<Card noHovering="false">
+        </Breadcrumb><br />
+<Card noHovering="false" bordered={false}>
 
 
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="company_id" rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="company_id"  columns={[
    {
      title: 'Logo',
      dataIndex: 'logo',
      className: styles.logo,
      render: logo => <img src={logo} />,
 
+
    },{
    title: 'Name',
    dataIndex: 'name',
+    className: styles.textleft
  }, {
    title: 'Domain',
    dataIndex: 'domain',
+    className: styles.textleft
  }, {
    title: 'Website Url',
    dataIndex: 'website_url',
+    className: styles.textleft
  },
  {
   title: 'Support Email Id',
-  dataIndex: 'support_email_id'
+  dataIndex: 'support_email_id',
+   className: styles.textleft
 },
 {
  title: 'Is Retailer',
  dataIndex: 'is_retailer',
-  render: is_retailer => <p>{is_retailer === true ? "yes" :"no"}</p>
+  className: styles.textleft,
+  render: is_retailer => <p>{is_retailer === true ? "Yes" :"No"}</p>
 }
 
 

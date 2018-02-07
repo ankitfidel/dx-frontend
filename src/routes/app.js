@@ -18,6 +18,7 @@ import cookie from 'react-cookies'
 const axios = require('axios');
 import { hashHistory, browserHistory } from 'dva/router';
 import { BackTop } from 'antd';
+import Style from 'style-it';
 
 const { Sider, Content } = Layout;
 
@@ -53,12 +54,44 @@ var content2 = cookie.load('content2');
 
     }
   }
+  function LightenDarkenColor(col, amt) {
+
+    var usePound = false;
+
+    if (col[0] == "#") {
+        col = col.slice(1);
+        usePound = true;
+    }
+
+    var num = parseInt(col,16);
+
+    var r = (num >> 16) + amt;
+
+    if (r > 255) r = 255;
+    else if  (r < 0) r = 0;
+
+    var b = ((num >> 8) & 0x00FF) + amt;
+
+    if (b > 255) b = 255;
+    else if  (b < 0) b = 0;
+
+    var g = (num & 0x0000FF) + amt;
+
+    if (g > 255) g = 255;
+    else if (g < 0) g = 0;
+
+  var colorcode =   (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+//  alert(colorcode);
+return colorcode;
+}
+
 
 function App({ children, location, dispatch, app }) {
 
 
-
-
+var NewColor = LightenDarkenColor(headercolor, 90);
+var darkColor = LightenDarkenColor(headercolor, 50);
+var lightestColor = LightenDarkenColor(headercolor, 90);
 
   const {
     login,
@@ -193,7 +226,33 @@ function App({ children, location, dispatch, app }) {
 
   if ((login || !config.needLogin)) {
     return (
+      <div>
+      <Style>
+      {`
+        a{color: ` + headercolor + `}a:hover{color:`+darkColor+` !important}
+    .ant-btn-primary{background-color:  ` + headercolor + `;border-color:  ` + darkColor + `;}
+    .ant-btn-primary:active, .ant-btn-primary.active,.ant-btn-primary:hover, .ant-btn-primary:focus{background-color:  ` + darkColor + `;border-color:  ` + darkColor + `;}
+    .ant-btn:active,.ant-btn:hover, .ant-btn:focus, .ant-btn.active{;border-color:  ` + darkColor + `;}
+    .ant-input:focus, .ant-input:hover{border-color:  ` + darkColor + `;}
+    .ant-btn:active, .ant-btn.active{color:  ` + headercolor + `}
+    .ant-pagination-item-active:focus, .ant-pagination-item-active:hover{ background: ` + headercolor + `}
+    .ant-pagination-item-active{background: ` + headercolor + `}
+    .ant-tabs-ink-bar{background:` + headercolor + `}
+    
+    .ant-tabs-nav .ant-tabs-tab-active{color: ` + headercolor + `}
+    .ant-tabs-nav .ant-tabs-tab:hover{color: ` + darkColor + `}
+         .ant-pagination-item-active:focus, .ant-pagination-item-active:hover{ background: ` + headercolor + `}
+         .ant-select-dropdown-menu-item:hover{ background: ` + headercolor + `; color:#fff}
+        .ant-table-thead > tr > th{background:` + lightestColor + `}
+      .ant-pagination-item-active{background: ` + headercolor + `}
+           .intro {
+             background: ` + headercolor + `
+           }
+           .ant-card{background: rgba(255,255,255,0.4);}
+        `}
+      </Style>
       <LocaleProvider locale={enUS}>
+
       <div
         className={classnames(styles.layout, { [styles.fold]: isNavbar ? true : siderFold  }, {  [styles.withnavbar]: isNavbar  })}>
         {!isNavbar  ? <aside
@@ -202,11 +261,11 @@ function App({ children, location, dispatch, app }) {
 
           </aside>
           : ''}
-        <div id="main_content" className={classnames(styles.main)}>
+        <div id="main_content" className={styles.main}>
           <div className={styles.spin} >
             <Spin tip='Loading...' spinning={loading} size='large'>
               <Header {...headerProps} style={{'backgroundColor': 'brown'}} />
- <Bread location={location} />
+
                 <div className={styles.container}>
                   <div className={styles.content} id="spin">
                   <BackTop target={() => document.getElementById('main_content')} />
@@ -221,6 +280,7 @@ function App({ children, location, dispatch, app }) {
 
       </div>
       </LocaleProvider>
+      </div>
     )
   }
 }

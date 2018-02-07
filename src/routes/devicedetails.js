@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal,Select, Switch, Radio, Form, DatePicker,Tabs } from 'antd'
+import {Menu, Icon, Popover, Badge,Breadcrumb, M,Avatar,Row, Col, Button,Card,Spin, Table, Modal,Select, Switch, Radio, Form, DatePicker,Tabs } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,ResponsiveContainer, CartesianGrid, Tooltip} from 'recharts';
@@ -10,6 +10,7 @@ const axios = require('axios');
 const Option = Select.Option;
 import styles from './common.less';
 import { browserHistory, hashHistory } from 'dva/router';
+
 import Style from 'style-it';
 const {  RangePicker } = DatePicker;
 
@@ -102,7 +103,7 @@ this.state = {
   selectedRowKeys: [],
   hostss:[],
   loading: true,
-
+  graphloading:false
 }
 
 this.filterselectDate = this.filterselectDate.bind(this);
@@ -362,6 +363,7 @@ this.filterselectDate = this.filterselectDate.bind(this);
       }
 
           changeGraph(date, dateString){
+
            console.log(date);
            console.log(dateString[0]+" "+dateString[1]);
            var cookies = cookie.load('sessionid');
@@ -399,7 +401,9 @@ this.filterselectDate = this.filterselectDate.bind(this);
          }
       showGraph = (id) => {
 
-
+        this.setState({
+          graphloading:true
+        })
 
            cookie.save('itemid',id);
            var cookies = cookie.load('sessionid');
@@ -431,7 +435,7 @@ this.filterselectDate = this.filterselectDate.bind(this);
 
 
                 this.setState({
-                   graph: true,chartgraph: chartgraphvalues
+                   graph: true,chartgraph: chartgraphvalues,graphloading:false
                 });
 
 
@@ -496,6 +500,7 @@ this.application();
 application(){
   var cookies = cookie.load('sessionid');
   var device_id = cookie.load("device_id");
+
   axios.get(axios.defaults.baseURL + '/api/front/application/' + cookies + '/device/' + device_id ,{
     responseType: 'json'
   }).then(response => {
@@ -512,7 +517,7 @@ application(){
          dataIndex: 'item_unit',
             className: styles.textleft
        },
-    
+
       {
        title: 'Item Oid',
        dataIndex: 'item_oid',
@@ -532,14 +537,16 @@ application(){
          render: id => <div> <a href="javascript:void(0)" onClick={() => this.showGraph(id)}><Icon type="area-chart" /></a></div>
        },];
          return(
+
          <TabPane tab={<span><Icon type="clock-circle" /> {pic.application_name}</span>} key={i}>
          <Card noHovering="false" bodyStyle={{ padding: 0 }}>
          <Table columns={hostsdetailstables}
-        rowKey="application_id"
+        rowKey={pic.items.id}
         dataSource={pic.items}
         />
                   </Card>
          </TabPane>
+
          )
        });
 
@@ -572,10 +579,26 @@ render(){
         left: 0,
         margin:' 0 auto'
       };
-
+      var user_role = cookie.load('user_role');
+      let adminmenu = null;
+      if(user_role === "dashboard_admin"){
+      adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+      }else{
+      adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+      }
 
      return (
        <div>
+       <Style>{`
+.icongreen{color:` + headercolor + `}
+
+`}
+       </Style>
+       <Breadcrumb>
+          {adminmenu}
+          <Breadcrumb.Item><a href="#/devices">Device: {this.state.device_name}</a></Breadcrumb.Item>
+        </Breadcrumb>
+        <br />
        <Modal
          title={this.state.item_name}
          visible={this.state.graph} width={'80%'} closable={false}
@@ -637,38 +660,38 @@ render(){
           </LineChart>
      </ResponsiveContainer>
        </Modal>
-        <Style>
-        {` .ant-pagination-item-active:focus, .ant-pagination-item-active:hover{ background: ` + sidebarcolor + `}
-        .ant-pagination-item-active{background: ` + sidebarcolor + `}
-             .intro {
-               background: ` + headercolor + `
-             }
-             .ant-card{background: rgba(255,255,255,0.4);}
-          `}
-      </Style>
+
 
        <div style={{'minHeight': '100vh'}}>
+       <Spin size="default" spinning={this.state.graphloading}>
        <img src={this.state.background_image_url} style={stylebg} />
-       <Row  gutter={24} justify="space-around" align="middle">
-       <Col lg={8} md={8}>
+       <Row  gutter={12} justify="space-around" align="middle">
+       <Col lg={6} md={6}>
        <Card style={{ padding: '0' }}>
          <Col span={12}>Status</Col>
-          <Col style={styles.textAlign} span={12}><span>{this.state.status = true ? "Active" : "Inactive"}</span>
+          <Col style={styles.textAlign} span={12}><span>{this.state.status = true ?<span> <Icon type="like" className="icongreen" />&nbsp;Active</span> : <span><Icon type="dislike" />&nbsp; Inactive </span>}</span>
         </Col>
        </Card>
        </Col>
 
-       <Col lg={8} md={8}>
+       <Col lg={6} md={6}>
        <Card style={{ padding: '0' }}>
          <Col span={12}>Group Name</Col>
           <Col style={styles.textAlign} span={12}><span>{this.state.group_name}</span>
         </Col>
        </Card>
        </Col>
-       <Col lg={8} md={8}>
+       <Col lg={6} md={6}>
+       <Card style={{ padding: '0' }}>
+         <Col span={12}>Device IP</Col>
+          <Col style={styles.textAlign} span={12}><span>{this.state.device_ip}</span>
+        </Col>
+       </Card>
+       </Col>
+       <Col lg={6} md={6}>
        <Card style={{ padding: '0' }}>
          <Col span={12}>IP</Col>
-          <Col style={styles.textAlign} span={12}><span>{this.state.device_ip} : {this.state.device_port}</span>
+          <Col style={styles.textAlign} span={12}><span>{this.state.device_port}</span>
         </Col>
        </Card>
        </Col>
@@ -707,6 +730,7 @@ render(){
 </Tabs>
 </Card>
          </Row>
+         </Spin>
        </div>
        </div>
      );

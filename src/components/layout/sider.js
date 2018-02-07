@@ -105,8 +105,7 @@ let adminmenu = null;
 <div className={styles.logo} style={{'backgroundColor': sidebarcolor}}>
 <img src={config.logoSrc}/> {siderFold ? '' : <span className="logoText"></span>}
 </div>
-<div><h5 style={{'padding':'10px 0 10px 10px', 'color': 'white'}}>{username}</h5>
-<h6 style={{'padding':'0 0 10px 10px', 'color': 'white', 'fontSize': '14px !important'}}>{email_id}</h6></div>
+
 <Sider3 style={{'backgroundColor': sidebarcolor}} />
 
 

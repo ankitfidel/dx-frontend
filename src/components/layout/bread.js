@@ -43,13 +43,7 @@ function Bread ({ location }) {
       </Breadcrumb.Item>
     )
   })
-  var user_role = cookie.load('user_role');
-let adminmenu = null;
-if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Home</span></Breadcrumb.Item>
-}else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Home</span></Breadcrumb.Item>
-}
+  
   return (
     <div className={styles.bread}>
       <Breadcrumb>

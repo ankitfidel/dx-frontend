@@ -10,48 +10,56 @@ const axios = require('axios');
 
 export default function ({ app}) {
   const routes = [
-  {
-   path: '/login',
-    component: Loginpage,
-    name:'loginpage',
-    getIndexRoute(nextState, cb) {
-        require.ensure([], require => {
-            cb(null, {component: require('./routes/loginpage')})
-        })
-    },
-   childRoutes: [
 
+ {
+  path: '/login',
+   component: Loginpage,
+   name:'loginpage',
+   getIndexRoute(nextState, cb) {
+       require.ensure([], require => {
+           cb(null, {component: require('./routes/loginpage')})
+       })
+   },},
    {
-      path: '/forget-password',
-      name: '/forget-password',
-    //    component:Login,
-      getComponent(nextState, cb) {
-          require.ensure([], require => {
-              cb(null, require('./routes/forgetpass'))
-          })
-      }
+       path: '/forgetpass',
+      // component: Loginpage,
+       name: '/forgetpass',
+       getComponent(nextState, cb) {
+           require.ensure([], require => {
+               cb(null, require('./routes/forgetpass'))
+           })
+       }
    },
    {
-      path: "/resetpassword/:token",
-      name: '/resetpassword',
-      getComponent(nextState, cb) {
-          require.ensure([], require => {
-              cb(null,  require('./routes/resetpassword'))
-          })
-      }
+       path: '/forgetusername',
+      // component: Loginpage,
+       name: '/forgetusername',
+       getComponent(nextState, cb) {
+           require.ensure([], require => {
+               cb(null, require('./routes/forgetusername'))
+           })
+       }
    },
-
    {
-      path: '/adminlogin',
-      name: '/adminlogin',
-      getComponent(nextState, cb) {
-          require.ensure([], require => {
-              cb(null, require('./routes/adminlogin'))
-          })
-      }
-   },]
- },
-
+       path: '/resetpassword',
+      // component: Loginpage,
+       name: '/resetpassword',
+       getComponent(nextState, cb) {
+           require.ensure([], require => {
+               cb(null, require('./routes/resetpassword'))
+           })
+       }
+   },
+   {
+       path: '/resetusername',
+      // component: Loginpage,
+       name: '/resetusername',
+       getComponent(nextState, cb) {
+           require.ensure([], require => {
+               cb(null, require('./routes/resetusername'))
+           })
+       }
+   },
 
      {
          path: '/',

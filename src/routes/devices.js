@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover,Layout, Badge, M,Avatar,Row, Col,Tag, Button,Card,message, Table, Modal,notification, Form, Input, Popconfirm} from 'antd'
+import {Menu, Icon, Popover,Layout, Badge,Breadcrumb, M,Avatar,Row,Spin, Col,Tag, Button,Card,message, Table, Modal,notification, Form, Input, Popconfirm} from 'antd'
 import {ComposedChart, CartesianGrid, LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,Legend, Bar, Tooltip, ResponsiveContainer} from 'recharts';
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
@@ -17,7 +17,10 @@ import { axiosrequest } from './axiosrequest';
 //       </span>
 
 const data = []
-
+function cancel(e) {
+  console.log(e);
+  message.info('Device not deleted');
+}
 const EditableCell = ({ editable, value, onChange }) => (
 <div>
   {editable
@@ -27,12 +30,12 @@ const EditableCell = ({ editable, value, onChange }) => (
 </div>
 );
 function error(msg) {
-  const modal = Modal.error({
+  const modal = Modal.warning({
     content: msg
   });
 }
 function errorr(msg) {
-  const modal = Modal.error({
+  const modal = Modal.warning({
     content: msg
   });
 }
@@ -65,6 +68,7 @@ class Devices extends React.Component {
         visible:false,
         connected:'',
         editDevice:false,
+         graphloading:false
               };
       this.cacheData = data.map(item => ({ ...item }));
       this.addDevicesssave = this.addDevicesssave.bind(this);
@@ -274,6 +278,9 @@ editDevice: true,
 });
 }
 deletedevice(device_id){
+  this.setState({
+    graphloading:true
+  })
   var cookies = cookie.load('sessionid');
   //alert(device_id)
   axios.delete(axios.defaults.baseURL + '/api/front/device/'+ cookies +'/'+device_id, {
@@ -285,6 +292,9 @@ deletedevice(device_id){
   //  alert("eerrre:   "+device_id)
   error(response.data.result)
     }else{
+      this.setState({
+        graphloading:false
+      })
     //  alert(device_id)
    window.location.reload();
     }
@@ -372,6 +382,9 @@ deletedevice(device_id){
  }
 
  connected(device_key){
+   this.setState({
+     graphloading:true
+   })
    //alert(is_connected)
 //   alert(JSON.stringify(device_key));
  var cookies = cookie.load('sessionid');
@@ -388,6 +401,9 @@ axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + de
         }).then(response => {
       //  alert("disconnect successfully")
   //    errorr()
+  this.setState({
+    graphloading:false
+  })
     window.location.reload()
     //  window.location.reload()
           })
@@ -499,11 +515,21 @@ addDevices = null
        onSelection: this.onSelection,
      };
 //const hasSelected = selectedRowKeys.length > 0;
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
   return (
     <div>
+    <Breadcrumb>
+       {adminmenu}
+
+     </Breadcrumb><br />
     <Style>
-    {` .ant-pagination-item-active:focus, .ant-pagination-item-active:hover{ background: ` + sidebarcolor + `}
-    .ant-pagination-item-active{background: ` + sidebarcolor + `}
+    {`
          .intro {
            background: ` + headercolor + `
          }
@@ -583,16 +609,17 @@ addDevices = null
 
      </Card>
     </Modal>
- <Card noHovering="false">
-
+ <Card noHovering="false" bordered={false}>
+<Spin size="default" spinning={this.state.graphloading}>
 {addDevices}&nbsp;<br /><br />
+
  <Table pagination={{ pageSize: 10, showSizeChanger:true }} scroll={{ x: 900}} rowKey="device_id" loading={loading} columns={[
    {
-   title: 'Name',
+   title: 'Device Name',
    dataIndex: 'device_name',
    key:'device',
    className: styles.textleft,
-   render: (device_name, device) => <a href="javascript:void(0)" onClick={() => this.devicedetails(device)}>{device_name}</a>
+   render: (device_name, device) =><div> <a href="javascript:void(0)" onClick={() => this.devicedetails(device)}>{device_name}</a> </div>
    },
 
 {
@@ -605,30 +632,37 @@ addDevices = null
   className: styles.textleft
 },
 {
-title: 'Name',
+title: 'Group Name',
 dataIndex: 'group_name',
  className: styles.textleft
 },
 {
 title: 'Status',
 dataIndex: 'is_connected',
-render: is_connected => <p>{is_connected == true ? <Tag color="#01910d">Connected</Tag> : <Tag color="#d30a0a ">Not connected</Tag>}</p>,
+render: is_connected => <p>{is_connected == true ? <span style={{'color':'#01910d'}}>Connected</span> : <span style={{'color':'#d30a0a'}}>Not connected</span>}</p>,
  className: styles.textleft
 },
 {
-title: 'Status',
+title: 'Action',
 dataIndex: 'device_key',
-render: device_key => <p><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.connected(device_key)}>Connect / Disconnect</Tag></p>,
+render: (device_key,record) => <p><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.connected(device_key)}>   <p>{record.is_connected == true ? <span>Disconnect Device</span> : <span> Connect Device</span>}</p>  </Tag></p>,
  className: styles.textleft
 },
 
 {
 title: '',
 dataIndex:'device_id',
- render: device_id  => <div><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.editdevice(device_id)}>Edit</Tag>| &nbsp; <Tag color="#ff0000"  onClick={() => this.deletedevice(device_id)}>Delete</Tag>| &nbsp; <Tag style={{'backgroundColor':headercolor, 'color': 'white'}}  onClick={() => this.itemlist(device_id)}>Items</Tag> | &nbsp;<Tag style={{'backgroundColor':headercolor, 'color': 'white'}}  onClick={() => this.triggerslist(device_id)}>Triggers</Tag></div>
+ render: device_id  => <div>
+  <a  href="javascript:void(0)"  onClick={() => this.itemlist(device_id)}>Items</a> &nbsp; | &nbsp;
+  <a href="javascript:void(0)"  onClick={() => this.triggerslist(device_id)}>Triggers</a>&nbsp; | &nbsp;
+  <a href="javascript:void(0)" onClick={() => this.editdevice(device_id)}><Icon type="edit" /> Edit</a> &nbsp; | &nbsp;
+ <Popconfirm title="Are you sure delete this Device?"onConfirm={() => this.deletedevice(device_id)} onCancel={cancel} okText="Yes" cancelText="No">
+    <a href="#"><Icon type="delete" /> Delete Device</a>
+  </Popconfirm></div>
 },
 
  ]} dataSource={devicelist}  />
+ </Spin>
       </Card>
     </div>
   )

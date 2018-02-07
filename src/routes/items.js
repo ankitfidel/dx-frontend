@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal, Switch,Input, Select, Radio, Form, Pagination,DatePicker } from 'antd'
+import {Menu, Icon, Popover,Popconfirm,message,Breadcrumb, Badge,Spin, M,Avatar,Row, Col, Button,Card, Table, Modal, Switch,Input, Select, Radio, Form, Pagination,DatePicker } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -18,6 +18,11 @@ const {  RangePicker } = DatePicker;
 //     <Input placeholder="item_key" defaultValue="" id="item_key"/>
 // </FormItem>
 
+function cancel(e) {
+  console.log(e);
+  message.info('Item not deleted');
+}
+
 
 function handleChange(device_id) {
   //console.log(`selected );
@@ -25,7 +30,7 @@ function handleChange(device_id) {
 }
 
 function error(msg) {
-  const modal = Modal.error({
+  const modal = Modal.warning({
     content: msg
   });
 }
@@ -105,8 +110,10 @@ class Users extends React.Component {
            result:[],
            item_name:'',
            item_unit:'',
+           device_name:'',
            item_oid:'',
            loading: true,
+           graphloading:false,
            visible: false,
            editItem:false,
            pagination: {},
@@ -167,6 +174,7 @@ class Users extends React.Component {
 
 
 filterselectDate(value){
+
 //  alert(value)
     var todate = new Date();
     var fromDate;
@@ -205,8 +213,7 @@ filterselectDate(value){
     fromDate = time_fromDate;
     fromDate = formattedDate(fromDate);
     todate = formattedDate(todate)
-    alert("fromDate: "+fromDate);
-    alert("todate: "+fromDate);
+
   }
   if (value == 'last 6 hours') {
     var time_fromDate = new Date();
@@ -392,6 +399,9 @@ filterselectDate(value){
 }
 deleteItem(id){
   var cookies = cookie.load('sessionid');
+  this.setState({
+    graphloading:true
+  })
   //alert(device_id)
   axios.delete(axios.defaults.baseURL + '/api/front/item/'+ cookies +'/'+id, {
   id:id
@@ -412,7 +422,9 @@ deleteItem(id){
 }
      showGraph = (id) => {
 
-
+       this.setState({
+          graphloading:true
+       });
           // for(let i=0;i<3;i++){
           //   chartgraph.push({"name":11,"cost":12,"impression":300});
           // }
@@ -452,7 +464,7 @@ deleteItem(id){
 
  //alert("DONE");
                this.setState({
-                  graph: true,chartgraph: chartgraphvalues
+                  graph: true,chartgraph: chartgraphvalues,graphloading:false
                });
 
 
@@ -484,7 +496,7 @@ deleteItem(id){
        graphclose = (e) => {
        console.log(e);
        this.setState({
-       graph: false,
+       graph: false,graphloading:false
        });
        }
      itemslist = (params = {}) => {
@@ -497,7 +509,7 @@ deleteItem(id){
           // console.log(response.data.result.items[0]);
            var items = response.data.result.items[0];
         //   var applicationResponses = response.data.result.items[0];
-               this.setState({ itemsData: response.data.result.items,  loading:false});
+               this.setState({ itemsData: response.data.result.items, device_name:response.data.result.device_name,  loading:false});
            })
          .catch(function (error) {
            console.log(error);
@@ -678,7 +690,7 @@ addItems = <Button type="primary" onClick={this.addItems}>Add Items</Button>
 }else{
 addItems = null
 }
-  var {chartgraph, selectedRowKeys, itemsData,item_unit,item_oid, application_id, interval_time,item_name, loading } = this.state;
+  var {chartgraph, selectedRowKeys, itemsData,item_unit,item_oid, device_name,graphloading, application_id, interval_time,item_name, loading } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -721,6 +733,13 @@ addItems = null
        onSelection: this.onSelection,
      };
 const hasSelected = selectedRowKeys.length > 0;
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
      return (
        <div>
        <Modal
@@ -770,6 +789,7 @@ const hasSelected = selectedRowKeys.length > 0;
    </Select>
     </FormItem>
     </Form>
+
         <ResponsiveContainer width={'100%'} height={350}>
         <LineChart width={600} height={200} data={chartgraph} syncId="anyId"
                 margin={{top: 10, right: 30, left: 0, bottom: 0}}>
@@ -864,10 +884,16 @@ const hasSelected = selectedRowKeys.length > 0;
        </FormItem>
         </Card>
        </Modal>
+       <Breadcrumb>
+          {adminmenu}
+          <Breadcrumb.Item><a href="#/devices">Device: {this.state.device_name}</a></Breadcrumb.Item>
+        </Breadcrumb>
+        <br />
 <Card noHovering="false">
 
 {addItems}
 <br /><br />
+<Spin size="normal" spinning={this.state.graphloading}>
  <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} loading={loading} rowKey="id"  columns={[
 
 {
@@ -891,7 +917,7 @@ const hasSelected = selectedRowKeys.length > 0;
    className: styles.textleft
 },
 {
- title: 'Interval Time',
+ title: 'Interval Time (in seconds)',
  dataIndex: 'interval_time',
   className: styles.textleft
 },
@@ -899,11 +925,18 @@ const hasSelected = selectedRowKeys.length > 0;
 {
  title: 'Action',
  dataIndex: 'id',
- render: (id) => <div><a href="javascript:void(0)" onClick={() => this.deleteItem(id)}><Icon title="Delete Item" type="delete" /></a>&nbsp; &nbsp; | &nbsp; &nbsp; <a href="javascript:void(0)" onClick={() => this.edititem(id)}><Icon title="Edit Item" type="edit" /></a> &nbsp; &nbsp; | &nbsp; &nbsp; <a href="javascript:void(0)" onClick={() => this.showGraph(id)}><Icon type="area-chart" /></a></div>
+ render: (id) => <div>
+
+ <a href="javascript:void(0)" onClick={() => this.showGraph(id)}><Icon type="area-chart" /> &nbsp;Graph</a>&nbsp; | &nbsp;
+  <a href="javascript:void(0)" onClick={() => this.edititem(id)}><Icon title="Edit Item" type="edit" /> &nbsp;Edit</a> &nbsp; | &nbsp;
+ <Popconfirm title="Are you sure delete this Item?" onConfirm={() => this.deleteItem(id)} onCancel={cancel} okText="Yes" cancelText="No">
+   <a href="#"><Icon type="delete" /> &nbsp;Delete Item</a>
+ </Popconfirm></div>
 }
 
 
 ]} dataSource={itemsData}  />
+</Spin>
          </Card>
        </div>
      );

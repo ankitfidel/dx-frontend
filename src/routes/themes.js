@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover,Layout, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal} from 'antd'
+import {Menu, Icon, Popover,Layout,Breadcrumb, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal} from 'antd'
 import {ComposedChart, CartesianGrid, LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,Legend, Bar, Tooltip, ResponsiveContainer} from 'recharts';
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const {Header, Content, Footer, Sider} = Layout;
@@ -92,7 +92,7 @@ cookie.save('sidebarcolor', response.data.result.sidebar_color_class, { path: '/
 cookie.save('headercolor', response.data.result.header_color_class, { path: '/' })
 cookie.save('content1', response.data.result.content_1, { path: '/' })
 cookie.save('content2', response.data.result.content_2, { path: '/' })
-  window.location.reload()
+ window.location.reload()
 //hashHistory.push("/themes")
 }
 
@@ -130,10 +130,20 @@ render(){
   //   color: 'white',
   //   : this.state.themess
   // };
-
+  var user_role = cookie.load('user_role');
+  let adminmenu = null;
+  if(user_role === "dashboard_admin"){
+  adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+  }else{
+  adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+  }
   return (
 <div>
-<Card bordered={false} title="Navbar Colors" className="rightSidebarCard">
+<Breadcrumb>
+   {adminmenu}
+
+ </Breadcrumb><br />
+<Card bordered={false} title="Themes" noHovering="true" className="rightSidebarCard">
 <Col span={12}>
 <ul className="menuColorList">
   <p>Header Colors</p>
@@ -141,32 +151,27 @@ render(){
     <a style={{ background: "#222"}} onClick={(themess) => this.headerTheme("#222222")} ></a>
   </li>
    <li>
-    <a style={{ background: colors.color.sugar_plum }} onClick={(themess) => this.headerTheme("#8E5572")}></a>
+    <a style={{ background: "#e00404" }} onClick={(themess) => this.headerTheme("#e00404")}></a>
   </li>
   <li>
-    <a style={{ background: colors.color.midnight_green }} onClick={(themess) => this.headerTheme("#114B5F")}></a>
+    <a style={{ background: "#04a552" }} onClick={(themess) => this.headerTheme("#04a552")}></a>
   </li>
   <li>
-    <a style={{ background: colors.color.arsenic }} onClick={(themess) => this.headerTheme( "#403F4C")}></a>
+    <a style={{ background: "#0361a5" }} onClick={(themess) => this.headerTheme( "#0361a5")}></a>
   </li>
   <li>
-  <a style={{   background: colors.color.brillant_azure}}  onClick={(themess) => this.headerTheme( "#3185FC")}></a>
+  <a style={{   background: "#2601a0"}}  onClick={(themess) => this.headerTheme( "#2601a0")}></a>
     </li>
     <li>
-    <a style={{ background: colors.color.portland_orange}} onClick={(themess) =>this.headerTheme( "#F46036")}></a>
+    <a style={{ background: "#00a08a"}} onClick={(themess) =>this.headerTheme( "#00a08a")}></a>
     </li>
     <li>
-    <a style={{ background: colors.color.jungle_green}} onClick={(themess) => this.headerTheme( "#1B998B")}></a>
+    <a style={{ background: "#af9001"}} onClick={(themess) => this.headerTheme( "#af9001")}></a>
     </li>
     <li>
-    <a style={{background: colors.color.desire}} onClick={(themess) => this.headerTheme( "#E84855")}></a>
+    <a style={{background: "#01b2b2"}} onClick={(themess) => this.headerTheme( "#01b2b2")}></a>
     </li>
-    <li>
-    <a style={{background: colors.color.stil_de_gran_yellow}} onClick={(themess) => this.headerTheme( "#F9DC5C")}></a>
-    </li>
-    <li>
-    <a style={{background: colors.color.purple}} onClick={(themess) => this.headerTheme( "#d897eb")}></a>
-    </li>
+
     </ul>
 </Col>
     <ul className="menuColorList">
@@ -175,32 +180,27 @@ render(){
         <a style={{ background: "#222"}} onClick={(sidethemeColor) => this.sidebarTheme("#222222")} ></a>
       </li>
        <li>
-        <a style={{ background: colors.color.sugar_plum }} onClick={(sidethemeColor) => this.sidebarTheme("#8E5572")}></a>
+        <a style={{ background: "#300000" }} onClick={(sidethemeColor) => this.sidebarTheme("#300000")}></a>
       </li>
       <li>
-        <a style={{ background: colors.color.midnight_green }} onClick={(sidethemeColor) => this.sidebarTheme("#114B5F")}></a>
+        <a style={{ background: "#013d1e" }} onClick={(sidethemeColor) => this.sidebarTheme("#013d1e")}></a>
       </li>
       <li>
-        <a style={{ background: colors.color.arsenic }} onClick={(sidethemeColor) => this.sidebarTheme( "#403F4C")}></a>
+        <a style={{ background: "#012f3d" }} onClick={(sidethemeColor) => this.sidebarTheme( "#012f3d")}></a>
       </li>
       <li>
-      <a style={{   background: colors.color.brillant_azure}}  onClick={(sidethemeColor) => this.sidebarTheme( "#3185FC")}></a>
+      <a style={{   background: "#0f013d"}}  onClick={(sidethemeColor) => this.sidebarTheme( "#0f013d")}></a>
         </li>
         <li>
-        <a style={{ background: colors.color.portland_orange}} onClick={(sidethemeColor) =>this.sidebarTheme( "#F46036")}></a>
+        <a style={{ background: "#01443b"}} onClick={(sidethemeColor) =>this.sidebarTheme( "#01443b")}></a>
         </li>
         <li>
-        <a style={{ background: colors.color.jungle_green}} onClick={(sidethemeColor) => this.sidebarTheme( "#1B998B")}></a>
+        <a style={{ background: "#3d3201"}} onClick={(sidethemeColor) => this.sidebarTheme( "#3d3201")}></a>
         </li>
         <li>
-        <a style={{background: colors.color.desire}} onClick={(sidethemeColor) => this.sidebarTheme( "#E84855")}></a>
+        <a style={{background: "#013d3d"}} onClick={(sidethemeColor) => this.sidebarTheme( "#013d3d")}></a>
         </li>
-        <li>
-        <a style={{background: colors.color.stil_de_gran_yellow}} onClick={(sidethemeColor) => this.sidebarTheme( "#F9DC5C")}></a>
-        </li>
-        <li>
-        <a style={{background: colors.color.purple}} onClick={(sidethemeColor) => this.sidebarTheme( "#d897eb")}></a>
-        </li>
+
         </ul>
     </Card>
     <section id={styles.devices}>

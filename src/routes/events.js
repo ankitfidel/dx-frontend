@@ -259,7 +259,10 @@ render(){
 const hasSelected = selectedRowKeys.length > 0;
      return (
        <div>
+       <Breadcrumb>
+          {adminmenu}
 
+        </Breadcrumb><br />
 <Card noHovering="false">
 
  <FormItem label="Filters by date:">
@@ -269,7 +272,7 @@ const hasSelected = selectedRowKeys.length > 0;
  onChange={this.changeHistoryData}
  />
  </FormItem> <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="id" loading={loading} rowSelection={rowSelection} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="id" loading={loading} columns={[
 
 {
    title: 'Name',

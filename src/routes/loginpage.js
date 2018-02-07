@@ -143,6 +143,7 @@ render(){
                Login
              </Button>
            </Row>
+           <p><a href="#/forgetpass">Forget Password</a>&nbsp; <a href="#/forgetusername">Forget Username</a></p>
  <span style={{'textAlign': 'center','marginTop': '10px', 'textTransform' : 'capitalize','display': 'block','marginBottom': '20px', 'color': 'red','fontSize': '12px'}}> { this.state.errormsg } </span>
          </form>
        </div>
