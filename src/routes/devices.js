@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover,Layout, Badge,Breadcrumb, M,Avatar,Row,Spin, Col,Tag, Button,Card,message, Table, Modal,notification, Form, Input, Popconfirm} from 'antd'
+import {Menu, Icon, Popover,Layout, Badge,Breadcrumb, M,Avatar,Row,Spin,InputNumber, Col,Tag, Button,Card,message, Table, Modal,notification, Form, Input, Popconfirm} from 'antd'
 import {ComposedChart, CartesianGrid, LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,Legend, Bar, Tooltip, ResponsiveContainer} from 'recharts';
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
@@ -68,7 +68,8 @@ class Devices extends React.Component {
         visible:false,
         connected:'',
         editDevice:false,
-         graphloading:false
+         graphloading:false,
+         addDeviceloading:false
               };
       this.cacheData = data.map(item => ({ ...item }));
       this.addDevicesssave = this.addDevicesssave.bind(this);
@@ -103,6 +104,7 @@ class Devices extends React.Component {
       axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/company/'+ company_id,{
         responseType: 'json'
       }).then(response => {
+          //alert(response.data.result[0].device_id)
             this.setState({devicelist: response.data.result, connected:response.data.result.is_connected, loading:false});
 
             var deviceKey = cookie.load('deviceKey');
@@ -189,6 +191,9 @@ class Devices extends React.Component {
    const ip = document.getElementById('ip').value;
    const groupid = document.getElementById('selectedGroupId').value;
   // const isRetailer = document.getElementById('isRetailer').checked = true;
+  this.setState({
+    addDeviceloading:true
+  })
    axios.post(axios.defaults.baseURL + '/api/front/device', {
     session_id:cookies,
     device_name:devicename,
@@ -214,7 +219,7 @@ class Devices extends React.Component {
    //  }
    //
    // })
-   .then(function (response) {
+   .then(response => {
       if(response.data.status == false){
         //alert()
       error(response.data.result)
@@ -222,6 +227,7 @@ class Devices extends React.Component {
     if(response.data.status == true){
           console.log(JSON.stringify(response.data.result));
         //  hashHistory.push("/devices");
+
         window.location.reload()
         }
    })
@@ -286,7 +292,7 @@ deletedevice(device_id){
   axios.delete(axios.defaults.baseURL + '/api/front/device/'+ cookies +'/'+device_id, {
   device_id:device_id
   })
-  .then(function (response) {
+  .then(response => {
       //alert(device_id)
   if(response.data.status == false){
   //  alert("eerrre:   "+device_id)
@@ -304,15 +310,16 @@ deletedevice(device_id){
   });
 }
 
-  itemlist(device_id){
-    console.log("device id"+ device_id);
-      cookie.save('device_id', device_id, { path: '/' });
-    hashHistory.push("/items");
+  itemlist(id){
+    console.log("device id"+ id);
+    cookie.save('device_id', id, { path: '/' });
+  //  window.location.href=("#/items")
+  //  hashHistory.push("/items");
   }
   triggerslist(device_id){
     console.log("device id"+ device_id);
       cookie.save('device_id', device_id, { path: '/' });
-    hashHistory.push("/triggers");
+  //  hashHistory.push("/triggers");
   }
 
  handleChange(value, key, column) {
@@ -547,22 +554,22 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
       ]}
     >
 
-<Card noHovering="false" bordered={false}>
+<Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
 <h2 style={{textAlign: 'center'}}>Update Device</h2>
 
 <FormItem label="Device Background URL:">
     <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
 </FormItem>
-       <FormItem label="Device Name:">
+       <FormItem label="Device Name:" required>
            <Input placeholder="Enter device Name.." value={this.state.device_name} id="devicename" onChange={e => this.onTodoChange_device_name(e.target.value)}/>
        </FormItem>
-       <FormItem label="Port:">
-           <Input placeholder="Enter Port.."  value={this.state.device_port} id="port"  onChange={e => this.onTodoChange_device_port(e.target.value)}/>
+       <FormItem label="Port:" required>
+           <Input  placeholder="Enter Port.."  value={this.state.device_port} id="port"  onChange={e => this.onTodoChange_device_port(e.target.value)}/>
        </FormItem>
-       <FormItem label="IP:">
-           <Input placeholder="ip"  value={this.state.device_ip} id="ip" onChange={e => this.onTodoChange_device_ip(e.target.value)}/>
+       <FormItem label="IP" required>
+           <Input style={{'width':'100%'}} placeholder="ip"  value={this.state.device_ip} id="ip" onChange={e => this.onTodoChange_device_ip(e.target.value)}/>
        </FormItem>
-       <FormItem label="Select Groups:">
+       <FormItem label="Select Groups:" required>
        <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}  onChange={e => this.onTodoChange_group_id(e.target.value)}>
     { this.state.grouplist }
       </select>
@@ -585,21 +592,22 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
         </Button>,
       ]}
     >
-    <Card noHovering="false" bordered={false}>
+    <Spin size="default"  spinning={this.state.addDeviceloading}>
+    <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
     <h2 style={{textAlign: 'center'}}>Add Device</h2>
     <FormItem label="Device Background URL:">
         <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
     </FormItem>
-           <FormItem label="Device Name:">
+           <FormItem label="Device Name:" required>
                <Input placeholder="Enter device Name.." defaultValue="" id="devicename"/>
            </FormItem>
-           <FormItem label="Port:">
-               <Input placeholder="Enter Port.." defaultValue="" id="port"/>
+           <FormItem label="Port:" required>
+               <Input type="number" placeholder="Enter Port.." defaultValue="" id="port"/>
            </FormItem>
-           <FormItem label="IP:">
-               <Input placeholder="Enter IP.." defaultValue="" id="ip"/>
+           <FormItem label="IP:" required>
+               <Input  placeholder="Enter IP.." defaultValue="" id="ip"/>
            </FormItem>
-           <FormItem label="Select Groups:">
+           <FormItem label="Select Groups:" required>
            <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}>
         { this.state.grouplist }
           </select>
@@ -608,12 +616,13 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 
 
      </Card>
+     </Spin>
     </Modal>
  <Card noHovering="false" bordered={false}>
-<Spin size="default" spinning={this.state.graphloading}>
+<Spin size="default" style={{zIndex: 9999}} spinning={this.state.graphloading}>
 {addDevices}&nbsp;<br /><br />
 
- <Table pagination={{ pageSize: 10, showSizeChanger:true }} scroll={{ x: 900}} rowKey="device_id" loading={loading} columns={[
+ <Table pagination={{ pageSize: 10, showSizeChanger:true }} scroll={{ x: 1000}} rowKey="device_id" loading={loading} columns={[
    {
    title: 'Device Name',
    dataIndex: 'device_name',
@@ -653,8 +662,8 @@ render: (device_key,record) => <p><Tag style={{'backgroundColor':headercolor, 'c
 title: '',
 dataIndex:'device_id',
  render: device_id  => <div>
-  <a  href="javascript:void(0)"  onClick={() => this.itemlist(device_id)}>Items</a> &nbsp; | &nbsp;
-  <a href="javascript:void(0)"  onClick={() => this.triggerslist(device_id)}>Triggers</a>&nbsp; | &nbsp;
+  <a  href="#/items" onClick={() => this.itemlist(device_id)}>Items</a> &nbsp; | &nbsp;
+  <a href="#/triggers"  onClick={() => this.triggerslist(device_id)}>Triggers</a>&nbsp; | &nbsp;
   <a href="javascript:void(0)" onClick={() => this.editdevice(device_id)}><Icon type="edit" /> Edit</a> &nbsp; | &nbsp;
  <Popconfirm title="Are you sure delete this Device?"onConfirm={() => this.deletedevice(device_id)} onCancel={cancel} okText="Yes" cancelText="No">
     <a href="#"><Icon type="delete" /> Delete Device</a>

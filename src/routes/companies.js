@@ -65,7 +65,9 @@ console.log(header),
 header,
             responseType: 'json'
           }).then(response => {
+
                 this.setState({ tableData: response.data.result});
+                //  alert(response.data.result[0].logo)
                 const company_id = response.data.result[0].company_id;
             //    alert(JSON.stringify(response.data.result[0].company_id))
               //   console.log(company_id)
@@ -198,7 +200,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 <Card noHovering="false" bordered={false}>
 
 
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="company_id"  columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} rowKey="company_id"  columns={[
    {
      title: 'Logo',
      dataIndex: 'logo',

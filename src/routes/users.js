@@ -347,29 +347,29 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
            </Button>,
          ]}
        >
-       <FormItem label="Username:">
+       <FormItem label="Username:" required>
            <Input placeholder="Enter Username.." defaultValue="" id="username"/>
        </FormItem>
-       <FormItem label="Password:">
+       <FormItem label="Password:" required>
            <Input placeholder="Enter Password.." defaultValue="" id="password"/>
        </FormItem>
-       <FormItem label="First Name:">
+       <FormItem label="First Name:" required>
            <Input placeholder="Enter First Name.." defaultValue="" id="firstName"/>
        </FormItem>
-       <FormItem label="Last Name:">
+       <FormItem label="Last Name:" required>
            <Input placeholder="Enter Last Name.." defaultValue="" id="lastName"/>
        </FormItem>
-       <FormItem label="Email Id:">
+       <FormItem label="Email Id:" required>
            <Input placeholder="Enter Email Id.." defaultValue="" id="emailId"/>
        </FormItem>
-       <FormItem label="User Role:">
+       <FormItem label="User Role:" required>
        <select style={{ width: 200  }} className={styles.selectopt} id="userRoleId">
       <option  className={styles.optioncus} value="2">dashboard user</option>
       <option className={styles.optioncus} value="3">dashboard admin</option>
      </select>
        </FormItem>
 
-          <FormItem label="Company Id:">
+          <FormItem label="Company Id:" required>
           <select className={styles.selectopt} style= {{ width :200}}>
        { this.state.comapnyrole }
          </select>
@@ -389,17 +389,17 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
            </Button>,
          ]}
        >
-       <FormItem label="Username:">
+       <FormItem label="Username:" required>
                <Input placeholder="Enter Username" value={username} id="username" onChange={e => this.onTodoChange_username(e.target.value)}/>
         </FormItem>
 
-        <FormItem label="First Name:">
+        <FormItem label="First Name:" required>
             <Input placeholder="Enter First Name.." value={this.state.first_name} id="first_name" onChange={e => this.onTodoChange_first_name(e.target.value)}/>
         </FormItem>
-        <FormItem label="Last Name:">
+        <FormItem label="Last Name:" required>
             <Input placeholder="Enter Last Name.."value={this.state.last_name} id="last_name" onChange={e => this.onTodoChange_last_name(e.target.value)}/>
         </FormItem>
-        <FormItem label="Email Id:">
+        <FormItem label="Email Id:" required>
             <Input placeholder="Enter Email id.." value={this.state.email_id} id="email_id" onChange={e => this.onTodoChange_email_id(e.target.value)}/>
         </FormItem>
 
@@ -409,7 +409,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 <Card noHovering="false" bordered={false}>
  <Button type="primary" onClick={this.addusers}>Add User</Button> &nbsp;
  <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="user_id" columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} rowKey="user_id" columns={[
  {
    title: 'First Name',
    dataIndex: 'first_name',

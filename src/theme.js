@@ -7,7 +7,7 @@ module.exports = () => {
     '@border-color-split': '#f4f4f4',
     '@border-color-base': '#e5e5e5',
     '@menu-dark-bg': '#3e3e3e',
-    '@text-color': '#666',
+    '@text-color': '#333',
      '@font-family': "'DIN_Next_regular', sans-serif"
   }
 }

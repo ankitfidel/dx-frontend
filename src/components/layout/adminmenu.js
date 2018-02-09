@@ -129,6 +129,9 @@ function MenusAdmin({
       <Menu.Item key="applications" className="menulink" style={{'overflow': 'hidden'}}>
          <Link activeClassName="selected"  to="/applications" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="cloud-upload-o" /> Applications</Link>
       </Menu.Item>
+      <Menu.Item key="alerts" className="menulink" style={{'overflow': 'hidden'}}>
+         <Link activeClassName="selected"  to="/alerts" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <i className="fa fa-exclamation-triangle"></i> &nbsp;&nbsp;Alerts</Link>
+      </Menu.Item>
 
 
 

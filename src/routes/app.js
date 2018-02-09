@@ -57,6 +57,7 @@ var content2 = cookie.load('content2');
   function LightenDarkenColor(col, amt) {
 
     var usePound = false;
+  //  alert(col.charAt(0))
 
     if (col[0] == "#") {
         col = col.slice(1);
@@ -229,7 +230,16 @@ var lightestColor = LightenDarkenColor(headercolor, 90);
       <div>
       <Style>
       {`
-        a{color: ` + headercolor + `}a:hover{color:`+darkColor+` !important}
+        .ant-card:hover{overflow:hidden}
+        .ant-table-placeholder{background-color: ` + lightestColor + `08 !important}
+        .ant-card{background-color: ` + lightestColor + `08 !important}
+        .ant-modal-mask{background-color: rgba(0, 0, 0, 0.6)}
+        .explorationContainer .exploreCanvas{backgroundColor:#fff !important}
+        #dashboardContainer iframe{border:0 none;}
+  .dashboardViewSlider .dashboard{background:#fff !important;}
+        }
+        a {color: ` + NewColor + ` !important}
+        a:hover{color:`+darkColor+` !important}
     .ant-btn-primary{background-color:  ` + headercolor + `;border-color:  ` + darkColor + `;}
     .ant-btn-primary:active, .ant-btn-primary.active,.ant-btn-primary:hover, .ant-btn-primary:focus{background-color:  ` + darkColor + `;border-color:  ` + darkColor + `;}
     .ant-btn:active,.ant-btn:hover, .ant-btn:focus, .ant-btn.active{;border-color:  ` + darkColor + `;}
@@ -238,12 +248,12 @@ var lightestColor = LightenDarkenColor(headercolor, 90);
     .ant-pagination-item-active:focus, .ant-pagination-item-active:hover{ background: ` + headercolor + `}
     .ant-pagination-item-active{background: ` + headercolor + `}
     .ant-tabs-ink-bar{background:` + headercolor + `}
-    
+
     .ant-tabs-nav .ant-tabs-tab-active{color: ` + headercolor + `}
     .ant-tabs-nav .ant-tabs-tab:hover{color: ` + darkColor + `}
          .ant-pagination-item-active:focus, .ant-pagination-item-active:hover{ background: ` + headercolor + `}
          .ant-select-dropdown-menu-item:hover{ background: ` + headercolor + `; color:#fff}
-        .ant-table-thead > tr > th{background:` + lightestColor + `}
+        .ant-table-thead > tr > th{background:` + lightestColor + `21; font-weight:bold}
       .ant-pagination-item-active{background: ` + headercolor + `}
            .intro {
              background: ` + headercolor + `

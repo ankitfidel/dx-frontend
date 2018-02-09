@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form,DatePicker, Pagination } from 'antd'
+import {Menu, Icon, Popover, Badge,Breadcrumb, M,Avatar,Row, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form,DatePicker, Pagination } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 const {  RangePicker } = DatePicker;
@@ -257,6 +257,14 @@ render(){
        onSelection: this.onSelection,
      };
 const hasSelected = selectedRowKeys.length > 0;
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
+
      return (
        <div>
        <Breadcrumb>
@@ -272,7 +280,7 @@ const hasSelected = selectedRowKeys.length > 0;
  onChange={this.changeHistoryData}
  />
  </FormItem> <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="id" loading={loading} columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} rowKey="id" loading={loading} columns={[
 
 {
    title: 'Name',

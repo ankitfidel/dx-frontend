@@ -370,28 +370,28 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
          onOk={this.addTriggersave}
          onCancel={this.handleCancel}
        >
-       <Card noHovering="false" bordered={false}>
+       <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
        <h2 style={{textAlign: 'center'}}>Add Trigger</h2>
-       <FormItem label="Name:">
+       <FormItem label="Name:" required>
            <Input placeholder="Enter Name" defaultValue="" id="name"/>
        </FormItem>
-       <FormItem label="Description:">
+       <FormItem label="Description:" required>
            <Input placeholder="Enter Description" defaultValue="" id="description"/>
        </FormItem>
-       <FormItem label="Trigger Value:">
+       <FormItem label="Trigger Value:" required>
            <Input placeholder="Enter Trigger Value" defaultValue="" id="trigger_value"/>
        </FormItem>
-       <FormItem label="Severity:">
+       <FormItem label="Severity:" required>
        <select id= "severityId" className={styles.selectopt} style= {{ width :200}}>
     { this.state.severityoption }
       </select>
        </FormItem>
-       <FormItem label="Expression:">
+       <FormItem label="Expression:" required>
        <select id= "expressId" className={styles.selectopt} style= {{ width :200}}>
     { this.state.expressoption }
       </select>
        </FormItem>
-       <FormItem label="Items:">
+       <FormItem label="Items:" required>
        <select id= "itemId" className={styles.selectopt} style= {{ width :200}}>
     { this.state.itemoption }
       </select>
@@ -410,29 +410,29 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
            </Button>,
          ]}
        >
-       <Card noHovering="false" bordered={false}>
+       <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
        <h2 style={{textAlign: 'center'}}>edit items</h2>
 
-          <FormItem label="Name:">
+          <FormItem label="Name:" required>
               <Input placeholder="Enter Name" value={this.state.name} onChange={e => this.onTodoChange_name(e.target.value)} id="name"/>
           </FormItem>
-          <FormItem label="Description:">
+          <FormItem label="Description:" required>
               <Input placeholder="Enter Description" value={this.state.description} onChange={e => this.onTodoChange_description(e.target.value)} id="description"/>
           </FormItem>
-          <FormItem label="Trigger Value:">
+          <FormItem label="Trigger Value:" required>
               <Input placeholder="Enter Trigger Value" value={this.state.trigger_value} onChange={e => this.onTodoChange_trigger_value(e.target.value)} id="trigger_value"/>
           </FormItem>
-          <FormItem label="Severity:">
+          <FormItem label="Severity:" required>
           <select id= "severityId" value={this.state.severity_id} onChange={e => this.onTodoChange_severity_id(e.target.value)} className={styles.selectopt} style= {{ width :200}}>
        { this.state.severityoption }
          </select>
           </FormItem>
-          <FormItem label="Expression:">
+          <FormItem label="Expression:" required>
           <select id= "expressId" value={this.state.expression_id} onChange={e => this.onTodoChange_expression_id(e.target.value)} className={styles.selectopt} style= {{ width :200}}>
        { this.state.expressoption }
          </select>
           </FormItem>
-          <FormItem label="Items:">
+          <FormItem label="Items:" required>
                <select id= "itemId" value={this.state.name} onChange={e => this.onTodoChange_name(e.target.value)} className={styles.selectopt} style= {{ width :200}}>
             { this.state.itemoption }
               </select>
@@ -442,9 +442,8 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 
 <Card noHovering="false">
 
-
  <Button type="primary" onClick={this.addItems}>Add Trigger</Button> &nbsp; <br /><br />
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} rowKey="id" columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} rowKey="id" columns={[
 
 {
    title: 'Name',

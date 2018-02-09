@@ -234,98 +234,146 @@ class Admin_dashboard extends React.Component {
       });
   }
   componentDidMount(){
-    this.countlist()
+    this.countlist();
+
+
+    var accessToken = cookie.load('powerbiaccesstoken');
+//alert(accessToken)
+                // check if the embed url was selected
+                var embedUrl = "https://app.powerbi.com/dashboardEmbed?dashboardId=0ba99506-dfba-4f60-8449-3bb9f1679111";
+                if (embedUrl === "")
+                    return;
+
+                // get the access token.
+                //accessToken = document.getElementById('MainContent_accessTokenTextbox').value;
+
+                // Embed configuration used to describe the what and how to embed.
+                // This object is used when calling powerbi.embed.
+                // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+                var config = {
+                    type: 'dashboard',
+                    accessToken: accessToken,
+                    embedUrl: embedUrl
+                };
+
+                // Grab the reference to the div HTML element that will host the dashboard.
+                var dashboardContainer = document.getElementById('dashboardContainer');
+
+                // Embed the dashboard and display it within the div container.
+                var dashboard = powerbi.embed(dashboardContainer, config);
+console.log(dashboard)
+                // dashboard.on will add an event handler which prints to Log window.
+                dashboard.on("tileClicked", function (event) {
+                    var logView = document.getElementById('logView');
+                    logView.innerHTML = logView.innerHTML + "Tile Clicked<br/>";
+                    logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
+                    logView.innerHTML = logView.innerHTML + "---------<br/>";
+                });
+
+                // dashboard.on will add an event handler which prints to Log window.
+                dashboard.on("error", function (event) {
+                    var logView = document.getElementById('logView');
+                    logView.innerHTML = logView.innerHTML + "Error<br/>";
+                    logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
+                    logView.innerHTML = logView.innerHTML + "---------<br/>";
+                });
   }
   render() {
+    // <Row gutter={32} justify="space-around" align="middle">
+    // <Col lg={8} md={8}>
+    //
+    // <Card className="bleedblue" style={{ padding: '30px' }}>
+    //
+    //   <Col span={12}>
+    //
+    //   <i className="fa fa-code-fork fa-5x text-primary"></i></Col>
+    //  <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.devicelist}</span><br />
+    //  <span className="text-primary" style={{ fontSize: 18 }}>No. of Devices </span>
+    //
+    //  </Col>
+    // </Card>
+    //
+    // </Col>
+    // <Col lg={8} md={8}>
+    //
+    // <Card className="bleedblue" style={{ padding: '30px' }}>
+    //   <Col span={12}><i className="fa fa-cubes fa-5x text-primary"></i></Col>
+    // <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.itemslist}</span><br />
+    // <span style={{ fontSize: 18 }} className="text-primary">No. of Items </span></Col>
+    // </Card>
+    // </Col>
+    //
+    // <Col lg={8} md={8}>
+    //
+    // <Card className="bleedblue" style={{ padding: '30px' }}>
+    //   <Col span={12}><i className="fa fa-users fa-5x text-primary"></i></Col>
+    // <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.userslist}</span><br />
+    // <span style={{ fontSize: 18 }} className="text-primary">No. of Users </span></Col>
+    // </Card>
+    // </Col>
+    // </Row><br />
+//     <Row gutter={24}>
+//       <Col xs={24} sm={24} md={24} lg={24}>
+//
+//         <Card title="Sales Overview" style={{'overflow':'hidden'}}>
+//         <div>
+//         <Button className="primary update" onClick={this.zoomOut.bind( this )}>Zoom Out</Button>
+//          <ResponsiveContainer width={'100%'} height={350}>
+//         <LineChart
+//                  width={800}
+//                  data={data}
+//                  onMouseDown = { (e) => this.setState({refAreaLeft:e.activeLabel}) }
+//                  onMouseMove = { (e) => this.state.refAreaLeft && this.setState({refAreaRight:e.activeLabel}) }
+//                  onMouseUp = { this.zoom.bind( this ) }
+//                >
+//                  <CartesianGrid strokeDasharray="3 3"/>
+//                  <XAxis
+//                    allowDataOverflow={true}
+//                    dataKey="name"
+//                    domain={[left, right]}
+//                    type="number"
+//                  />
+//                  <YAxis
+//                    allowDataOverflow={true}
+//                    domain={[bottom, top]}
+//                    type="number"
+//                    yAxisId="1"
+//                   />
+//                  <YAxis
+//                    orientation="right"
+//                    allowDataOverflow={true}
+//                    domain={[bottom2, top2]}
+//                    type="number"
+//                    yAxisId="2"
+//                   />
+//                  <Tooltip wrapperStyle={{ width: 100, backgroundColor: '#fff' }}/>
+//                  <Line yAxisId="1" type='natural' dataKey='cost' stroke='#8884d8' animationDuration={300}/>
+//                  <Line yAxisId="2" type='natural' dataKey='impression' stroke='#82ca9d' animationDuration={300}/>
+//
+//                  {
+//                   (refAreaLeft && refAreaRight) ? (
+//                    <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight}  strokeOpacity={0.3} /> ) : null
+//
+//                  }
+//
+//                </LineChart>
+//                </ResponsiveContainer>
+//         </div>
+//         </Card>
+// </Col>
+//
+//
+//     </Row>
     const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2,userslist,devicelist,itemslist, bottom2 } = this.state;
 
     return (
+
       <div className="dashboard-3">
-      <Row gutter={32} justify="space-around" align="middle">
-      <Col lg={8} md={8}>
-
-      <Card className="bleedblue" style={{ padding: '30px' }}>
-
-        <Col span={12}>
-
-        <i className="fa fa-code-fork fa-5x text-primary"></i></Col>
-       <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.devicelist}</span><br />
-       <span className="text-primary" style={{ fontSize: 18 }}>No. of Devices </span>
-
-       </Col>
-      </Card>
-
-      </Col>
-      <Col lg={8} md={8}>
-
-      <Card className="bleedblue" style={{ padding: '30px' }}>
-        <Col span={12}><i className="fa fa-cubes fa-5x text-primary"></i></Col>
-      <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.itemslist}</span><br />
-      <span style={{ fontSize: 18 }} className="text-primary">No. of Items </span></Col>
-      </Card>
-      </Col>
-
-      <Col lg={8} md={8}>
-
-      <Card className="bleedblue" style={{ padding: '30px' }}>
-        <Col span={12}><i className="fa fa-users fa-5x text-primary"></i></Col>
-      <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.userslist}</span><br />
-      <span style={{ fontSize: 18 }} className="text-primary">No. of Users </span></Col>
-      </Card>
-      </Col>
-      </Row>
-        <Row gutter={24}>
-          <Col xs={24} sm={24} md={24} lg={24}>
-
-            <Card title="Sales Overview" style={{'overflow':'hidden'}}>
-            <div>
-            <Button className="primary update" onClick={this.zoomOut.bind( this )}>Zoom Out</Button>
-             <ResponsiveContainer width={'100%'} height={350}>
-            <LineChart
-                     width={800}
-                     data={data}
-                     onMouseDown = { (e) => this.setState({refAreaLeft:e.activeLabel}) }
-                     onMouseMove = { (e) => this.state.refAreaLeft && this.setState({refAreaRight:e.activeLabel}) }
-                     onMouseUp = { this.zoom.bind( this ) }
-                   >
-                     <CartesianGrid strokeDasharray="3 3"/>
-                     <XAxis
-                       allowDataOverflow={true}
-                       dataKey="name"
-                       domain={[left, right]}
-                       type="number"
-                     />
-                     <YAxis
-                       allowDataOverflow={true}
-                       domain={[bottom, top]}
-                       type="number"
-                       yAxisId="1"
-                      />
-                     <YAxis
-                       orientation="right"
-                       allowDataOverflow={true}
-                       domain={[bottom2, top2]}
-                       type="number"
-                       yAxisId="2"
-                      />
-                     <Tooltip wrapperStyle={{ width: 100, backgroundColor: '#fff' }}/>
-                     <Line yAxisId="1" type='natural' dataKey='cost' stroke='#8884d8' animationDuration={300}/>
-                     <Line yAxisId="2" type='natural' dataKey='impression' stroke='#82ca9d' animationDuration={300}/>
-
-                     {
-                      (refAreaLeft && refAreaRight) ? (
-                       <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight}  strokeOpacity={0.3} /> ) : null
-
-                     }
-
-                   </LineChart>
-                   </ResponsiveContainer>
-            </div>
-            </Card>
-  </Col>
 
 
-        </Row>
+      <div id="dashboardContainer" style={{'height':'100vh'}}></div>
+
+
 
 
 

@@ -97,6 +97,7 @@ this.state = {
   expandedRowRender:true,
   title:true,
   showHeader:true,
+  noData:'',
   footer:true,
   rowSelection: true,
   scroll: true,
@@ -425,14 +426,17 @@ this.filterselectDate = this.filterselectDate.bind(this);
              console.log(item_values);
              var chartgraphvalues = [];
                 for(let i=0;i<item_values.length;i++){
-
-
                   chartgraphvalues.push({
                     'timestamp' : item_values[i].timestamp,
                     'value' : item_values[i].value
                   });
                 }
-
+if(item_values == ""){
+//  alert("No data")
+this.setState({
+   noData: "No data Found",
+});
+}
 
                 this.setState({
                    graph: true,chartgraph: chartgraphvalues,graphloading:false
@@ -539,7 +543,7 @@ application(){
          return(
 
          <TabPane tab={<span><Icon type="clock-circle" /> {pic.application_name}</span>} key={i}>
-         <Card noHovering="false" bodyStyle={{ padding: 0 }}>
+         <Card noHovering="true" bodyStyle={{ padding: 0 }}>
          <Table columns={hostsdetailstables}
         rowKey={pic.items.id}
         dataSource={pic.items}
@@ -565,17 +569,17 @@ application(){
 
 render(){
   //
-  const {status,device_name, group_name,device_ip,device_port,background_image_url,triggerlist,chartgraph} = this.state;
+  const {status,device_name, group_name,device_ip,device_port,background_image_url,triggerlist,noData, chartgraph} = this.state;
   var styles = {
       textAlign: {
           textAlign: 'right'
       }
     }
       var stylebg = {
-        width: '80%',
+        height: '100%', width:'100%',
         right: 0,
         position: 'absolute',
-        opacity: 0.4, top:'33%',
+        opacity: 0.095,
         left: 0,
         margin:' 0 auto'
       };
@@ -648,17 +652,20 @@ render(){
    </Select>
     </FormItem>
     </Form>
-        <ResponsiveContainer width={'100%'} height={350}>
-        <LineChart width={600} height={200} data={chartgraph} syncId="anyId"
-                margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-            <XAxis dataKey="timestamp"/>
-            <YAxis dataKey="value"/>
-            <CartesianGrid strokeDasharray="3 3"/>
-            <Tooltip/>
-            <Line type='monotone' dataKey='value'  fill='#82ca9d' />
-            <Brush />
-          </LineChart>
-     </ResponsiveContainer>
+    <ResponsiveContainer width={'100%'} height={350}>
+     <LineChart width={600} height={200} data={chartgraph} syncId="anyId"
+             margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+         <XAxis dataKey="timestamp"/>
+         <YAxis dataKey="value"/>
+         <CartesianGrid strokeDasharray="3 3"/>
+         <Tooltip/>
+         <Line type='monotone' dataKey='value'  fill='#82ca9d' />
+         <Brush />
+       </LineChart>
+  </ResponsiveContainer>
+    <h3>{this.state.noData} </h3>
+
+
        </Modal>
 
 
@@ -675,29 +682,29 @@ render(){
        </Col>
 
        <Col lg={6} md={6}>
-       <Card style={{ padding: '0' }}>
+       <Card style={{ padding: '0', 'border': headercolor }}>
          <Col span={12}>Group Name</Col>
           <Col style={styles.textAlign} span={12}><span>{this.state.group_name}</span>
         </Col>
        </Card>
        </Col>
        <Col lg={6} md={6}>
-       <Card style={{ padding: '0' }}>
+       <Card style={{ padding: '0',  'border': headercolor }}>
          <Col span={12}>Device IP</Col>
           <Col style={styles.textAlign} span={12}><span>{this.state.device_ip}</span>
         </Col>
        </Card>
        </Col>
        <Col lg={6} md={6}>
-       <Card style={{ padding: '0' }}>
+       <Card style={{ padding: '0',  'border': headercolor }}>
          <Col span={12}>IP</Col>
           <Col style={styles.textAlign} span={12}><span>{this.state.device_port}</span>
         </Col>
        </Card>
        </Col>
        </Row>
-       <Row><Card bodyStyle={{ padding: 0 }}>
-       <Table  rowKey="id" scroll={{ x: 900}}  columns={[
+       <Row><Card noHovering="false" bodyStyle={{ padding: 0 }}>
+       <Table  rowKey="id" scroll={{ x: 1000}}  columns={[
          {
          title: 'Active Time',
          dataIndex: 'active_time',

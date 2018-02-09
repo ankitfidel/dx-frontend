@@ -101,6 +101,15 @@ export default function ({ app}) {
                      })
                  }
              },
+             {
+                 path: '/alerts',
+                 name: 'alerts',
+                 getComponent(nextState, cb) {
+                     require.ensure([], require => {
+                         cb(null, require('./routes/alerts'))
+                     })
+                 }
+             },
 
              {
                  path: 'customapi',

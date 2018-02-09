@@ -54,8 +54,9 @@ class Loginpage extends React.Component {
      var myDate = new Date();
            var timezone = myDate.getTimezoneOffset();
          //   alert(axios.defaults.baseURL);
+
          axios.post(axios.defaults.baseURL + '/api/authenticate', {
-           credentials: 'credentials',
+
            username:username,
            password:password,
            timezoneOffset:timezone
@@ -75,6 +76,13 @@ class Loginpage extends React.Component {
          if(response.data.status == false){
            this.setState({errormsg:response.data.result})
          }else{
+
+
+           // var cookies = cookie.load('sessionid');
+           // var user_id = cookie.load('user_id');
+           //alert(user_id);
+
+
            if (response.data.result.user_role=="dashboard_admin"){
                // alert("userRole is dashboard admin");
                 cookie.save('sessionid', sessionid)
@@ -90,7 +98,21 @@ class Loginpage extends React.Component {
                 cookie.save('username', response.data.result.username, { path: '/' })
                 cookie.save('user_id', response.data.result.user_id, { path: '/' })
                 hashHistory.push("/admindashboard");
-               window.location.reload()
+                axios.get(axios.defaults.baseURL + '/api/token/refresh',{
+                  responseType: 'json'
+                }).then(response => {
+                  var userdata = response.data.result;
+
+                //  alert(response.data.token);
+                    cookie.save('powerbiaccesstoken', response.data.token);
+                //  console.log( userdata.username)
+                   window.location.reload()
+                   //   this.setState({username: userdata.username, email_id:userdata.email_id, password:userdata.password,first_name:userdata.first_name, last_name:userdata.last_name});
+                  })
+                .catch(function (error) {
+                  console.log(error);
+                });
+
             }else if (response.data.result.user_role=="dashboard_user"){
              //   alert("userRole is dashboard");
                 cookie.save('sessionid', sessionid)
@@ -132,10 +154,10 @@ render(){
          </div>
          <form>
 
-           <FormItem hasFeedback label="Username:" style={{'color':'white'}}>
+           <FormItem required label="Username:" style={{'color':'white'}}>
              <Input size='large' onPressEnter={this.handleOk} id="username" placeholder='Enter Username..' />
            </FormItem>
-           <FormItem hasFeedback label="Password:" style={{'color':'white'}}>
+           <FormItem required label="Password:" style={{'color':'white'}}>
             <Input size='large' type='password' id="password" onPressEnter={this.handleOk} placeholder='Enter Password..' />
            </FormItem>
            <Row>

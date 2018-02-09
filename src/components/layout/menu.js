@@ -128,7 +128,11 @@ var content2 = cookie.load('content2');
          <Link activeClassName="selected"  to="/events" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}>  <Icon type="notification" /> Events</Link>
       </Menu.Item>
 
+      <Menu.Item key="alerts" className="menulink" style={{'overflow': 'hidden'}}>
+         <Link activeClassName="selected"  to="/alerts" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}><i className="fa fa-exclamation-triangle"></i>
 
+ &nbsp;&nbsp; Alerts</Link>
+      </Menu.Item>
 
 
 

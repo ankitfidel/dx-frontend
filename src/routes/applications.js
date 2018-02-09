@@ -29,11 +29,10 @@ class Groups extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-        groupData: [{
-          name:'',
+        applicationsData: [{
 
-          id:'',
-          group_name:''
+          application_id:'',
+          application_name:''
                }],
            pagination: {},
 
@@ -43,14 +42,14 @@ class Groups extends React.Component {
            visible: false,
            canceleditgroup:false,
            handleChange:false,
-           editgroups: false,
+           editapplication: false,
            pagination: {},
            size: 'default',
            selectedRowKeys: [],
            cookies: cookie.loadAll()
       };
-       this.addgroupsave = this.addgroupsave.bind(this);
-       this.onTodoChange_groupname = this.onTodoChange_groupname.bind(this);
+       this.addapplicationsave = this.addapplicationsave.bind(this);
+       this.onTodoChange_applicationname = this.onTodoChange_applicationname.bind(this);
 
    }
 
@@ -58,13 +57,13 @@ class Groups extends React.Component {
        console.log('selectedRowKeys changed: ', selectedRowKeys);
        this.setState({ selectedRowKeys });
      }
-     grouplist = (params = {}) => {
+     applicationslist = (params = {}) => {
          var cookies = cookie.load('sessionid');
          var company_id = cookie.load('company_id');
-         axios.get(axios.defaults.baseURL + '/api/front/group/' + cookies + '/company/'+ company_id,{
+         axios.get(axios.defaults.baseURL + '/api/front/application/' + cookies + '/company/'+ company_id,{
            responseType: 'json'
          }).then(response => {
-               this.setState({ groupData: response.data.result,  loading:false});
+               this.setState({ applicationsData: response.data.result,  loading:false});
            })
          .catch(function (error) {
            console.log(error);
@@ -72,39 +71,40 @@ class Groups extends React.Component {
     }
 
       componentDidMount() {
-         this.grouplist();
+         this.applicationslist();
   }
-  addgroup = () => {
+  addapplication = () => {
     this.setState({
     visible: true,
   });
   }
-  groupeditData(id){
-    cookie.save('id', id);
+  applicationeditData(application_id){
+  //  alert(application_id);
+    cookie.save('application_id', application_id);
     this.setState({
-    editgroups: true,
+    editapplication: true,
   });
   var cookies = cookie.load('sessionid');
-  var user_id = cookie.load('user_id');
-  var company_id = cookie.load('company_id');
+//  var user_id = cookie.load('user_id');
+  //var company_id = cookie.load('company_id');
   //alert(user_id);
-  axios.get(axios.defaults.baseURL + '/api/front/group/'+ cookies + '/company/' + company_id,{
+  axios.get(axios.defaults.baseURL + '/api/front/application/'+ cookies + '/' + application_id,{
     responseType: 'json'
   }).then(response => {
-    var userdata = response.data.result[0];
-        this.setState({group_name: userdata.name});
+    var userdata = response.data.result;
+        this.setState({application_name: userdata.application_name});
     })
   .catch(function (error) {
     console.log(error);
   });
   }
-  deleteGroup(groupId){
+  applicationData(application_id){
     var cookies = cookie.load('sessionid');
   //  var application_id = cookie.load('application_id');
 
     //alert(device_id)
-    axios.delete(axios.defaults.baseURL + '/api/front/group/'+ cookies +'/'+groupId, {
-    groupId:groupId
+    axios.delete(axios.defaults.baseURL + '/api/front/application/'+ cookies +'/'+application_id, {
+    application_id:application_id
     })
     .then(function (response) {
         //alert(device_id)
@@ -120,13 +120,13 @@ class Groups extends React.Component {
     console.log(error);
     });
   }
-  editgroupsave(){
+  editapplicationsave(){
     const cookies = cookie.load('sessionid');
-    var id = cookie.load('id');
-var group_name = document.getElementById('group_name').value;
-    axios.put(axios.defaults.baseURL + '/api/front/group/'+ id , {
+    var application_id = cookie.load('application_id');
+    var application_name = document.getElementById('application_name').value;
+    axios.put(axios.defaults.baseURL + '/api/front/application/'+ application_id , {
       session_id:cookies,
-      group_name:group_name,
+      application_name:application_name,
     }).then(function (response) {
       if(response.data.status == false){
           error(response.data.result)
@@ -138,13 +138,13 @@ var group_name = document.getElementById('group_name').value;
       console.log(error);
     });
   }
-  addgroupsave = (e) => {
+  addapplicationsave = (e) => {
     const cookies = cookie.load('sessionid');
     var company_id = cookie.load('company_id');
-    var group_name = document.getElementById('group_name').value;
-    axios.post(axios.defaults.baseURL + '/api/front/group', {
+    var application_name = document.getElementById('application_name').value;
+    axios.post(axios.defaults.baseURL + '/api/front/application', {
      session_id:cookies,
-     group_name:group_name,
+     application_name:application_name,
      company_id:company_id,
     })
     .then(function (response) {
@@ -162,7 +162,7 @@ var group_name = document.getElementById('group_name').value;
 handleCancels = (e) => {
 console.log(e);
 this.setState({
-editgroups: false,
+editapplication: false,
 });
 }
 canceleditgroup = (e) => {
@@ -178,8 +178,8 @@ visible: false,
           this.setState({ selectedRowKeys });
     //  alert();
         }
-        onTodoChange_groupname(value){
-            this.setState({group_name: value});
+        onTodoChange_applicationname(value){
+            this.setState({application_name: value});
         }
 render(){
   // var cookies = cookie.load('sessionid');
@@ -189,14 +189,21 @@ render(){
   //   browserHistory.push("/login");
   // }
   var user_role = cookie.load('user_role');
-let addgroup = null;
+let addapplication = null;
 // alert("user_role"+user_role)
 if(user_role === "dashboard_admin"){
-addgroup = <Button type="primary" onClick={this.addgroup}>Add Group</Button>
+addapplication = <Button type="primary" onClick={this.addapplication}>Add Application</Button>
 }else{
-addgroup = null
+addapplication = null
 }
-  const { selectedRowKeys, groupData, loading,group_name,name, company_id } = this.state;
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
+  const { selectedRowKeys, applicationsData, loading,application_name,name, company_id } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -239,69 +246,76 @@ addgroup = null
        onSelection: this.onSelection,
      };
 const hasSelected = selectedRowKeys.length > 0;
-var user_role = cookie.load('user_role');
-let adminmenu = null;
-if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
-}else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
-}
 
      return (
        <div>
        <Breadcrumb>
-          {adminmenu}
-
-        </Breadcrumb><br />
+    {adminmenu}
+      </Breadcrumb> <br />
        <Modal
          visible={this.state.visible}
-         onOk={this.addgroupsave}
+         onOk={this.addapplicationsave}
          onCancel={this.canceleditgroup}
+         footer={[<div>
+            <Button key="canceleditgroup" type="default" loading={loading} onClick={this.canceleditgroup}>
+              Close
+            </Button>
+            <Button key="addapplicationsave" type="primary" loading={loading} onClick={this.addapplicationsave}>
+              Add Application
+            </Button></div>]}
        >
        <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
-       <h2 style={{textAlign: 'center'}}>Add Group</h2>
+       <h2 style={{textAlign: 'center'}}>Add Application</h2>
 
-       <FormItem label="Group Name:" required>
-           <Input placeholder="Enter Group Name" defaultValue="" id="group_name"/>
+       <FormItem label="Application Name:" required>
+           <Input placeholder="Enter application Name" defaultValue="" id="application_name"/>
        </FormItem>
 
         </Card>
        </Modal>
        <Modal
-         visible={this.state.editgroups}
-         onOk={this.editgroupsave}
+         visible={this.state.editapplication}
+         onOk={this.editapplicationsave}
          onCancel={this.handleCancels}
+         footer={[<div>
+            <Button key="handleCancels" type="default" loading={loading} onClick={this.handleCancels}>
+              Close
+            </Button>
+            <Button key="editapplicationsave" type="primary" loading={loading} onClick={this.editapplicationsave}>
+              Update Application
+            </Button></div>
+          ]}
        >
-       <Card noHovering="false"  style={{'backgroundColor': 'transparent !important'}} bordered={false}>
-       <h2 style={{textAlign: 'center'}}>Edit Groups</h2>
+       <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
+       <h2 style={{textAlign: 'center'}}>Edit Application</h2>
 
-       <FormItem label="Group Name:" required>
-           <Input placeholder="Enter Group Name"value={group_name} id="group_name" onChange={e => this.onTodoChange_groupname(e.target.value)}/>
+       <FormItem label="Application Name:" required>
+           <Input placeholder="Enter application Name"value={application_name} id="application_name" onChange={e => this.onTodoChange_applicationname(e.target.value)}/>
        </FormItem>
 
         </Card>
        </Modal>
 <Card noHovering="false" bordered={false}>
 
-{addgroup} <br /><br />
+{addapplication} <br /><br />
 
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} loading={loading} rowKey="id"  columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} loading={loading} rowKey="application_id" columns={[
 
 {
-   title: 'Group Name',
-   dataIndex: 'name',
-     className: styles.textleft
+   title: 'Application Name',
+   dataIndex: 'application_name',
+    className: styles.textleft
  },
 
   {
      title: 'Action',
-     dataIndex: 'id',
-       className: styles.textleft,
-     render: id => <div> <Button size="small" type="primary" onClick={() => this.groupeditData(id)}><Icon type="edit" /> Edit</Button> &nbsp;&nbsp;<Button size="small" type="primary" onClick={() => this.deleteGroup(id)}><Icon type="delete" /> Delete</Button></div>
+     dataIndex: 'application_id',
+      className: styles.textleft,
+     render: application_id => < div> <Button size="small" type="primary" onClick={() => this.applicationeditData(application_id)}><Icon type="edit" /> Edit</Button> &nbsp; <Button size="small" type="primary" onClick={() => this.applicationData(application_id)}><Icon type="delete" /> Delete</Button></div>
    },
 
 
-]} dataSource={groupData}  />
+]} dataSource={applicationsData}  />
          </Card>
        </div>
      );

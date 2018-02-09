@@ -117,6 +117,7 @@ class Users extends React.Component {
            visible: false,
            editItem:false,
            pagination: {},
+           addDeviceloading:false,
            size: 'default',
            selectedRowKeys: [],
            cookies: cookie.loadAll()
@@ -502,6 +503,7 @@ deleteItem(id){
      itemslist = (params = {}) => {
          var cookies = cookie.load('sessionid');
          var device_id = cookie.load('device_id');
+         //alert(device_id)
          axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies + '/device/'+ device_id,{
            responseType: 'json'
          }).then(response => {
@@ -570,6 +572,10 @@ this.listapps();
     const item_oid = document.getElementById('item_oid').value;
     const intervalTime = document.getElementById('intervalTime').value;
     const application_ids = document.getElementById('application_ids').value;
+
+    this.setState({
+      addDeviceloading:true
+    })
     axios.post(axios.defaults.baseURL + '/api/front/item', {
      session_id:cookies,
      item_name:item_name,
@@ -813,19 +819,20 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
            </Button>,
          ]}
        >
-       <Card noHovering="false" bordered={false}>
+       <Spin size="default"  spinning={this.state.addDeviceloading}>
+       <Card noHovering="false"  style={{'backgroundColor': 'transparent !important'}} bordered={false}>
        <h2 style={{textAlign: 'center'}}>Add Item</h2>
 
-       <FormItem label="Item Name:">
+       <FormItem label="Item Name:" required>
            <Input placeholder="Enter Item Name" defaultValue="" id="item_name"/>
        </FormItem>
-       <FormItem label="Item Unit:">
+       <FormItem label="Item Unit:" required>
            <Input placeholder="Enter Item Unit" defaultValue="" id="item_unit"/>
        </FormItem>
-       <FormItem label="Item Oid:">
+       <FormItem label="Item Oid:" required>
            <Input placeholder="Enter Item Oid" defaultValue="" id="item_oid"/>
        </FormItem>
-       <FormItem label="Set Interval Time (in seconds):">
+       <FormItem label="Set Interval Time (in seconds):" required>
            <select className={styles.selectopt} id="intervalTime">
             <option value="30">30</option>
             <option value="120">120</option>
@@ -833,7 +840,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
             <option value="3600">3600</option>
            </select>
        </FormItem>
-       <FormItem label="Select Applications:">
+       <FormItem label="Select Applications:" required>
        <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select Applications"
         onChange={handleChange}
        >
@@ -843,6 +850,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 
 
         </Card>
+        </Spin>
        </Modal>
        <Modal
          visible={this.state.editItem}
@@ -855,19 +863,19 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
            </Button>,
          ]}
        >
-       <Card noHovering="false" bordered={false}>
+       <Card noHovering="false"  style={{'backgroundColor': 'transparent !important'}} bordered={false}>
        <h2 style={{textAlign: 'center'}}>Edit Item</h2>
 
-       <FormItem label="Item Name:">
+       <FormItem label="Item Name:" required>
            <Input placeholder="Enter Item Name" value={this.state.item_name} onChange={e => this.onTodoChange_item_name(e.target.value)} id="item_name"/>
        </FormItem>
-       <FormItem label="Item Unit:">
+       <FormItem label="Item Unit:" required>
            <Input placeholder="Enter Item Unit" value={this.state.item_unit} onChange={e => this.onTodoChange_item_unit(e.target.value)} id="item_unit"/>
        </FormItem>
-       <FormItem label="Item Oid:">
+       <FormItem label="Item Oid:" required>
            <Input placeholder="Enter Item Oid" value={this.state.item_oid} id="item_oid"/>
        </FormItem>
-       <FormItem label="Set Interval Time (in seconds):">
+       <FormItem label="Set Interval Time (in seconds):" required>
            <select className={styles.selectopt} value={this.state.interval_time} onChange={e => this.onTodoChange_intervalTime(e.target.value)} id="intervalTime">
             <option value="30">30</option>
             <option value="120">120</option>
@@ -875,7 +883,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
             <option value="3600">3600</option>
            </select>
        </FormItem>
-       <FormItem label="Set Interval Time (in seconds):">
+       <FormItem label="Set Interval Time (in seconds):" required>
        <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select a Device"
         onChange={handleChange}
        >
@@ -890,11 +898,10 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
         </Breadcrumb>
         <br />
 <Card noHovering="false">
-
 {addItems}
 <br /><br />
 <Spin size="normal" spinning={this.state.graphloading}>
- <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 900}} loading={loading} rowKey="id"  columns={[
+ <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} loading={loading} rowKey="id"  columns={[
 
 {
    title: 'Application Name',

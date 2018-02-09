@@ -13,6 +13,8 @@
       <script
         src="./assets/js/media.match.min.js"></script>
   <![endif]-->
+  <script src="https://microsoft.github.io/PowerBI-JavaScript/demo/node_modules/powerbi-client/dist/powerbi.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -20,6 +22,31 @@
 
 <script src="index.js"></script>
 <script src="./assets/js/iconfont.js"></script>
+<script type="text/javascript">
 
+/*        window.onload = function () {
+            // client side click to embed a selected dashboard.
+            var el = document.getElementById("bEmbedDashboardAction");
+            if (el.addEventListener) {
+                el.addEventListener("click", updateEmbedDashboard, false);
+            } else {
+                el.attachEvent('onclick', updateEmbedDashboard);
+            }
+
+            // handle server side post backs, optimize for reload scenarios
+            // show embedded dashboard if all fields were filled in.
+            var accessTokenElement = document.getElementById('MainContent_accessTokenTextbox');
+            if (accessTokenElement !== null) {
+                var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ino0NHdNZEh1OHdLc3VtcmJmYUs5OHF4czVZSSIsImtpZCI6Ino0NHdNZEh1OHdLc3VtcmJmYUs5OHF4czVZSSJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvN2MxNmUxM2QtZjM1Ny00MzVmLTk3N2UtM2MyMzM5MjU3ZThjLyIsImlhdCI6MTUxODAwMDM5MCwibmJmIjoxNTE4MDAwMzkwLCJleHAiOjE1MTgwMDQyOTAsImFjciI6IjEiLCJhaW8iOiJZMk5nWUdBLzg3LzUvclAvYXd5VWt4WjBzanA4TkZSNHFubWYvZHVPOU90WnNqektHdFlBIiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6IjJmMzExZDZmLTk2ZTgtNGEwYi04YmJjLTVmNTk3N2JlMjM0MyIsImFwcGlkYWNyIjoiMSIsImVfZXhwIjoyNjI4MDAsImZhbWlseV9uYW1lIjoiVmFyYWhhZGUiLCJnaXZlbl9uYW1lIjoiR2FuZXNoIiwiaXBhZGRyIjoiMjE5LjkxLjE1My40NCIsIm5hbWUiOiJHYW5lc2ggVmFyYWhhZGUiLCJvaWQiOiI4NGZlYzg1ZS0yYjUyLTRjMjMtYWY1OS03MWMyYjIyN2EwYTYiLCJwdWlkIjoiMTAwMzNGRkZBODEwMjc0OSIsInNjcCI6IkRhc2hib2FyZC5SZWFkLkFsbCBEYXRhc2V0LlJlYWQuQWxsIEdyb3VwLlJlYWQgUmVwb3J0LlJlYWQuQWxsIiwic3ViIjoiREpOZXdLc3RfT1J3Vk5kcFZtZ0FBdHJ6ZGdOekNqSmJjY3pWS1Q3Y1RzdyIsInRpZCI6IjdjMTZlMTNkLWYzNTctNDM1Zi05NzdlLTNjMjMzOTI1N2U4YyIsInVuaXF1ZV9uYW1lIjoiZ2FuZXNoLnZhcmFoYWRlQGZpZGVsaXRzZXJ2aWNlcy5jb20iLCJ1cG4iOiJnYW5lc2gudmFyYWhhZGVAZmlkZWxpdHNlcnZpY2VzLmNvbSIsInV0aSI6Ik5HYVBTOXFVdmt5MkQ4N0p2czB0QUEiLCJ2ZXIiOiIxLjAiLCJ3aWRzIjpbIjYyZTkwMzk0LTY5ZjUtNDIzNy05MTkwLTAxMjE3NzE0NWUxMCJdfQ.IqUwaQsPEHpPt3TuX41g06CChEZ2oaEbBTzmrMl2MWPnOyy999zqM4xCHcS852zsrs65bPPESdzUjAMgZupZ4wetsXBmeNEGWRBoM2dxKZb7RuvmOj68NTBa152c0BjN2-48TksV8NUSm21bAozUdCFZ78ud8q71Yya4Z5yY9Mjb3i7q-ex1IpsiX8gwjnVPvObjgdm4X65088ezsW2XNNDGEMp1zSC6Jtbieu6UzQFOAEvjC2QWXGF9J9QZbVokKfV5cOsxJVc166sv8DCmldewOkVmFBZGvkDyzmj4jNDQ7vuMr_y56cTAXrkQzd_bXZ8UOJM5Y1i8ZN4ayzoOdg";
+                if (accessToken !== "")
+                    updateEmbedDashboard();
+            }
+        }; */
+
+        // update embed dashboard
+        window.onload = function updateEmbedDashboard() {
+
+        };
+    </script>
 </body>
 </html>
