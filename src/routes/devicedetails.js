@@ -468,6 +468,10 @@ this.setState({
            }
 
      componentDidMount() {
+       var device_name = cookie.load('device_name');
+    //   alert(device_name)
+       var docTitle = device_name +  " | Device Details";
+       document.title = docTitle;
 this.application();
     this.activetriggerslist()
     var device_id = cookie.load("device_id");
@@ -563,12 +567,21 @@ application(){
 }
 
 
-
+// componentWillMount(){
+//   alert(this.state.device_name);
+//     var dd = this.state.device_name;
+//
+// }
 
 
 
 render(){
+
+
+
+//  alert("device_name: "+dd);
   //
+
   const {status,device_name, group_name,device_ip,device_port,background_image_url,triggerlist,noData, chartgraph} = this.state;
   var styles = {
       textAlign: {

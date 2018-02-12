@@ -101,6 +101,8 @@ class Devices extends React.Component {
   devicelistparam = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
+      var deviceStatus = cookie.load('device_is_connected');
+    //  alert("deviceStatus:"+deviceStatus);
       axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/company/'+ company_id,{
         responseType: 'json'
       }).then(response => {
@@ -112,8 +114,18 @@ class Devices extends React.Component {
             for (var i = 0; i < response.data.result.length; i++) {
               if(response.data.result[i].device_key==deviceKey){
 
+
+
+
                 if(response.data.result[i].is_connected==false){
+
+                  if(deviceStatus!=true){
+
+
+                      deviceMsg = response.data.result[i].device_name +" Device connection failed. Check device details and try connecting again";
+                  }else{
                     deviceMsg = response.data.result[i].device_name +" is disconnected";
+                  }
                 }else{
                     deviceMsg = response.data.result[i].device_name +" is connected";
                 }
@@ -124,18 +136,6 @@ class Devices extends React.Component {
             }
               openNotification(deviceMsg);
               cookie.remove('deviceKey');
-            // if(){
-            //
-            // }
-
-      //  var connectedDevices = response.data.result
-      //   key.map(connectedDevices){
-      //       if(connectedDevices.is_connected == true){
-      //           openNotification(connectedDevices)
-      //       }
-      // };
-          //  console.log()
-          //  alert(ponse.data.result[0].is_connected)
 
         })
       .catch(function (error) {
@@ -393,31 +393,31 @@ deletedevice(device_id){
 //this.success()
  }
 
- connected(device_key){
+ connected(device_key,is_connected){
    this.setState({
      graphloading:true
    })
-   //alert(is_connected)
-//   alert(JSON.stringify(device_key));
+
  var cookies = cookie.load('sessionid');
  cookie.save("deviceKey",device_key);
+ //alert(is_connected)
+ cookie.save("device_is_connected",is_connected);
 
 axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + device_key,{
      responseType: 'json'
    }).then(response => {
-  //   alert(response.data.result.is_connected)
+
    if(response.data.result.is_connected == true){
-    //  alert(response.data.result.is_connected)
+
       axios.get(axios.defaults.baseURL + '/api/front/device/disconnect/' + cookies + '/' + device_key,{
           responseType: 'json'
         }).then(response => {
-      //  alert("disconnect successfully")
-  //    errorr()
+
   this.setState({
     graphloading:false
   })
     window.location.reload()
-    //  window.location.reload()
+
           })
         .catch(function (error) {
           console.log(error);
@@ -427,11 +427,11 @@ axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + de
      axios.get(axios.defaults.baseURL + '/api/front/device/connect/' + cookies + '/' + device_key,{
       responseType: 'json'
     }).then(response => {
-  //    alert("connect successfully")
-  //  window.location.reload()
-//success()
+
  window.location.reload()
-//window.location.reload()
+
+
+
         })
       .catch(function (error) {
         console.log(error);
@@ -448,8 +448,10 @@ axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + de
   // alert(" ::: "+ JSON.stringify(device_id1))
 
    var device_id = device.device_id;
+   var device_name = device.device_name;
    //alert(device_id)
    cookie.save("device_id", device_id);
+    cookie.save("device_name", device_name);
    hashHistory.push("/devicedetails")
  }
  error() {
@@ -463,7 +465,7 @@ closed(){
   window.location.reload()
 }
 render(){
-
+document.title = "Devices";
   var sidebarcolor = cookie.load('sidebarcolor');
   var headercolor = cookie.load('headercolor');
   var content1 = cookie.load('content1');
@@ -658,7 +660,7 @@ render: is_connected => <p>{is_connected == true ? <span style={{'color':'#01910
 {
 title: '',
 dataIndex: 'device_key',
-render: (device_key,record) => <p><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.connected(device_key)}>   <p>{record.is_connected == true ? <span>Disconnect Device</span> : <span> Connect Device</span>}</p>  </Tag></p>,
+render: (device_key,record) => <div><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.connected(device_key,record.is_connected)}>   {record.is_connected == true ? <span>Disconnect Device</span> : <span> Connect Device</span>}  </Tag></div>,
  className: styles.textleft
 },
 
@@ -677,6 +679,7 @@ dataIndex:'device_id',
  ]} dataSource={devicelist}  />
  </Spin>
       </Card>
+
     </div>
   )
 }

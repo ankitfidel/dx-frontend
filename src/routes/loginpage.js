@@ -147,7 +147,7 @@ class Loginpage extends React.Component {
 
 render(){
   const { selectedRowKeys,companyId, errormsg  } = this.state;
-
+document.title = "Login";
 
      return (
        <div className={styles.bg}>

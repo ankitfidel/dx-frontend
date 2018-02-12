@@ -53,7 +53,7 @@ class Viewdevices extends React.Component {
 
      componentDidMount() {
     //  this.fetchcompany();
-  
+
    }
 
    // fetchcompany = (params = {}) => {
@@ -130,6 +130,7 @@ class Viewdevices extends React.Component {
       }
 
 render(){
+  document.title = "View devices";
   const { selectedRowKeys,companyId, device_ip, device_name, device_port  } = this.state;
 
 

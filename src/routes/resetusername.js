@@ -57,6 +57,7 @@ class Resetpassword extends React.Component {
    }
 
 render(){
+  document.title = "Reset Username";
 const {errormsg} = this.state;
 //alert("render tken")
   return (

@@ -227,7 +227,7 @@ var data = []
         }
 
 render(){
-
+document.title = "Events";
   const { selectedRowKeys, triggerHistoryData, loading } = this.state;
   const rowSelection = {
        selectedRowKeys,

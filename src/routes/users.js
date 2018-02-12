@@ -275,7 +275,7 @@ axios.get(axios.defaults.baseURL + '/api/front/user/'+ cookies + '/user_id/' + u
         this.setState({email_id: value});
     }
 render(){
-
+document.title = "Users";
   const { selectedRowKeys, userData, username,loading, password, first_name, last_name, email_id, updateUser } = this.state;
   const rowSelection = {
        selectedRowKeys,

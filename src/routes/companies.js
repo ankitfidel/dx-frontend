@@ -138,6 +138,7 @@ header,
         }
 
 render(){
+  document.title = "Companies";
   var textLeft = {
     textAlign: 'left',
   };

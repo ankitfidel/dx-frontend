@@ -286,6 +286,7 @@ class Admin_dashboard extends React.Component {
   //   })
   // }
   render() {
+    document.title = "Admin Dashboard";
     // <Row gutter={32} justify="space-around" align="middle">
     // <Col lg={8} md={8}>
     //

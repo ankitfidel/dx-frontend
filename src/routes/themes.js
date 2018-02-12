@@ -109,6 +109,7 @@ this.setState({sidethemeColor:sidethemeColor})
 }
 
 render(){
+  document.title = "Themes";
   var sidebarcolor = cookie.load('sidebarcolor');
   var headercolor = cookie.load('headercolor');
   // console.log("gg");

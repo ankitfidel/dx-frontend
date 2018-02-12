@@ -182,6 +182,7 @@ visible: false,
             this.setState({group_name: value});
         }
 render(){
+  document.title = "Groups";
   // var cookies = cookie.load('sessionid');
   // alert("cookies: "+cookies)
   // if(cookies==null || cookies == undefined || cookies == ''){

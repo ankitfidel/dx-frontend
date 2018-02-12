@@ -279,6 +279,7 @@ console.log(dashboard)
                 });
   }
   render() {
+    document.title = "Dashboard";
     // <Row gutter={32} justify="space-around" align="middle">
     // <Col lg={8} md={8}>
     //

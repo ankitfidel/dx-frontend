@@ -182,6 +182,7 @@ visible: false,
             this.setState({application_name: value});
         }
 render(){
+  document.title = "Application";
   // var cookies = cookie.load('sessionid');
   // alert("cookies: "+cookies)
   // if(cookies==null || cookies == undefined || cookies == ''){

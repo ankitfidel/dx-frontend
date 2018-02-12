@@ -17,6 +17,7 @@ const style={
         // height: '250px',
     }
 }
+
 class Profile extends React.Component {
 
     onClick(event) {
@@ -44,6 +45,7 @@ class Profile extends React.Component {
 
    }
 render(){
+  document.title = "Profile";
   var email_id = cookie.load('email_id');
   var company_name = cookie.load('company_name');
   var sidebarcolor = cookie.load('sidebarcolor');
@@ -53,6 +55,7 @@ render(){
 var username = cookie.load('username');
 var user_id = cookie.load('user_id');
 var logo = cookie.load('logo');
+//alert(logo)
 
 var user_role = cookie.load('user_role');
 let adminmenu = null;
@@ -72,9 +75,9 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
     <Row gutter={24}>
         <Col xs={{span: 12, offset: 6}} md={{span: 12, offset: 6}} lg={{span: 8, offset: 8}} className="infoCol">
             <div className="profile">
-
+  <img src={logo} />
                 <div className="profile-header" style={style.profileHeader}>
-        <img src={logo} />
+
                 </div>
                 <div className="profileInfo">
                     <h1 style={{'fontSize': '1.5em', 'textTransform':'capitalize'}}>{username}</h1>

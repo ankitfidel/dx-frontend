@@ -52,7 +52,7 @@ alert("please check mail")
    }
 
 render(){
-
+document.title = "Forget Username";
   return (
     <div className={styles.bg}>
 

@@ -307,7 +307,7 @@ editTrigger: false,
         // this.onTodoChange_severity_id = this.onTodoChange_severity_id.bind(this);
         // this.onTodoChange_expression_id = this.onTodoChange_expression_id.bind(this);
 render(){
-
+document.title = "Triggers";
   const { selectedRowKeys, triggerData,device_name, name } = this.state;
   const rowSelection = {
        selectedRowKeys,

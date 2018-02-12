@@ -463,7 +463,7 @@ closed(){
   window.location.reload()
 }
 render(){
-
+document.title = "Devices";
   var sidebarcolor = cookie.load('sidebarcolor');
   var headercolor = cookie.load('headercolor');
   var content1 = cookie.load('content1');

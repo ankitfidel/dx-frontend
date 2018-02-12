@@ -243,6 +243,7 @@ class Alerts extends React.Component {
     })
   }
   render() {
+    document.title = "Alert";
     const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2,userslist,devicelist,itemslist, bottom2 } = this.state;
     var user_role = cookie.load('user_role');
     let adminmenu = null;

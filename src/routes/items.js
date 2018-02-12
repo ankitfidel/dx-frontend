@@ -691,6 +691,7 @@ editItemssave(){
           this.setState({interval_time: value});
         }
 render(){
+  document.title = "Items";
   var user_role = cookie.load('user_role');
 let addItems = null;
 // alert("user_role"+user_role)
