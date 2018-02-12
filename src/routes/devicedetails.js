@@ -600,7 +600,10 @@ render(){
        </Style>
        <Breadcrumb>
           {adminmenu}
-          <Breadcrumb.Item><a href="#/devices">Device: {this.state.device_name}</a></Breadcrumb.Item>
+          <Breadcrumb.Item><a href="#/devices">Devices</a></Breadcrumb.Item>
+            <Breadcrumb.Item>{this.state.device_name}</Breadcrumb.Item>
+              <Breadcrumb.Item>Details</Breadcrumb.Item>
+
         </Breadcrumb>
         <br />
        <Modal

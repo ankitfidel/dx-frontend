@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Badge,Avatar, Menu,Modal,Form,Input,notification  } from 'antd'
+import { Icon, Badge,Avatar, Menu,Modal,Form,Input,notification,Button  } from 'antd'
 import { Link } from 'dva/router'
 import styles from './BadgeBox.less'
 import screenfull from 'screenfull';
@@ -22,6 +22,14 @@ var content2 = cookie.load('content2');
 function openNotification() {
   notification.open({
      message: 'Password Change Successfully !',
+     icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+     duration:3,
+    // onClose: closefun()
+  });
+};
+function wrongNotification() {
+  notification.open({
+     message: 'Password and Confirm password must be same Successfully !',
      icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
      duration:3,
     // onClose: closefun()
@@ -102,9 +110,7 @@ handleOk = () => {
   })
   .then(response => {
     openNotification()
-
       handleChange()
-
   //  handleCancel()
 //  window.location.reload()
 //  alert("password changed")
@@ -112,8 +118,9 @@ handleOk = () => {
   .catch(function (error) {
     console.log(error);
   });
-}else{
-  alert("confirm password first")
+}else if(password== null || password1 == null){
+    wrongNotification()
+//  alert("confirm password first")
 }
 }
 changepassword = () =>{
@@ -139,12 +146,18 @@ render(){
           visible={this.state.changepassModal}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          footer={[
+            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+            <Button key="submit" type="primary"  onClick={this.handleOk}>
+              Change password
+            </Button>,
+          ]}
         >
         <FormItem label="Password:">
-                <Input placeholder="Enter new password" id="password"/>
+                <Input placeholder="Enter new password" type="password" id="password"/>
          </FormItem>
          <FormItem label="Confirm Password:">
-                 <Input placeholder="Enter confirm password" id="password1" />
+                 <Input placeholder="Enter confirm password" type="password" id="password1" />
           </FormItem>
 
 
@@ -152,7 +165,7 @@ render(){
 
  <Menu mode="horizontal" style={{'backgroundColor': headercolor, 'zIndex': 999}}>
 
-         <Menu.Item onClick={this.fullScreen}  className={styles.badge}><Icon style={{ 'color':'white'}} type="arrows-alt" title="Full Screen" className={styles.size}/></Menu.Item>
+        
 
         <SubMenu  title={<p style={{'textTransform': 'none','color':'white'}}><Icon type="user" /><span style={{'textOverflow':'ellipsis'}}>{username} </span><Icon style={{'float': 'right','margin':'15px 20px 0 10px'}} type="down" /></p>}>
           <Menu.Item><a onClick={this.profile} className={styles.logoutbtn}>Profile</a></Menu.Item>

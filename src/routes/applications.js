@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row,Breadcrumb, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form, Pagination } from 'antd'
+import {Menu, Icon, Popover, Badge, Popconfirm,M,Avatar,Row,Breadcrumb, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form, Pagination } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,ResponsiveContainer, CartesianGrid, Tooltip} from 'recharts';
@@ -251,6 +251,7 @@ const hasSelected = selectedRowKeys.length > 0;
        <div>
        <Breadcrumb>
     {adminmenu}
+    <Breadcrumb.Item><span>Applications</span></Breadcrumb.Item>
       </Breadcrumb> <br />
        <Modal
          visible={this.state.visible}
@@ -264,14 +265,14 @@ const hasSelected = selectedRowKeys.length > 0;
               Add Application
             </Button></div>]}
        >
-       <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
+       <div style={{'backgroundColor': 'transparent !important'}} >
        <h2 style={{textAlign: 'center'}}>Add Application</h2>
 
        <FormItem label="Application Name:" required>
            <Input placeholder="Enter application Name" defaultValue="" id="application_name"/>
        </FormItem>
 
-        </Card>
+        </div>
        </Modal>
        <Modal
          visible={this.state.editapplication}
@@ -282,18 +283,18 @@ const hasSelected = selectedRowKeys.length > 0;
               Close
             </Button>
             <Button key="editapplicationsave" type="primary" loading={loading} onClick={this.editapplicationsave}>
-              Update Application
+              Save Application
             </Button></div>
           ]}
        >
-       <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
+       <div style={{'backgroundColor': 'transparent !important'}} >
        <h2 style={{textAlign: 'center'}}>Edit Application</h2>
 
        <FormItem label="Application Name:" required>
            <Input placeholder="Enter application Name"value={application_name} id="application_name" onChange={e => this.onTodoChange_applicationname(e.target.value)}/>
        </FormItem>
 
-        </Card>
+        </div>
        </Modal>
 <Card noHovering="false" bordered={false}>
 
@@ -311,9 +312,13 @@ const hasSelected = selectedRowKeys.length > 0;
      title: 'Action',
      dataIndex: 'application_id',
       className: styles.textleft,
-     render: application_id => < div> <Button size="small" type="primary" onClick={() => this.applicationeditData(application_id)}><Icon type="edit" /> Edit</Button> &nbsp; <Button size="small" type="primary" onClick={() => this.applicationData(application_id)}><Icon type="delete" /> Delete</Button></div>
-   },
+     render: application_id => <div> <a href="javascript:void(0)" onClick={() => this.applicationeditData(application_id)}><Icon type="edit" /> Edit</a> &nbsp; | &nbsp;
 
+     <Popconfirm title="Are you sure delete this Application?" onConfirm={() => this.applicationData(application_id)} okText="Yes" cancelText="No">
+       <a href="#"><Icon type="delete" />&nbsp;Delete </a>
+     </Popconfirm>
+     </div>
+   },
 
 ]} dataSource={applicationsData}  />
          </Card>

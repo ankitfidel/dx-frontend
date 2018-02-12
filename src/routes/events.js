@@ -65,8 +65,16 @@ visible: false,
     //  var item_values = response.data.result.item_values;
     //  alert(item_values.length);
     //  console.log(response.data.result);
-        this.setState({ triggerHistoryData: response.data.result, loading:false});
+    //  alert(response.data)
+    if(response.data.status == false){
 
+        this.setState({
+          loading:false
+         })
+
+    }else{
+        this.setState({ triggerHistoryData: response.data.result, loading:false});
+}
       //   alert("DONE");
 
       })
@@ -111,7 +119,13 @@ visible: false,
           // console.log(response.data.result.items[0]);
       //     var items = response.data.result.items;
       //alert(JSON.stringify(response.data.result))
-               this.setState({ triggerHistoryData: response.data.result, loading:false});
+      if(response.data.status == false){
+var data = []
+          this.setState({ triggerHistoryData: data, loading:false});
+      }else{
+          this.setState({ triggerHistoryData: response.data.result, loading:false});
+  }
+              // this.setState({ triggerHistoryData: response.data.result, loading:false});
               // alert(JSON.stringify(response.data.result))
            })
          .catch(function (error) {
@@ -137,7 +151,7 @@ visible: false,
          this.triggerlist();
         this.fetchSeverity();
         this.fetchExpression();
-        this.fetchItem();
+    //    this.fetchItem();
   }
   fetchSeverity = (params = {}) => {
     // console.log('params:', params);
@@ -178,24 +192,24 @@ visible: false,
         console.log(error);
       })
   }
-  fetchItem = (params = {}) => {
-      var cookies = cookie.load('sessionid');
-      var device_id = cookie.load('device_id');
-      axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies + '/device/' + device_id,{
-        responseType: 'json'
-      }) .then(response => {
-        var items = response.data.result.items;
-         let itemoption = items.map((item,i) => {
-           return(
-      <option key={i.toString()} value={item.id}>{item.item_name}</option>
-           )
-         })
-           this.setState({itemoption:itemoption});
-       })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }
+  // fetchItem = (params = {}) => {
+  //     var cookies = cookie.load('sessionid');
+  //     var device_id = cookie.load('device_id');
+  //     axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies + '/device/' + device_id,{
+  //       responseType: 'json'
+  //     }) .then(response => {
+  //       var items = response.data.result.items;
+  //        let itemoption = items.map((item,i) => {
+  //          return(
+  //     <option key={i.toString()} value={item.id}>{item.item_name}</option>
+  //          )
+  //        })
+  //          this.setState({itemoption:itemoption});
+  //      })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     })
+  // }
 
   addItems = () => {
     this.setState({
@@ -269,7 +283,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        <div>
        <Breadcrumb>
           {adminmenu}
-
+<Breadcrumb.Item><span>Events</span></Breadcrumb.Item>
         </Breadcrumb><br />
 <Card noHovering="false">
 
@@ -286,24 +300,24 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
    title: 'Name',
    dataIndex: 'name',
    className: styles.textleft,
-   render: name => <span>{name === null ? "Data is null" : name}</span>
+   render: name => <span>{name === null ? "-" : name}</span>
  }, {
    title: 'Description',
    dataIndex: 'description',
    className: styles.textleft,
-  render: description => <span>{description === null ? "Data is null" : description}</span>
+  render: description => <span>{description === null ? "-" : description}</span>
  },
  {
   title: 'active_time',
   dataIndex: 'active_time',
   className: styles.textleft,
- render: active_time => <span>{active_time === null ? "Data is null" : active_time}</span>
+ render: active_time => <span>{active_time === null ? "-" : active_time}</span>
 },
 {
  title: 'type',
  dataIndex: 'type',
  className: styles.textleft,
-  render: type => <span>{type === null ? "Data is null" : type}</span>
+  render: type => <span>{type === null ? "-" : type}</span>
 },
 {
  title: 'Active',

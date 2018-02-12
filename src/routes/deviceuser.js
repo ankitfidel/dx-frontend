@@ -47,7 +47,7 @@ const openNotification = (msg) => {
     duration:2
   });
 };
-class Devices extends React.Component {
+class Device extends React.Component {
 
   constructor(props) {
       super(props);
@@ -538,7 +538,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
     <div>
     <Breadcrumb>
        {adminmenu}
-<Breadcrumb.Item><span>Devices</span></Breadcrumb.Item>
+
      </Breadcrumb><br />
     <Style>
     {`
@@ -554,13 +554,13 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
       footer={[
         <Button key="back" onClick={this.editCancel}>Cancel</Button>,
         <Button key="submit" type="primary" loading={loading} onClick={this.editDevicesssave}>
-          Save Device
+          Update Device
         </Button>,
       ]}
     >
 
 <div style={{'padding':'20px'}}>
-<h2 style={{textAlign: 'center'}}>Edit Device</h2>
+<h2 style={{textAlign: 'center'}}>Update Device</h2>
 
 <FormItem label="Device Background URL:">
     <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
@@ -656,22 +656,18 @@ render: is_connected => <p>{is_connected == true ? <span style={{'color':'#01910
  className: styles.textleft
 },
 {
-title: '',
+title: 'Action',
 dataIndex: 'device_key',
 render: (device_key,record) => <p><Tag style={{'backgroundColor':headercolor, 'color': 'white'}} onClick={() => this.connected(device_key)}>   <p>{record.is_connected == true ? <span>Disconnect Device</span> : <span> Connect Device</span>}</p>  </Tag></p>,
  className: styles.textleft
 },
 
 {
-title: 'Action',
+title: '',
 dataIndex:'device_id',
- render: device_id  => <div>
-  <a  href="#/items" onClick={() => this.itemlist(device_id)}>Items</a> &nbsp; | &nbsp;
-  <a href="#/triggers"  onClick={() => this.triggerslist(device_id)}>Triggers</a>&nbsp; | &nbsp;
-  <a href="javascript:void(0)" onClick={() => this.editdevice(device_id)}><Icon type="edit" /> Edit</a> &nbsp; | &nbsp;
- <Popconfirm title="Are you sure to delete this device?"onConfirm={() => this.deletedevice(device_id)}  okText="Yes" cancelText="No">
-    <a href="#"><Icon type="delete" /> Delete Device</a>
-  </Popconfirm></div>
+ render: device_id  => <div style={{'textAlign':'left'}}>
+  <a  href="#/item" onClick={() => this.itemlist(device_id)}>Items</a> &nbsp; | &nbsp;
+  <a href="#/user-triggers"  onClick={() => this.triggerslist(device_id)}>Triggers</a>&nbsp; </div>
 },
 
  ]} dataSource={devicelist}  />
@@ -684,4 +680,4 @@ dataIndex:'device_id',
 }
 
 
-export default Devices
+export default Device

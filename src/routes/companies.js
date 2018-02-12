@@ -195,7 +195,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        <div>
        <Breadcrumb>
           {adminmenu}
-
+<Breadcrumb.Item><span>Companies</span></Breadcrumb.Item>
         </Breadcrumb><br />
 <Card noHovering="false" bordered={false}>
 

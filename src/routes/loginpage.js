@@ -82,7 +82,6 @@ class Loginpage extends React.Component {
            // var user_id = cookie.load('user_id');
            //alert(user_id);
 
-
            if (response.data.result.user_role=="dashboard_admin"){
                // alert("userRole is dashboard admin");
                 cookie.save('sessionid', sessionid)
@@ -90,6 +89,8 @@ class Loginpage extends React.Component {
                 cookie.save('user_role', user_role, { path: '/' })
                 cookie.save('company_name', company_name, { path: '/' })
                 cookie.save('email_id', email_id, { path: '/' })
+                cookie.save('logo', response.data.result.logo, { path: '/' })
+
              //   cookie.save('theme', theme, { path: '/' })
                 cookie.save('sidebarcolor', response.data.result.theme.sidebar_color_class, { path: '/' })
                 cookie.save('headercolor', response.data.result.theme.header_color_class, { path: '/' })
@@ -120,6 +121,8 @@ class Loginpage extends React.Component {
                 cookie.save('user_role', user_role, { path: '/' })
                 cookie.save('company_name', company_name, { path: '/' })
                 cookie.save('email_id', email_id, { path: '/' })
+                cookie.save('logo', response.data.result.logo, { path: '/' })
+
                // cookie.save('theme', theme, { path: '/' })
                cookie.save('username', response.data.result.username, { path: '/' })
                cookie.save('user_id', response.data.result.user_id, { path: '/' })

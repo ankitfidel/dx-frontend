@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {
   Row,
   Col,
-  Card,
+  Card,Spin,
   Carousel,
   Switch,
   Icon,
@@ -171,7 +171,8 @@ class Admin_dashboard extends React.Component {
     this.state = initialState,{
       devicelist:'',
       itemslist:'',
-      userslist:''
+      userslist:'',
+      dashboardspin:true,
 
     };
   }
@@ -235,8 +236,6 @@ class Admin_dashboard extends React.Component {
   }
   componentDidMount(){
     this.countlist();
-
-
     var accessToken = cookie.load('powerbiaccesstoken');
 //alert(accessToken)
                 // check if the embed url was selected
@@ -261,7 +260,7 @@ class Admin_dashboard extends React.Component {
 
                 // Embed the dashboard and display it within the div container.
                 var dashboard = powerbi.embed(dashboardContainer, config);
-console.log(dashboard)
+
                 // dashboard.on will add an event handler which prints to Log window.
                 dashboard.on("tileClicked", function (event) {
                     var logView = document.getElementById('logView');
@@ -277,7 +276,15 @@ console.log(dashboard)
                     logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
                     logView.innerHTML = logView.innerHTML + "---------<br/>";
                 });
+                this.setState({
+                  dashboardspin:false
+                })
   }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     dashboardspin:true
+  //   })
+  // }
   render() {
     // <Row gutter={32} justify="space-around" align="middle">
     // <Col lg={8} md={8}>
@@ -369,12 +376,12 @@ console.log(dashboard)
     return (
 
       <div className="dashboard-3">
-
+<Spin size="default"  spinning={this.state.dashboardspin}>
 
       <div id="dashboardContainer" style={{'height':'100vh'}}></div>
 
 
-
+</Spin>
 
 
       </div>

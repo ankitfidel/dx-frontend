@@ -130,7 +130,7 @@ axios.get(axios.defaults.baseURL + '/api/front/user/'+ cookies + '/user_id/' + u
 }).then(response => {
   var userdata = response.data.result;
   console.log( userdata.username)
-      this.setState({username: userdata.username, email_id:userdata.email_id, password:userdata.password,first_name:userdata.first_name, last_name:userdata.last_name});
+      this.setState({username: userdata.username, email_id:userdata.email_id, first_name:userdata.first_name, last_name:userdata.last_name});
   })
 .catch(function (error) {
   console.log(error);
@@ -143,7 +143,6 @@ axios.get(axios.defaults.baseURL + '/api/front/user/'+ cookies + '/user_id/' + u
     var cookies = cookie.load('sessionid');
     const user_id = cookie.load('user_id');
     const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
     const last_name = document.getElementById('last_name').value;
     const first_name = document.getElementById('first_name').value;
     const email_id = document.getElementById('email_id').value;
@@ -151,7 +150,6 @@ axios.get(axios.defaults.baseURL + '/api/front/user/'+ cookies + '/user_id/' + u
     axios.put(axios.defaults.baseURL + '/api/front/user/'+user_id, {
      session_id:cookies,
      username:username,
-     password:password,
      last_name:last_name,
      first_name:first_name,
      email_id:email_id,
@@ -333,7 +331,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        <div>
        <Breadcrumb>
           {adminmenu}
-
+<Breadcrumb.Item><span>Users</span></Breadcrumb.Item>
         </Breadcrumb><br />
        <Modal
          title="Add User"
@@ -348,19 +346,19 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
          ]}
        >
        <FormItem label="Username:" required>
-           <Input placeholder="Enter Username.." defaultValue="" id="username"/>
+           <Input placeholder="Enter Username" defaultValue="" id="username"/>
        </FormItem>
        <FormItem label="Password:" required>
-           <Input placeholder="Enter Password.." defaultValue="" id="password"/>
+           <Input placeholder="Enter Password" defaultValue="" id="password"/>
        </FormItem>
        <FormItem label="First Name:" required>
-           <Input placeholder="Enter First Name.." defaultValue="" id="firstName"/>
+           <Input placeholder="Enter First Name" defaultValue="" id="firstName"/>
        </FormItem>
        <FormItem label="Last Name:" required>
-           <Input placeholder="Enter Last Name.." defaultValue="" id="lastName"/>
+           <Input placeholder="Enter Last Name" defaultValue="" id="lastName"/>
        </FormItem>
        <FormItem label="Email Id:" required>
-           <Input placeholder="Enter Email Id.." defaultValue="" id="emailId"/>
+           <Input placeholder="Enter Email Id" defaultValue="" id="emailId"/>
        </FormItem>
        <FormItem label="User Role:" required>
        <select style={{ width: 200  }} className={styles.selectopt} id="userRoleId">
@@ -369,7 +367,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
      </select>
        </FormItem>
 
-          <FormItem label="Company Id:" required>
+          <FormItem label="Company Name:" required>
           <select className={styles.selectopt} style= {{ width :200}}>
        { this.state.comapnyrole }
          </select>
@@ -385,7 +383,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
          footer={[
            <Button key="back" onClick={this.updateUserclose}> Close</Button>,
            <Button key="submit" type="primary" loading={loading} onClick={this.updateUsersData}>
-             Update User
+             Save User
            </Button>,
          ]}
        >
@@ -394,13 +392,13 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
         </FormItem>
 
         <FormItem label="First Name:" required>
-            <Input placeholder="Enter First Name.." value={this.state.first_name} id="first_name" onChange={e => this.onTodoChange_first_name(e.target.value)}/>
+            <Input placeholder="Enter First Name" value={this.state.first_name} id="first_name" onChange={e => this.onTodoChange_first_name(e.target.value)}/>
         </FormItem>
         <FormItem label="Last Name:" required>
-            <Input placeholder="Enter Last Name.."value={this.state.last_name} id="last_name" onChange={e => this.onTodoChange_last_name(e.target.value)}/>
+            <Input placeholder="Enter Last Name"value={this.state.last_name} id="last_name" onChange={e => this.onTodoChange_last_name(e.target.value)}/>
         </FormItem>
         <FormItem label="Email Id:" required>
-            <Input placeholder="Enter Email id.." value={this.state.email_id} id="email_id" onChange={e => this.onTodoChange_email_id(e.target.value)}/>
+            <Input placeholder="Enter Email Id" value={this.state.email_id} id="email_id" onChange={e => this.onTodoChange_email_id(e.target.value)}/>
         </FormItem>
 
 

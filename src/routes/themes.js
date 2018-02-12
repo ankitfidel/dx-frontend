@@ -141,7 +141,7 @@ render(){
 <div>
 <Breadcrumb>
    {adminmenu}
-
+<Breadcrumb.Item><span>Themes</span></Breadcrumb.Item>
  </Breadcrumb><br />
 <Card bordered={false} title="Themes" noHovering="true" className="rightSidebarCard">
 <Col span={12}>

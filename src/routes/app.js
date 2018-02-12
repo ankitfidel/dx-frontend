@@ -230,13 +230,18 @@ var lightestColor = LightenDarkenColor(headercolor, 90);
       <div>
       <Style>
       {`
+        .profile{background-color:` + headercolor + `50}
         .ant-card:hover{overflow:hidden}
+        .ant-breadcrumb a{font-weight:bold}
+        .ant-spin-nested-loading > div > .ant-spin{max-height:100% !important}
+
+        .ant-spin-dot i{background-color:` + headercolor + ` }
         .ant-table-placeholder{background-color: ` + lightestColor + `08 !important}
         .ant-card{background-color: ` + lightestColor + `08 !important}
         .ant-modal-mask{background-color: rgba(0, 0, 0, 0.6)}
         .explorationContainer .exploreCanvas{backgroundColor:#fff !important}
         #dashboardContainer iframe{border:0 none;}
-  .dashboardViewSlider .dashboard{background:#fff !important;}
+        .dashboardViewSlider .dashboard{background:#fff !important;}
         }
         a {color: ` + NewColor + ` !important}
         a:hover{color:`+darkColor+` !important}

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row,Breadcrumb, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form, Pagination } from 'antd'
+import {Menu, Icon, Popover, Badge, M,Avatar,Row,Breadcrumb,Popconfirm, Col, Button,Card, Table, Modal, Switch,Input, Radio, Form, Pagination } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,ResponsiveContainer, CartesianGrid, Tooltip} from 'recharts';
@@ -251,35 +251,47 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        <div>
        <Breadcrumb>
           {adminmenu}
-
+<Breadcrumb.Item><span>Groups</span></Breadcrumb.Item>
         </Breadcrumb><br />
        <Modal
          visible={this.state.visible}
          onOk={this.addgroupsave}
          onCancel={this.canceleditgroup}
+         footer={[
+           <Button key="back" onClick={this.canceleditgroup}> Close</Button>,
+           <Button key="submit" type="primary"  onClick={this.addgroupsave}>
+             Add Group
+           </Button>,
+         ]}
        >
-       <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
+       <div style={{'backgroundColor': 'transparent !important'}} >
        <h2 style={{textAlign: 'center'}}>Add Group</h2>
 
        <FormItem label="Group Name:" required>
            <Input placeholder="Enter Group Name" defaultValue="" id="group_name"/>
        </FormItem>
 
-        </Card>
+        </div>
        </Modal>
        <Modal
          visible={this.state.editgroups}
          onOk={this.editgroupsave}
          onCancel={this.handleCancels}
+         footer={[
+           <Button key="back" onClick={this.handleCancels}> Close</Button>,
+           <Button key="submit" type="primary"  onClick={this.editgroupsave}>
+             Add Group
+           </Button>,
+         ]}
        >
-       <Card noHovering="false"  style={{'backgroundColor': 'transparent !important'}} bordered={false}>
+        <div style={{'backgroundColor': 'transparent !important'}} >
        <h2 style={{textAlign: 'center'}}>Edit Groups</h2>
 
        <FormItem label="Group Name:" required>
            <Input placeholder="Enter Group Name"value={group_name} id="group_name" onChange={e => this.onTodoChange_groupname(e.target.value)}/>
        </FormItem>
 
-        </Card>
+        </div>
        </Modal>
 <Card noHovering="false" bordered={false}>
 
@@ -297,7 +309,12 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
      title: 'Action',
      dataIndex: 'id',
        className: styles.textleft,
-     render: id => <div> <Button size="small" type="primary" onClick={() => this.groupeditData(id)}><Icon type="edit" /> Edit</Button> &nbsp;&nbsp;<Button size="small" type="primary" onClick={() => this.deleteGroup(id)}><Icon type="delete" /> Delete</Button></div>
+     render: id => <div> <a href="javascript:void(0)" onClick={() => this.groupeditData(id)}><Icon type="edit" /> Edit</a> &nbsp;&nbsp;
+
+     <Popconfirm title="Are you sure delete this Application?" onConfirm={() => this.deleteGroup(id)} okText="Yes" cancelText="No">
+       <a href="#"><Icon type="delete" />&nbsp;Delete Group</a>
+     </Popconfirm>
+     </div>
    },
 
 

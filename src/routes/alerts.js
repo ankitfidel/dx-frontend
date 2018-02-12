@@ -4,7 +4,7 @@ import {
   Col,
   Card,
   Carousel,
-  Switch,
+  Switch,Spin,Breadcrumb,
   Icon,
   Menu, Dropdown,
   Button, Table
@@ -173,7 +173,8 @@ class Alerts extends React.Component {
     this.state = initialState,{
       devicelist:'',
       itemslist:'',
-      userslist:''
+      userslist:'',
+      dashboardspin:true
 
     };
   }
@@ -237,23 +238,37 @@ class Alerts extends React.Component {
   }
   componentDidMount(){
     this.countlist()
+    this.setState({
+      dashboardspin:false
+    })
   }
   render() {
     const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2,userslist,devicelist,itemslist, bottom2 } = this.state;
-
+    var user_role = cookie.load('user_role');
+    let adminmenu = null;
+    if(user_role === "dashboard_admin"){
+    adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+    }else{
+    adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+    }
     return (
-
+      <div>
+      <Breadcrumb>
+         {adminmenu}
+      <Breadcrumb.Item><span>Alerts</span></Breadcrumb.Item>
+       </Breadcrumb><br />
       <div className="dashboard-3">
 
-
+<Spin size="default"  spinning={this.state.dashboardspin}>
         <Row gutter={24}>
         <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNzI0MTA3MzAtNDRlYi00NDIyLTk0YmEtNDc1Y2M1OTEwMmNkIiwidCI6ImExOGFkY2Y4LTViMGQtNGRiMS1iZDY3LTgyNDc2MjQ5N2M0YiIsImMiOjZ9" width="100%" height="580" frameBorder="0" allowFullScreen="allowFullScreen"></iframe>
 
 
         </Row>
-
+</Spin>
 
       </div>
+        </div>
     );
   }
 }

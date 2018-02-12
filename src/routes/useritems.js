@@ -88,7 +88,7 @@ function formattedDate(currentDate){
 //   // alert("value::::: " + date)
 //   //console.log(Date.now);
 // }
-class Users extends React.Component {
+class Item extends React.Component {
 
   constructor(props) {
       super(props);
@@ -903,8 +903,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
         </Breadcrumb>
         <br />
 <Card noHovering="false">
-{addItems}
-<br /><br />
+
 <Spin size="normal" spinning={this.state.graphloading}>
  <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} loading={loading} rowKey="id"  columns={[
 
@@ -937,13 +936,10 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 {
  title: 'Action',
  dataIndex: 'id',
- render: (id) => <div>
+   className: styles.textleft,
+ render: (id) => <div style={{'textAlign':'left'}}>
 
- <a href="javascript:void(0)" onClick={() => this.showGraph(id)}><Icon type="area-chart" /> &nbsp;Graph</a>&nbsp; | &nbsp;
-  <a href="javascript:void(0)" onClick={() => this.edititem(id)}><Icon title="Edit Item" type="edit" /> &nbsp;Edit</a> &nbsp; | &nbsp;
- <Popconfirm title="Are you sure delete this Item?" onConfirm={() => this.deleteItem(id)} onCancel={cancel} okText="Yes" cancelText="No">
-   <a href="#"><Icon type="delete" /> &nbsp;Delete Item</a>
- </Popconfirm></div>
+ <a href="javascript:void(0)" onClick={() => this.showGraph(id)}><Icon type="area-chart" /> &nbsp;Graph</a>&nbsp;</div>
 }
 
 
@@ -956,4 +952,4 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 }
 }
 
-export default Users
+export default Item

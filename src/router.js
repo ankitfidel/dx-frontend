@@ -203,6 +203,16 @@ export default function ({ app}) {
                  }
              },
              {
+                 path: '/device',
+                 name: 'device',
+                 getComponent(nextState, cb) {
+                     require.ensure([], require => {
+                         cb(null, require('./routes/deviceuser'))
+                     })
+                 }
+             },
+
+             {
                  path: '/connect-device',
                  name: 'connectdevice',
                  getComponent(nextState, cb) {
@@ -230,7 +240,15 @@ export default function ({ app}) {
                  }
              },
 
-
+             {
+                 path: '/item',
+                 name: 'item',
+                 getComponent(nextState, cb) {
+                     require.ensure([], require => {
+                         cb(null, require('./routes/useritems'))
+                     })
+                 }
+             },
              {
                  path: '/items',
                  name: 'items',
@@ -240,12 +258,22 @@ export default function ({ app}) {
                      })
                  }
              },
+
              {
                  path: '/triggers',
                  name: 'triggers',
                  getComponent(nextState, cb) {
                      require.ensure([], require => {
                          cb(null, require('./routes/triggers'))
+                     })
+                 }
+             },
+             {
+                 path: '/user-triggers',
+                 name: 'user-triggers',
+                 getComponent(nextState, cb) {
+                     require.ensure([], require => {
+                         cb(null, require('./routes/usertriggers'))
                      })
                  }
              },

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover,Layout, Badge, M,Avatar,Row, Col, Button,Card, Table, Modal} from 'antd'
+import {Menu, Icon, Popover,Layout, Badge, Breadcrumb, M,Avatar,Row, Col, Button,Card, Table, Modal} from 'antd'
 import {ComposedChart, CartesianGrid, LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis,Legend, Bar, Tooltip, ResponsiveContainer} from 'recharts';
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const {Header, Content, Footer, Sider} = Layout;
@@ -10,11 +10,11 @@ import RightSider from '../components/layout/rightSider';
 import cookie from 'react-cookies'
 const style={
     profileHeader:{
-         background: 'url(./assets/2.jpg) no-repeat',
+      //   background: 'url(./assets/2.jpg) no-repeat',
 
-        width: '100%',
-        backgroundSize: 'cover',
-        height: '250px',
+        // width: '100%',
+        // backgroundSize: 'cover',
+        // height: '250px',
     }
 }
 class Profile extends React.Component {
@@ -52,15 +52,29 @@ render(){
   var content2 = cookie.load('content2');
 var username = cookie.load('username');
 var user_id = cookie.load('user_id');
+var logo = cookie.load('logo');
 
+var user_role = cookie.load('user_role');
+let adminmenu = null;
+if(user_role === "dashboard_admin"){
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}else{
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+}
   return (
 <div>
+<Breadcrumb>
+   {adminmenu}
+<Breadcrumb.Item><span>Profile</span></Breadcrumb.Item>
+ </Breadcrumb><br />
 <div className="profile-page">
+
     <Row gutter={24}>
         <Col xs={{span: 12, offset: 6}} md={{span: 12, offset: 6}} lg={{span: 8, offset: 8}} className="infoCol">
             <div className="profile">
-                <div className="profile-header" style={style.profileHeader}>
 
+                <div className="profile-header" style={style.profileHeader}>
+        <img src={logo} />
                 </div>
                 <div className="profileInfo">
                     <h1 style={{'fontSize': '1.5em', 'textTransform':'capitalize'}}>{username}</h1>

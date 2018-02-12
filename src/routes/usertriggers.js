@@ -17,7 +17,7 @@ function error(msg) {
   });
 }
 
-class Triggers extends React.Component {
+class Usertriggers extends React.Component {
 
   constructor(props) {
       super(props);
@@ -444,7 +444,6 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 
 <Card noHovering="false">
 
- <Button type="primary" onClick={this.addItems}>Add Trigger</Button> &nbsp; <br /><br />
  <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} rowKey="id" columns={[
 
 {
@@ -484,11 +483,6 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
  title: 'Active Time',
  dataIndex: 'active_time'
 },
-{
- title: 'Action',
- dataIndex: 'id',
-  render: id => <a href="javascript:void(0)" onClick={() => this.editTrigger(id)}><Icon type="edit" title="Edit Triggers" /></a>
-}
 
 
 ]} dataSource={triggerData}  />
@@ -499,4 +493,4 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 }
 }
 
-export default Triggers
+export default Usertriggers
