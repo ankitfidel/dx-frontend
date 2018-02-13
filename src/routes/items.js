@@ -107,6 +107,7 @@ class Users extends React.Component {
            pagination: {},
            data:[],
            chartgraph:[],
+           noData:'',
            result:[],
            item_name:'',
            item_unit:'',
@@ -140,12 +141,29 @@ class Users extends React.Component {
      // alert(dateString[0])
      var dateFrom=dateString[0];
      var dateTo=dateString[1];
+     this.setState({
+        graphloadingsitem:true,chartgraph:[]
+     });
    //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
      axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+itemid+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
        responseType: 'json'
      }).then(response => {
        var item_values = response.data.result.item_values;
     //   alert(item_values.length);
+    this.setState({
+       graphloadingsitem:false,
+    });
+    if(response.data.status==false){
+      this.setState({
+         graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
+      });
+    }
+    if(item_values == ""){
+    //  alert("No data")
+    this.setState({
+       noData: "No data Found",graphloadingsitem:false,graphloading:false
+    });
+  }else{
        console.log(item_values);
        var chartgraphvalues = [];
           for(let i=0;i<item_values.length;i++){
@@ -155,9 +173,13 @@ class Users extends React.Component {
             });
           }
 
+
           this.setState({
-            chartgraph:chartgraphvalues
+            chartgraph:chartgraphvalues,noData:""
           });
+        }
+
+
 
         //  alert("DONE");
 
@@ -365,9 +387,15 @@ filterselectDate(value){
   //fdgdfgfd
   // alert("todate:"+todate);
   // alert("fromDate:"+fromDate);
-
+  this.setState({
+     graph: true
+  });
   var cookies = cookie.load('sessionid');
   var id = cookie.load('itemid');
+  this.setState({
+     graphloadingsitem:true,chartgraph:[]
+  });
+
   axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+fromDate+'/end_date/' +todate ,{
     responseType: 'json'
   }).then(response => {
@@ -375,6 +403,24 @@ filterselectDate(value){
   //  alert(item_values.length);
     console.log(item_values);
     var chartgraphvalues = [];
+    this.setState({
+       graphloadingsitem:false,
+    });
+
+    if(response.data.status==false){
+      this.setState({
+         graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
+      });
+    }
+
+       if(item_values == ""){
+       //  alert("No data")
+       this.setState({
+          noData: "No data Found",graphloadingsitem:false,graphloading:false
+       });
+     }else{
+
+
        for(let i=0;i<item_values.length;i++){
 
          //console.log('item_values[i].value = '+item_values[i].value);
@@ -384,10 +430,15 @@ filterselectDate(value){
          });
        }
 
-//alert("DONE");
+
        this.setState({
-          graph: true,chartgraph: chartgraphvalues
+          graph: true,chartgraph: chartgraphvalues,noData:""
        });
+
+
+     }
+//alert("DONE");
+
 
 
 
@@ -426,10 +477,7 @@ deleteItem(id){
        this.setState({
           graphloading:true
        });
-          // for(let i=0;i<3;i++){
-          //   chartgraph.push({"name":11,"cost":12,"impression":300});
-          // }
-        //  GET /api/front/item/values/{sessionId}/{itemId}/page={page}/per_page={per_page}
+
           cookie.save('itemid',id);
           var cookies = cookie.load('sessionid');
           var itemid = cookie.load('itemid');
@@ -446,12 +494,29 @@ deleteItem(id){
 
           // var dateFrom="2018-01-09 12:00:00";
           // var dateTo="2018-01-09 24:00:00";
+
+          this.setState({
+             graphloadingsitem:true,chartgraph:[]
+          });
         //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
           axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
             responseType: 'json'
           }).then(response => {
             var item_values = response.data.result.item_values;
         //    alert(item_values.length);
+
+      //  alert(JSON.stringify(response.data))
+if(response.data.status==false){
+  this.setState({
+     graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
+  });
+}
+          if(item_values == [] || item_values == ""){
+        //  alert("No data")
+        this.setState({
+           noData: "No data Found",graphloadingsitem:false,
+        });
+      }else{
             console.log(item_values);
             var chartgraphvalues = [];
                for(let i=0;i<item_values.length;i++){
@@ -465,9 +530,9 @@ deleteItem(id){
 
  //alert("DONE");
                this.setState({
-                  graph: true,chartgraph: chartgraphvalues,graphloading:false
+                  graph: true,chartgraph: chartgraphvalues,graphloading:false,noData:"", graphloading:false
                });
-
+}
 
 
 
@@ -696,11 +761,11 @@ render(){
 let addItems = null;
 // alert("user_role"+user_role)
 if(user_role === "dashboard_admin"){
-addItems = <Button type="primary" onClick={this.addItems}>Add Items</Button>
+addItems = <Button type="primary" onClick={this.addItems}>Add Item</Button>
 }else{
 addItems = null
 }
-  var {chartgraph, selectedRowKeys, itemsData,item_unit,item_oid, device_name,graphloading, application_id, interval_time,item_name, loading } = this.state;
+  var {chartgraph, selectedRowKeys, itemsData,item_unit,item_oid, device_name,graphloading, application_id,graphloadingsitem, interval_time,item_name, loading } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -746,10 +811,11 @@ const hasSelected = selectedRowKeys.length > 0;
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
+var device_name = cookie.load('device_name');
      return (
        <div>
        <Modal
@@ -799,7 +865,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
    </Select>
     </FormItem>
     </Form>
-
+<Spin size="default" spinning={this.state.graphloadingsitem}>
         <ResponsiveContainer width={'100%'} height={350}>
         <LineChart width={600} height={200} data={chartgraph} syncId="anyId"
                 margin={{top: 10, right: 30, left: 0, bottom: 0}}>
@@ -811,6 +877,14 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
             <Brush />
           </LineChart>
      </ResponsiveContainer>
+     </Spin>
+     <h3 style={{    'position': 'absolute',
+     'top': '50%',
+     'margin':' 0 auto',
+     'textAlign': 'center',
+     'fontSize': '30px',
+     'left': 0,
+     'right': 0,}}>{this.state.noData} </h3>
        </Modal>
        <Modal
          visible={this.state.visible}
@@ -833,8 +907,8 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        <FormItem label="Item Unit:" required>
            <Input placeholder="Enter Item Unit" defaultValue="" id="item_unit"/>
        </FormItem>
-       <FormItem label="Item Oid:" required>
-           <Input placeholder="Enter Item Oid" defaultValue="" id="item_oid"/>
+       <FormItem label="Item OID:" required>
+           <Input placeholder="Enter Item OID" defaultValue="" id="item_oid"/>
        </FormItem>
        <FormItem label="Set Interval Time (in seconds):" required>
            <select className={styles.selectopt} id="intervalTime">
@@ -863,11 +937,11 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
          footer={[
            <Button key="back" onClick={this.editCancel}>Cancel</Button>,
            <Button key="submit" type="primary" loading={loading} onClick={this.editItemssave}>
-             Update Item
+             Save
            </Button>,
          ]}
        >
-      <div style={{'padding':'20px'}}>
+      <div style={{'padding':'20px', 'background':'transparent !important'}}>
        <h2 style={{textAlign: 'center'}}>Edit Item</h2>
 
        <FormItem label="Item Name:" required>
@@ -876,8 +950,8 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        <FormItem label="Item Unit:" required>
            <Input placeholder="Enter Item Unit" value={this.state.item_unit} onChange={e => this.onTodoChange_item_unit(e.target.value)} id="item_unit"/>
        </FormItem>
-       <FormItem label="Item Oid:" required>
-           <Input placeholder="Enter Item Oid" value={this.state.item_oid} id="item_oid"/>
+       <FormItem label="Item OID:" required>
+           <Input placeholder="Enter Item OID" value={this.state.item_oid} id="item_oid"/>
        </FormItem>
        <FormItem label="Set Interval Time (in seconds):" required>
            <select className={styles.selectopt} value={this.state.interval_time} onChange={e => this.onTodoChange_intervalTime(e.target.value)} id="intervalTime">
@@ -887,8 +961,8 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
             <option value="3600">3600</option>
            </select>
        </FormItem>
-       <FormItem label="Set Interval Time (in seconds):" required>
-       <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select a Device"
+       <FormItem label="Select Application:" required>
+       <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select an application"
         onChange={handleChange}
        >
        { this.state.comapnyrole }
@@ -899,14 +973,14 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        <Breadcrumb>
           {adminmenu}
           <Breadcrumb.Item><a href="#/devices">Devices</a></Breadcrumb.Item>
-            <Breadcrumb.Item>  {this.state.device_name}</Breadcrumb.Item>
+            <Breadcrumb.Item>  {device_name}</Breadcrumb.Item>
   <Breadcrumb.Item>Items</Breadcrumb.Item>
         </Breadcrumb>
         <br />
 <Card noHovering="false">
 {addItems}
 <br /><br />
-<Spin size="normal" spinning={this.state.graphloading}>
+<Spin size="default" spinning={this.state.graphloading}>
  <Table pagination={{ pageSize: 10,  showSizeChanger:true}} scroll={{ x: 1000}} loading={loading} rowKey="id"  columns={[
 
 {
@@ -925,7 +999,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
     className: styles.textleft
  },
  {
-  title: 'Item Oid',
+  title: 'Item OID',
   dataIndex: 'item_oid',
    className: styles.textleft
 },
@@ -942,7 +1016,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 
  <a href="javascript:void(0)" onClick={() => this.showGraph(id)}><Icon type="area-chart" /> &nbsp;Graph</a>&nbsp; | &nbsp;
   <a href="javascript:void(0)" onClick={() => this.edititem(id)}><Icon title="Edit Item" type="edit" /> &nbsp;Edit</a> &nbsp; | &nbsp;
- <Popconfirm title="Are you sure delete this Item?" onConfirm={() => this.deleteItem(id)} onCancel={cancel} okText="Yes" cancelText="No">
+ <Popconfirm title="Are you sure delete this Item?" onConfirm={() => this.deleteItem(id)}  okText="Yes" cancelText="No">
    <a href="#"><Icon type="delete" /> &nbsp;Delete Item</a>
  </Popconfirm></div>
 }

@@ -52,7 +52,8 @@ render(){
   var headercolor = cookie.load('headercolor');
   var content1 = cookie.load('content1');
   var content2 = cookie.load('content2');
-var username = cookie.load('username');
+var first_name = cookie.load('first_name');
+var last_name = cookie.load('last_name');
 var user_id = cookie.load('user_id');
 var logo = cookie.load('logo');
 //alert(logo)
@@ -60,9 +61,9 @@ var logo = cookie.load('logo');
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
   return (
 <div>
@@ -80,7 +81,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 
                 </div>
                 <div className="profileInfo">
-                    <h1 style={{'fontSize': '1.5em', 'textTransform':'capitalize'}}>{username}</h1>
+                    <h1 style={{'fontSize': '1.5em', 'textTransform':'capitalize'}}>{first_name} {last_name}</h1>
                     <p style={{'textTransform':'none'}}>{email_id}</p>
                       <p style={{'textTransform':'none'}}>{company_name}</p>
 

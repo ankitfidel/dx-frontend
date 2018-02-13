@@ -305,7 +305,15 @@ export default function ({ app}) {
                      })
                  }
              },
-
+             {
+                 path: '/devicedetail',
+                 name: 'devicedetail',
+                 getComponent(nextState, cb) {
+                     require.ensure([], require => {
+                         cb(null, require('./routes/userdevicedetails'))
+                     })
+                 }
+             },
 
              {
                  path: '/devicedetails',
@@ -316,6 +324,7 @@ export default function ({ app}) {
                      })
                  }
              },
+
              {
                  path: '/events',
                  name: 'events',

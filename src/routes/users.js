@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col,Breadcrumb, Button,Card, Table,Tag, Modal, Switch, Radio, Form, Input, Pagination } from 'antd'
+import {Menu, Icon, Popover, Badge, M,Avatar,Row, Col,Breadcrumb, Button,Card,Popconfirm, Table,Tag, Modal, Switch, Radio, Form, Input, Pagination } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import reqwest from 'reqwest';
@@ -322,9 +322,9 @@ const hasSelected = selectedRowKeys.length > 0;
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
      return (
 
@@ -334,17 +334,18 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 <Breadcrumb.Item><span>Users</span></Breadcrumb.Item>
         </Breadcrumb><br />
        <Modal
-         title="Add User"
+
          visible={this.state.visible}
          onOk={this.adduserssave}
          onCancel={this.handleCancel}
          footer={[
-           <Button key="back" onClick={this.handleCancel}> Close</Button>,
+           <Button key="back" onClick={this.handleCancel}> Cancel</Button>,
            <Button key="submit" type="primary" loading={loading} onClick={this.adduserssave}>
              Add User
            </Button>,
          ]}
        >
+       <h2 style={{textAlign: 'center'}}>Add User</h2>
        <FormItem label="Username:" required>
            <Input placeholder="Enter Username" defaultValue="" id="username"/>
        </FormItem>
@@ -362,8 +363,8 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        </FormItem>
        <FormItem label="User Role:" required>
        <select style={{ width: 200  }} className={styles.selectopt} id="userRoleId">
-      <option  className={styles.optioncus} value="2">dashboard user</option>
-      <option className={styles.optioncus} value="3">dashboard admin</option>
+      <option  className={styles.optioncus} value="2">Dashboard User</option>
+      <option className={styles.optioncus} value="3">Dashboard Admin</option>
      </select>
        </FormItem>
 
@@ -376,17 +377,18 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 
        </Modal>
        <Modal
-         title="Edit user"
+
          visible={this.state.updateUser}
          onOk={this.updateUsersData}
          onCancel={this.updateUserclose}
          footer={[
-           <Button key="back" onClick={this.updateUserclose}> Close</Button>,
+           <Button key="back" onClick={this.updateUserclose}> Cancel</Button>,
            <Button key="submit" type="primary" loading={loading} onClick={this.updateUsersData}>
-             Save User
+             Save
            </Button>,
          ]}
        >
+       <h2 style={{textAlign: 'center'}}>Edit User</h2>
        <FormItem label="Username:" required>
                <Input placeholder="Enter Username" value={username} id="username" onChange={e => this.onTodoChange_username(e.target.value)}/>
         </FormItem>
@@ -431,7 +433,12 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
  title: 'Action',
  dataIndex: 'user_id',
   className: styles.textleft,
- render: user_id =><div>  <a href="javascript:void(0)"  onClick={() => this.usereditData(user_id)}><Icon title="Edit User" type="edit" /> Edit</a> &nbsp; | &nbsp; <a href="javascript:void(0)"  onClick={() => this.start(user_id)}><Icon title="Delete User" type="delete" /> Delete</a>&nbsp;&nbsp;</div>
+ render: user_id =><div>  <a href="javascript:void(0)"  onClick={() => this.usereditData(user_id)}><Icon title="Edit User" type="edit" /> Edit</a> &nbsp; | &nbsp;
+
+  <Popconfirm title="Are you sure delete this user?" onConfirm={() => this.start(user_id)} okText="Yes" cancelText="No">
+    <a href="#"><Icon title="Delete User" type="delete" />  &nbsp;Delete user</a>
+  </Popconfirm>
+  </div>
 }
 
 

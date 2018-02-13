@@ -200,9 +200,9 @@ addapplication = null
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
   const { selectedRowKeys, applicationsData, loading,application_name,name, company_id } = this.state;
   const rowSelection = {
@@ -260,7 +260,7 @@ const hasSelected = selectedRowKeys.length > 0;
          onCancel={this.canceleditgroup}
          footer={[<div>
             <Button key="canceleditgroup" type="default" loading={loading} onClick={this.canceleditgroup}>
-              Close
+              Cancel
             </Button>
             <Button key="addapplicationsave" type="primary" loading={loading} onClick={this.addapplicationsave}>
               Add Application

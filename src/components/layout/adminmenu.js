@@ -109,7 +109,7 @@ function MenusAdmin({
       mode="inline">
 
       <Menu.Item key="dashboard" className="menulink" >
-         <Link to="/admindashboard" onClick={clicked(changeOpenKeys)} activeStyle={{ 'background': headercolor }} style={{'padding': '0px 20px'}}> <Icon type="rocket" /> Dashboard</Link>
+         <Link to="/admindashboard" onClick={clicked(changeOpenKeys)} activeStyle={{ 'background': headercolor }} style={{'padding': '0px 20px'}}> <Icon type="home" /> Dashboard</Link>
       </Menu.Item>
       <Menu.Item key="devices" className="menulink" style={{'overflow': 'hidden'}}>
          <Link to="/devices" activeClassName="selected"  activeStyle={{ background: headercolor }} style={{'padding': '0px 20px'}}> <Icon type="setting" /> Devices</Link>

@@ -308,7 +308,7 @@ editTrigger: false,
         // this.onTodoChange_expression_id = this.onTodoChange_expression_id.bind(this);
 render(){
 document.title = "Triggers";
-  const { selectedRowKeys, triggerData,device_name, name } = this.state;
+  const { selectedRowKeys, triggerData, name } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -354,16 +354,17 @@ const hasSelected = selectedRowKeys.length > 0;
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
+var device_name = cookie.load('device_name');
      return (
        <div>
        <Breadcrumb>
           {adminmenu}
           <Breadcrumb.Item><a href="#/devices">Devices</a></Breadcrumb.Item>
-          <Breadcrumb.Item>{this.state.device_name}</Breadcrumb.Item>
+          <Breadcrumb.Item>{device_name}</Breadcrumb.Item>
             <Breadcrumb.Item>Triggers</Breadcrumb.Item>
         </Breadcrumb>
         <br />
@@ -371,8 +372,14 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
          visible={this.state.visible}
          onOk={this.addTriggersave}
          onCancel={this.handleCancel}
+         footer={[
+           <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+           <Button key="submit" type="primary"  onClick={this.addTriggersave}>
+             Add Trigger
+           </Button>,
+         ]}
        >
-       <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
+        <div style={{'padding':'20px', 'background':'transparent !important'}}>
        <h2 style={{textAlign: 'center'}}>Add Trigger</h2>
        <FormItem label="Name:" required>
            <Input placeholder="Enter Name" defaultValue="" id="name"/>
@@ -399,21 +406,21 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
       </select>
        </FormItem>
 
-        </Card>
+        </div>
        </Modal>
        <Modal
          visible={this.state.editTrigger}
          onOk={this.editItemssave}
          onCancel={this.editTriggerCancel}
          footer={[
-           <Button key="back" onClick={this.editTriggerCancel}>Cancel & Close</Button>,
+           <Button key="back" onClick={this.editTriggerCancel}>Cancel</Button>,
            <Button key="submit" type="primary"  onClick={this.editItemssave}>
-             Save Item
+             Save Trigger
            </Button>,
          ]}
        >
-       <Card noHovering="false" style={{'backgroundColor': 'transparent !important'}} bordered={false}>
-       <h2 style={{textAlign: 'center'}}>edit items</h2>
+         <div style={{'padding':'20px', 'background':'transparent !important'}}>
+       <h2 style={{textAlign: 'center'}}>Edit Trigger</h2>
 
           <FormItem label="Name:" required>
               <Input placeholder="Enter Name" value={this.state.name} onChange={e => this.onTodoChange_name(e.target.value)} id="name"/>
@@ -439,7 +446,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
             { this.state.itemoption }
               </select>
                </FormItem>
-        </Card>
+        </div>
        </Modal>
 
 <Card noHovering="false">
@@ -487,7 +494,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 {
  title: 'Action',
  dataIndex: 'id',
-  render: id => <a href="javascript:void(0)" onClick={() => this.editTrigger(id)}><Icon type="edit" title="Edit Triggers" /></a>
+  render: id => <a href="javascript:void(0)" onClick={() => this.editTrigger(id)}><Icon type="edit" title="Edit Triggers" /> Edit</a>
 }
 
 

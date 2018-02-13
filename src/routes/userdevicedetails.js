@@ -18,11 +18,7 @@ var sidebarcolor = cookie.load('sidebarcolor');
 var headercolor = cookie.load('headercolor');
 var content1 = cookie.load('content1');
 var content2 = cookie.load('content2');
-function error(msg) {
-  const modal = Modal.warning({
-    content: msg
-  });
-}
+
 
 function formattedDate(currentDate){
   var year = currentDate.getFullYear();
@@ -74,7 +70,7 @@ function formattedDate(currentDate){
    return newDate;
 }
 
-class Devicedetails extends React.Component {
+class Userdevicedetails extends React.Component {
 
   constructor(props) {
       super(props);
@@ -333,36 +329,23 @@ this.filterselectDate = this.filterselectDate.bind(this);
         // alert("todate:"+todate);
         // alert("fromDate:"+fromDate);
         this.setState({
-           graphloadingss: true,chartgraph:[]
+           graphloadingss: true
         });
         var cookies = cookie.load('sessionid');
         var id = cookie.load('itemid');
         console.log("fromDate: "+fromDate);
         console.log("todate: "+todate);
-        this.setState({
-           graphloadingss: true
-        });
         axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+fromDate+'/end_date/' +todate ,{
           responseType: 'json'
         }).then(response => {
           var item_values = response.data.result.item_values;
-          if(response.data.status==false){
-            this.setState({
-               graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
-            });
-          }
         //  alert(item_values.length);
-        if(item_values == ""){
-        //  alert("No data")
-        this.setState({
-           noData: "No data Found",graphloadingss: false
-        });
-        }else{
           console.log(item_values);
           var chartgraphvalues = [];
              for(let i=0;i<item_values.length;i++){
-
-
+               this.setState({
+                  graphloadingss: false
+               });
                //console.log('item_values[i].value = '+item_values[i].value);
                chartgraphvalues.push({
                  'timestamp' : item_values[i].timestamp,
@@ -370,169 +353,175 @@ this.filterselectDate = this.filterselectDate.bind(this);
                });
              }
 
-
-
-
+             if(item_values == ""){
+             //  alert("No data")
+             this.setState({
+                noData: "No data Found",  graphloadingss: false
+             });
+             }else{
+               this.setState({
+                  noData: "",
+               });
+             }
       //alert("DONE");
              this.setState({
-                graph: true,chartgraph: chartgraphvalues,  noData: "",graphloadingss: false
+                graph: true,chartgraph: chartgraphvalues
              });
 
-}
+
 
 
           })
 
         .catch(function (error) {
           console.log(error);
-
         });
       }
 
-          changeGraph(date, dateString){
+      changeGraph(date, dateString){
 
-           console.log(date);
-           console.log(dateString[0]+" "+dateString[1]);
+       console.log(date);
+       console.log(dateString[0]+" "+dateString[1]);
 
-           if(dateString[1]==null || dateString[1] == ""){
-             alert()
-             error("Please select date or time");
-          
-           }
-           var cookies = cookie.load('sessionid');
-           var itemid = cookie.load('itemid');
-           console.log(cookies+' '+itemid+'/start_date/'+dateString[0]+'/end_date/' +dateString[1]);
-           // alert(dateString[0])
-           var dateFrom=dateString[0];
-           var dateTo=dateString[1];
+       if(dateString[1]==null || dateString[1] == ""){
+         alert()
+         error("Please select date or time");
+
+       }
+       var cookies = cookie.load('sessionid');
+       var itemid = cookie.load('itemid');
+       console.log(cookies+' '+itemid+'/start_date/'+dateString[0]+'/end_date/' +dateString[1]);
+       // alert(dateString[0])
+       var dateFrom=dateString[0];
+       var dateTo=dateString[1];
+       this.setState({
+          graphloadingss: true, chartgraph:[]
+       });
+     //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
+       axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+itemid+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
+         responseType: 'json'
+       }).then(response => {
+         var item_values = response.data.result.item_values;
+         if(response.data.status==false){
            this.setState({
-              graphloadingss: true, chartgraph:[]
-           });
-         //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
-           axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+itemid+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
-             responseType: 'json'
-           }).then(response => {
-             var item_values = response.data.result.item_values;
-             if(response.data.status==false){
-               this.setState({
-                  graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
-               });
-             }
-          //   alert(item_values.length);
-          this.setState({
-             graphloadingss: false
-          });
-             console.log(item_values);
-             if(item_values == ""){
-             //  alert("No data")
-             this.setState({
-                noData: "No data Found",graphloadingss: false
-             });
-             }else{
-             var chartgraphvalues = [];
-                for(let i=0;i<item_values.length;i++){
-                  chartgraphvalues.push({
-                    'timestamp' : item_values[i].timestamp,
-                    'value' : item_values[i].value
-                  });
-                }
-
-                  this.setState({
-                     noData: "",chartgraph:chartgraphvalues
-                  });
-                }
-
-              //  alert("DONE");
-
-             })
-
-           .catch(function (error) {
-
-            console.log(error);
-             // this.setState({
-             //    graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
-             // });
+              graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
            });
          }
-      showGraph = (id) => {
-
-        this.setState({
-          graphloading:true
-        })
-
-           cookie.save('itemid',id);
-           var cookies = cookie.load('sessionid');
-           var itemid = cookie.load('itemid');
-
-
-           var dateTo = new Date();
-           var time_fromDate = new Date();
-           time_fromDate.setMinutes(time_fromDate.getMinutes() - 720);
-             var dateFrom = time_fromDate;
-            dateFrom = formattedDate(dateFrom);
-            dateTo = formattedDate(dateTo);
-            this.setState({
-               graphloadingss: true
-            });
-           axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
-             responseType: 'json'
-           }).then(response => {
-             var item_values = response.data.result.item_values;
-             this.setState({
-                graphloadingss: false
-             });
-             if(response.data.status==false){
-               this.setState({
-                  graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
-               });
-             }
-             console.log(item_values);
-             var chartgraphvalues = [];
-                for(let i=0;i<item_values.length;i++){
-                  chartgraphvalues.push({
-                    'timestamp' : item_values[i].timestamp,
-                    'value' : item_values[i].value
-                  });
-                }
-            if(item_values == ""){
-            //  alert("No data")
-            this.setState({
-               noData: "No data Found",graphloadingss: false
-            });
-            }else{
-              this.setState({
-                 noData: "",
+      //   alert(item_values.length);
+      this.setState({
+         graphloadingss: false
+      });
+         console.log(item_values);
+         if(item_values == ""){
+         //  alert("No data")
+         this.setState({
+            noData: "No data Found",graphloadingss: false
+         });
+         }else{
+         var chartgraphvalues = [];
+            for(let i=0;i<item_values.length;i++){
+              chartgraphvalues.push({
+                'timestamp' : item_values[i].timestamp,
+                'value' : item_values[i].value
               });
             }
 
+              this.setState({
+                 noData: "",chartgraph:chartgraphvalues
+              });
+            }
+
+          //  alert("DONE");
+
+         })
+
+       .catch(function (error) {
+
+        console.log(error);
+         // this.setState({
+         //    graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
+         // });
+       });
+     }
+         showGraph = (id) => {
+
+           this.setState({
+             graphloading:true
+           })
+
+              cookie.save('itemid',id);
+              var cookies = cookie.load('sessionid');
+              var itemid = cookie.load('itemid');
+
+
+              var dateTo = new Date();
+              var time_fromDate = new Date();
+              time_fromDate.setMinutes(time_fromDate.getMinutes() - 720);
+                var dateFrom = time_fromDate;
+               dateFrom = formattedDate(dateFrom);
+               dateTo = formattedDate(dateTo);
+               this.setState({
+                  graphloadingss: true
+               });
+              axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
+                responseType: 'json'
+              }).then(response => {
+                var item_values = response.data.result.item_values;
                 this.setState({
-                   graph: true,chartgraph: chartgraphvalues,graphloading:false
+                   graphloadingss: false
                 });
+                if(response.data.status==false){
+                  this.setState({
+                     graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
+                  });
+                }
+                console.log(item_values);
+                var chartgraphvalues = [];
+                   for(let i=0;i<item_values.length;i++){
+                     chartgraphvalues.push({
+                       'timestamp' : item_values[i].timestamp,
+                       'value' : item_values[i].value
+                     });
+                   }
+               if(item_values == ""){
+               //  alert("No data")
+               this.setState({
+                  noData: "No data Found",graphloadingss: false
+               });
+               }else{
+                 this.setState({
+                    noData: "",
+                 });
+               }
+
+                   this.setState({
+                      graph: true,chartgraph: chartgraphvalues,graphloading:false
+                   });
 
 
 
 
-             })
+                })
 
-           .catch(function (error) {
-             console.log(error);
-           });
+              .catch(function (error) {
+                console.log(error);
+              });
 
-           var device_id = cookie.load('device_id');
+              var device_id = cookie.load('device_id');
 
 
-           axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies +'/'+ id,{
-             responseType: 'json'
-           }).then(response => {
+              axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies +'/'+ id,{
+                responseType: 'json'
+              }).then(response => {
 
-             var item_name = response.data.result.item_name;
-             console.log(item_name);
-                 this.setState({ item_name: item_name,  loading:false});
-             })
-           .catch(function (error) {
-             console.log(error);
-           });
-           }
+                var item_name = response.data.result.item_name;
+                console.log(item_name);
+                    this.setState({ item_name: item_name,  loading:false});
+                })
+              .catch(function (error) {
+                console.log(error);
+              });
+              }
 
      componentDidMount() {
        var device_name = cookie.load('device_name');
@@ -680,7 +669,7 @@ render(){
        </Style>
        <Breadcrumb>
           {adminmenu}
-          <Breadcrumb.Item><a href="#/devices">Devices</a></Breadcrumb.Item>
+          <Breadcrumb.Item><a href="#/device">Devices</a></Breadcrumb.Item>
             <Breadcrumb.Item>{this.state.device_name}</Breadcrumb.Item>
               <Breadcrumb.Item>Details</Breadcrumb.Item>
 
@@ -688,7 +677,7 @@ render(){
         <br />
        <Modal
          title={this.state.item_name}
-         visible={this.state.graph} width={'80%'}
+         visible={this.state.graph} width={'80%'} closable={false}
          //onOk={this.handleCancel}
          footer={[
             <Button key="close" type="primary" onClick={this.graphclose}>
@@ -838,4 +827,4 @@ render(){
 
 
 
-export default Devicedetails;
+export default Userdevicedetails;

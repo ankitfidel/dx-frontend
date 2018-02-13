@@ -69,9 +69,12 @@ class Loginpage extends React.Component {
          const email_id = response.data.result.email_id;
          const username = response.data.result.username;
          const user_id = response.data.result.user_id;
+         const first_name=response.data.result.first_name;
+         const last_name=response.data.result.last_name;
        // const headercolor =  response.data.result.theme.header_color_class;
        //   const content1 =  response.data.result.theme.content_1;
        //   const content2 =  response.data.result.theme.content_2;
+
 
          if(response.data.status == false){
            this.setState({errormsg:response.data.result})
@@ -80,7 +83,8 @@ class Loginpage extends React.Component {
 
            // var cookies = cookie.load('sessionid');
            // var user_id = cookie.load('user_id');
-           //alert(user_id);
+           console.log(JSON.stringify(response.data.result));
+          // alert(response.data.result);
 
            if (response.data.result.user_role=="dashboard_admin"){
                // alert("userRole is dashboard admin");
@@ -98,6 +102,8 @@ class Loginpage extends React.Component {
                 cookie.save('content2', response.data.result.theme.content_2, { path: '/' })
                 cookie.save('username', response.data.result.username, { path: '/' })
                 cookie.save('user_id', response.data.result.user_id, { path: '/' })
+                cookie.save('first_name', response.data.result.first_name, { path: '/' })
+                cookie.save('last_name', response.data.result.last_name, { path: '/' })
                 hashHistory.push("/admindashboard");
                 axios.get(axios.defaults.baseURL + '/api/token/refresh',{
                   responseType: 'json'
@@ -122,6 +128,8 @@ class Loginpage extends React.Component {
                 cookie.save('company_name', company_name, { path: '/' })
                 cookie.save('email_id', email_id, { path: '/' })
                 cookie.save('logo', response.data.result.logo, { path: '/' })
+                cookie.save('first_name', response.data.result.first_name, { path: '/' })
+                cookie.save('last_name', response.data.result.last_name, { path: '/' })
 
                // cookie.save('theme', theme, { path: '/' })
                cookie.save('username', response.data.result.username, { path: '/' })

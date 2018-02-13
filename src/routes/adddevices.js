@@ -151,13 +151,13 @@ render(){
 <h2 style={{textAlign: 'center'}}>Add Devices</h2>
 
        <FormItem label="Device Name:">
-           <Input placeholder="Enter device Name.." defaultValue="" id="devicename"/>
+           <Input placeholder="Enter device name" defaultValue="" id="devicename"/>
        </FormItem>
        <FormItem label="Port:">
-           <Input placeholder="Enter Port.." defaultValue="" id="port"/>
+           <Input placeholder="Enter port" defaultValue="" id="port"/>
        </FormItem>
        <FormItem label="IP:">
-           <Input placeholder="ip" defaultValue="" id="ip"/>
+           <Input placeholder="Enter IP" defaultValue="" id="ip"/>
        </FormItem>
        <FormItem label="Select Groups:">
        <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}>

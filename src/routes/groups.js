@@ -80,6 +80,7 @@ class Groups extends React.Component {
   });
   }
   groupeditData(id){
+
     cookie.save('id', id);
     this.setState({
     editgroups: true,
@@ -88,11 +89,11 @@ class Groups extends React.Component {
   var user_id = cookie.load('user_id');
   var company_id = cookie.load('company_id');
   //alert(user_id);
-  axios.get(axios.defaults.baseURL + '/api/front/group/'+ cookies + '/company/' + company_id,{
+  axios.get(axios.defaults.baseURL + '/api/front/group/'+ cookies + '/' + id,{
     responseType: 'json'
   }).then(response => {
-    var userdata = response.data.result[0];
-        this.setState({group_name: userdata.name});
+    var userdata = response.data.result.name;
+        this.setState({group_name: userdata});
     })
   .catch(function (error) {
     console.log(error);
@@ -243,9 +244,9 @@ const hasSelected = selectedRowKeys.length > 0;
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
 
      return (
@@ -259,7 +260,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
          onOk={this.addgroupsave}
          onCancel={this.canceleditgroup}
          footer={[
-           <Button key="back" onClick={this.canceleditgroup}> Close</Button>,
+           <Button key="back" onClick={this.canceleditgroup}> Cancel</Button>,
            <Button key="submit" type="primary"  onClick={this.addgroupsave}>
              Add Group
            </Button>,
@@ -279,14 +280,14 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
          onOk={this.editgroupsave}
          onCancel={this.handleCancels}
          footer={[
-           <Button key="back" onClick={this.handleCancels}> Close</Button>,
+           <Button key="back" onClick={this.handleCancels}> Cancel</Button>,
            <Button key="submit" type="primary"  onClick={this.editgroupsave}>
-             Add Group
+             Save
            </Button>,
          ]}
        >
         <div style={{'backgroundColor': 'transparent !important'}} >
-       <h2 style={{textAlign: 'center'}}>Edit Groups</h2>
+       <h2 style={{textAlign: 'center'}}>Edit Group</h2>
 
        <FormItem label="Group Name:" required>
            <Input placeholder="Enter Group Name"value={group_name} id="group_name" onChange={e => this.onTodoChange_groupname(e.target.value)}/>
@@ -310,7 +311,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
      title: 'Action',
      dataIndex: 'id',
        className: styles.textleft,
-     render: id => <div> <a href="javascript:void(0)" onClick={() => this.groupeditData(id)}><Icon type="edit" /> Edit</a> &nbsp;&nbsp;
+     render: id => <div> <a href="javascript:void(0)" onClick={() => this.groupeditData(id)}><Icon type="edit" /> Edit</a> &nbsp; | &nbsp;
 
      <Popconfirm title="Are you sure delete this Application?" onConfirm={() => this.deleteGroup(id)} okText="Yes" cancelText="No">
        <a href="#"><Icon type="delete" />&nbsp;Delete Group</a>

@@ -315,15 +315,19 @@ deletedevice(device_id){
   });
 }
 
-  itemlist(id){
-    console.log("device id"+ id);
-    cookie.save('device_id', id, { path: '/' });
+  itemlist(device){
+    var device_id = device.device_id;
+    var device_name = device.device_name;
+    console.log("device id"+ device_id);
+    cookie.save('device_id', device_id);
   //  window.location.href=("#/items")
   //  hashHistory.push("/items");
   }
-  triggerslist(device_id){
+  triggerslist(device){
+    var device_id = device.device_id;
+    var device_name = device.device_name;
     console.log("device id"+ device_id);
-      cookie.save('device_id', device_id, { path: '/' });
+      cookie.save('device_id', device_id);
   //  hashHistory.push("/triggers");
   }
 
@@ -530,9 +534,9 @@ addDevices = null
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
   return (
     <div>
@@ -632,7 +636,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
    dataIndex: 'device_name',
    key:'device',
    className: styles.textleft,
-   render: (device_name, device) =><div> <a href="javascript:void(0)" onClick={() => this.devicedetails(device)}>{device_name}</a> </div>
+   render: (device_name, device) =><div> <a href="#/devicedetail" onClick={() => this.devicedetails(device)}>{device_name}</a> </div>
    },
 
 {
@@ -665,9 +669,9 @@ render: (device_key,record) => <p><Tag style={{'backgroundColor':headercolor, 'c
 {
 title: '',
 dataIndex:'device_id',
- render: device_id  => <div style={{'textAlign':'left'}}>
-  <a  href="#/item" onClick={() => this.itemlist(device_id)}>Items</a> &nbsp; | &nbsp;
-  <a href="#/user-triggers"  onClick={() => this.triggerslist(device_id)}>Triggers</a>&nbsp; </div>
+ render: (device_id, device)  => <div style={{'textAlign':'left'}}>
+  <a  href="#/item" onClick={() => this.itemlist(device)}>Items</a> &nbsp; | &nbsp;
+  <a href="#/user-triggers"  onClick={() => this.triggerslist(device)}>Triggers</a>&nbsp; </div>
 },
 
  ]} dataSource={devicelist}  />

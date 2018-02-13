@@ -119,9 +119,7 @@ class Devices extends React.Component {
 
                 if(response.data.result[i].is_connected==false){
 
-                  if(deviceStatus!=true){
-
-
+                  if(deviceStatus===false){
                       deviceMsg = response.data.result[i].device_name +" Device connection failed. Check device details and try connecting again";
                   }else{
                     deviceMsg = response.data.result[i].device_name +" is disconnected";
@@ -315,15 +313,25 @@ deletedevice(device_id){
   });
 }
 
-  itemlist(id){
-    console.log("device id"+ id);
-    cookie.save('device_id', id, { path: '/' });
+
+  itemlist(device){
+    var device_id = device.device_id;
+    var device_name = device.device_name;
+    console.log("device id"+ device_id);
+  //  alert(device_name)
+    cookie.save('device_id', device_id);
+    cookie.save('device_name', device_name);
+  //  alert(device_name)
   //  window.location.href=("#/items")
   //  hashHistory.push("/items");
   }
-  triggerslist(device_id){
+  triggerslist(device){
+    var device_id = device.device_id;
+    var device_name = device.device_name;
     console.log("device id"+ device_id);
-      cookie.save('device_id', device_id, { path: '/' });
+      cookie.save('device_id', device_id);
+        cookie.save('device_name', device_name);
+  //      alert(device_name)
   //  hashHistory.push("/triggers");
   }
 
@@ -401,12 +409,12 @@ deletedevice(device_id){
  var cookies = cookie.load('sessionid');
  cookie.save("deviceKey",device_key);
  //alert(is_connected)
- cookie.save("device_is_connected",is_connected);
+
 
 axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + device_key,{
      responseType: 'json'
    }).then(response => {
-
+cookie.save("device_is_connected",response.data.result.is_connected);
    if(response.data.result.is_connected == true){
 
       axios.get(axios.defaults.baseURL + '/api/front/device/disconnect/' + cookies + '/' + device_key,{
@@ -450,9 +458,10 @@ axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + de
    var device_id = device.device_id;
    var device_name = device.device_name;
    //alert(device_id)
+   console.log(device_id);
    cookie.save("device_id", device_id);
     cookie.save("device_name", device_name);
-   hashHistory.push("/devicedetails")
+  // hashHistory.push("/devicedetails")
  }
  error() {
    message.error('This is a message of error');
@@ -532,9 +541,9 @@ addDevices = null
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
   return (
     <div>
@@ -556,7 +565,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
       footer={[
         <Button key="back" onClick={this.editCancel}>Cancel</Button>,
         <Button key="submit" type="primary" loading={loading} onClick={this.editDevicesssave}>
-          Save Device
+          Save
         </Button>,
       ]}
     >
@@ -565,16 +574,16 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 <h2 style={{textAlign: 'center'}}>Edit Device</h2>
 
 <FormItem label="Device Background URL:">
-    <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
+    <Input placeholder="Enter background image url" value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
 </FormItem>
        <FormItem label="Device Name:" required>
-           <Input placeholder="Enter device Name.." value={this.state.device_name} id="devicename" onChange={e => this.onTodoChange_device_name(e.target.value)}/>
+           <Input placeholder="Enter device name" value={this.state.device_name} id="devicename" onChange={e => this.onTodoChange_device_name(e.target.value)}/>
        </FormItem>
        <FormItem label="Port:" required>
-           <Input  placeholder="Enter Port.."  value={this.state.device_port} id="port"  onChange={e => this.onTodoChange_device_port(e.target.value)}/>
+           <Input  placeholder="Enter port"  value={this.state.device_port} id="port"  onChange={e => this.onTodoChange_device_port(e.target.value)}/>
        </FormItem>
        <FormItem label="IP" required>
-           <Input style={{'width':'100%'}} placeholder="ip"  value={this.state.device_ip} id="ip" onChange={e => this.onTodoChange_device_ip(e.target.value)}/>
+           <Input style={{'width':'100%'}} placeholder="Enter IP"  value={this.state.device_ip} id="ip" onChange={e => this.onTodoChange_device_ip(e.target.value)}/>
        </FormItem>
        <FormItem label="Select Groups:" required>
        <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}  onChange={e => this.onTodoChange_group_id(e.target.value)}>
@@ -602,18 +611,18 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
 <div style={{'padding':'20px'}}>
     <h2 style={{textAlign: 'center'}}>Add Device</h2>
     <FormItem label="Device Background URL:">
-        <Input placeholder="Enter background_image_url.." value={this.state.background_image_url} id="background_image_url" onChange={e => this.onTodoChange_background_image_url(e.target.value)}/>
+        <Input placeholder="Enter background image url" id="background_image_url" />
     </FormItem>
            <FormItem label="Device Name:" required>
-               <Input placeholder="Enter device Name.." defaultValue="" id="devicename"/>
+               <Input placeholder="Enter device name" defaultValue="" id="devicename"/>
            </FormItem>
            <FormItem label="Port:" required>
-               <Input type="number" placeholder="Enter Port.." defaultValue="" id="port"/>
+               <Input type="number" placeholder="Enter port" defaultValue="" id="port"/>
            </FormItem>
            <FormItem label="IP:" required>
-               <Input  placeholder="Enter IP.." defaultValue="" id="ip"/>
+               <Input  placeholder="Enter IP" defaultValue="" id="ip"/>
            </FormItem>
-           <FormItem label="Select Groups:" required>
+           <FormItem label="Select Group:" required>
            <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}>
         { this.state.grouplist }
           </select>
@@ -634,7 +643,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
    dataIndex: 'device_name',
    key:'device',
    className: styles.textleft,
-   render: (device_name, device) =><div> <a href="javascript:void(0)" onClick={() => this.devicedetails(device)}>{device_name}</a> </div>
+   render: (device_name, device) =><div> <a href="#/devicedetails" onClick={() => this.devicedetails(device)}>{device_name}</a> </div>
    },
 
 {
@@ -647,7 +656,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
   className: styles.textleft
 },
 {
-title: 'Group Name',
+title: 'Group',
 dataIndex: 'group_name',
  className: styles.textleft
 },
@@ -667,9 +676,9 @@ render: (device_key,record) => <div><Tag style={{'backgroundColor':headercolor, 
 {
 title: 'Action',
 dataIndex:'device_id',
- render: device_id  => <div>
-  <a  href="#/items" onClick={() => this.itemlist(device_id)}>Items</a> &nbsp; | &nbsp;
-  <a href="#/triggers"  onClick={() => this.triggerslist(device_id)}>Triggers</a>&nbsp; | &nbsp;
+ render: (device_id, device)  => <div>
+  <a  href="#/items" onClick={() => this.itemlist(device)}>Items</a> &nbsp; | &nbsp;
+  <a href="#/triggers"  onClick={() => this.triggerslist(device)}>Triggers</a>&nbsp; | &nbsp;
   <a href="javascript:void(0)" onClick={() => this.editdevice(device_id)}><Icon type="edit" /> Edit</a> &nbsp; | &nbsp;
  <Popconfirm title="Are you sure to delete this device?"onConfirm={() => this.deletedevice(device_id)}  okText="Yes" cancelText="No">
     <a href="#"><Icon type="delete" /> Delete Device</a>

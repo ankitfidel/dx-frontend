@@ -115,7 +115,7 @@ var content2 = cookie.load('content2');
       mode="inline">
 
       <Menu.Item key="dashboard" className="menulink" style={{'overflow': 'hidden'}}>
-         <Link to="/dashboard" activeClassName="selected" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="rocket" /> Dashboard</Link>
+         <Link to="/dashboard" activeClassName="selected" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <Icon type="home" /> Dashboard</Link>
       </Menu.Item>
     <Menu.Item key="devicesslist"  className="menulink" style={{'overflow': 'hidden'}}>
      <Link activeClassName="selected"  to="/device" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}>  <Icon type="cloud-o" /> Devices</Link>

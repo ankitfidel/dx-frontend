@@ -274,9 +274,9 @@ const hasSelected = selectedRowKeys.length > 0;
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
 
      return (
@@ -308,13 +308,13 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
   render: description => <span>{description === null ? "-" : description}</span>
  },
  {
-  title: 'active_time',
+  title: 'Active Time',
   dataIndex: 'active_time',
   className: styles.textleft,
  render: active_time => <span>{active_time === null ? "-" : active_time}</span>
 },
 {
- title: 'type',
+ title: 'Type',
  dataIndex: 'type',
  className: styles.textleft,
   render: type => <span>{type === null ? "-" : type}</span>

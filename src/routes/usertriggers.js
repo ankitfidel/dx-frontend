@@ -308,7 +308,7 @@ editTrigger: false,
         // this.onTodoChange_expression_id = this.onTodoChange_expression_id.bind(this);
 render(){
 document.title = "Triggers";
-  const { selectedRowKeys, triggerData,device_name, name } = this.state;
+  const { selectedRowKeys, triggerData, name } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -354,16 +354,17 @@ const hasSelected = selectedRowKeys.length > 0;
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
+var device_name = cookie.load('device_name');
      return (
        <div>
        <Breadcrumb>
           {adminmenu}
-          <Breadcrumb.Item><a href="#/devices">Devices</a></Breadcrumb.Item>
-          <Breadcrumb.Item>{this.state.device_name}</Breadcrumb.Item>
+          <Breadcrumb.Item><a href="#/device">Devices</a></Breadcrumb.Item>
+          <Breadcrumb.Item>{device_name}</Breadcrumb.Item>
             <Breadcrumb.Item>Triggers</Breadcrumb.Item>
         </Breadcrumb>
         <br />

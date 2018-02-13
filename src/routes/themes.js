@@ -131,20 +131,53 @@ render(){
   //   color: 'white',
   //   : this.state.themess
   // };
+
+
+
+  // <div className={styles.deviceWrap, styles.ipadLandscape}>
+  //    <div className={styles.device, styles.desktoplayout} style={{'backgroundImage': 'url("assets/iphone.png")', 'backgroundSize': "cover"}}>
+  //
+  //    <div style={{ padding: '110px 27px 0px 206px'}}>
+  //    <Layout>
+  //        <Sider className={this.state.sidethemeColor} style={{'backgroundColor': sidebarcolor}}
+  //          breakpoint="lg">
+  //          <div className="logo" />
+  //          <Menu className={this.state.sidethemeColor} style={{'backgroundColor': sidebarcolor}}  defaultSelectedKeys={['4']}>
+  //
+  //
+  //          </Menu>
+  //        </Sider>
+  //        <Layout>
+  //          <Header className={this.state.themess} style={{'backgroundColor': headercolor}} />
+  //          <Content style={{ margin: '24px 16px 0' }}>
+  //            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+  //              content
+  //            </div>
+  //          </Content>
+  //          <Footer style={{ textAlign: 'center' }}>
+  //            Ant Design ©2016 Created by Ant UED
+  //          </Footer>
+  //        </Layout>
+  //      </Layout>
+  //          </div>
+  //    </div>
+  // </div>
+
+
   var user_role = cookie.load('user_role');
   let adminmenu = null;
   if(user_role === "dashboard_admin"){
-  adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+  adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
   }else{
-  adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+  adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
   }
   return (
 <div>
 <Breadcrumb>
    {adminmenu}
-<Breadcrumb.Item><span>Themes</span></Breadcrumb.Item>
+<Breadcrumb.Item><span>Theme</span></Breadcrumb.Item>
  </Breadcrumb><br />
-<Card bordered={false} title="Themes" noHovering="true" className="rightSidebarCard">
+<Card bordered={false} title="Theme Colors" noHovering="true" className="rightSidebarCard">
 <Col span={12}>
 <ul className="menuColorList">
   <p>Header Colors</p>
@@ -239,6 +272,10 @@ render(){
               </div>
         </div>
      </div>
+
+
+
+
      </div>
 
 

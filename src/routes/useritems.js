@@ -116,6 +116,7 @@ class Item extends React.Component {
            graphloading:false,
            visible: false,
            editItem:false,
+           noData:false,
            pagination: {},
            addDeviceloading:false,
            size: 'default',
@@ -131,42 +132,63 @@ class Item extends React.Component {
    }
 
 
-    changeGraph(date, dateString){
-     console.log(date);
-     console.log(dateString[0]+" "+dateString[1]);
-     var cookies = cookie.load('sessionid');
-     var itemid = cookie.load('itemid');
-     console.log(cookies+' '+itemid+'/start_date/'+dateString[0]+'/end_date/' +dateString[1]);
-     // alert(dateString[0])
-     var dateFrom=dateString[0];
-     var dateTo=dateString[1];
-   //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
-     axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+itemid+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
-       responseType: 'json'
-     }).then(response => {
-       var item_values = response.data.result.item_values;
-    //   alert(item_values.length);
-       console.log(item_values);
-       var chartgraphvalues = [];
-          for(let i=0;i<item_values.length;i++){
-            chartgraphvalues.push({
-              'timestamp' : item_values[i].timestamp,
-              'value' : item_values[i].value
-            });
-          }
-
-          this.setState({
-            chartgraph:chartgraphvalues
-          });
-
-        //  alert("DONE");
-
-       })
-
-     .catch(function (error) {
-       console.log(error);
+   changeGraph(date, dateString){
+    console.log(date);
+    console.log(dateString[0]+" "+dateString[1]);
+    var cookies = cookie.load('sessionid');
+    var itemid = cookie.load('itemid');
+    console.log(cookies+' '+itemid+'/start_date/'+dateString[0]+'/end_date/' +dateString[1]);
+    // alert(dateString[0])
+    var dateFrom=dateString[0];
+    var dateTo=dateString[1];
+    this.setState({
+       graphloadingsitem:true,chartgraph:[]
+    });
+  //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
+    axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+itemid+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
+      responseType: 'json'
+    }).then(response => {
+      var item_values = response.data.result.item_values;
+   //   alert(item_values.length);
+   this.setState({
+      graphloadingsitem:false,
+   });
+   if(response.data.status==false){
+     this.setState({
+        graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
      });
    }
+   if(item_values == ""){
+   //  alert("No data")
+   this.setState({
+      noData: "No data Found",graphloadingsitem:false,graphloading:false
+   });
+ }else{
+      console.log(item_values);
+      var chartgraphvalues = [];
+         for(let i=0;i<item_values.length;i++){
+           chartgraphvalues.push({
+             'timestamp' : item_values[i].timestamp,
+             'value' : item_values[i].value
+           });
+         }
+
+
+         this.setState({
+           chartgraph:chartgraphvalues,noData:""
+         });
+       }
+
+
+
+       //  alert("DONE");
+
+      })
+
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
 
      onSelectChange = (selectedRowKeys) => {
        console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -366,6 +388,10 @@ filterselectDate(value){
   // alert("todate:"+todate);
   // alert("fromDate:"+fromDate);
 
+
+  this.setState({
+     chartgraph: [],graphloadingsitem:true
+  });
   var cookies = cookie.load('sessionid');
   var id = cookie.load('itemid');
   axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+fromDate+'/end_date/' +todate ,{
@@ -375,6 +401,23 @@ filterselectDate(value){
   //  alert(item_values.length);
     console.log(item_values);
     var chartgraphvalues = [];
+    this.setState({
+       graphloadingsitem:false,
+    });
+    if(response.data.status==false){
+
+      this.setState({
+         graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
+      });
+    }
+
+       if(item_values == ""){
+       this.setState({
+          noData: "No data Found",graphloadingsitem:false,graphloading:false
+       });
+     }else{
+
+
        for(let i=0;i<item_values.length;i++){
 
          //console.log('item_values[i].value = '+item_values[i].value);
@@ -384,10 +427,15 @@ filterselectDate(value){
          });
        }
 
-//alert("DONE");
+
        this.setState({
-          graph: true,chartgraph: chartgraphvalues
+          graph: true,chartgraph: chartgraphvalues,noData:""
        });
+
+
+     }
+//alert("DONE");
+
 
 
 
@@ -421,78 +469,93 @@ deleteItem(id){
   console.log(error);
   });
 }
-     showGraph = (id) => {
+showGraph = (id) => {
 
-       this.setState({
-          graphloading:true
-       });
-          // for(let i=0;i<3;i++){
-          //   chartgraph.push({"name":11,"cost":12,"impression":300});
-          // }
-        //  GET /api/front/item/values/{sessionId}/{itemId}/page={page}/per_page={per_page}
-          cookie.save('itemid',id);
-          var cookies = cookie.load('sessionid');
-          var itemid = cookie.load('itemid');
+  this.setState({
+     graphloading:true
+  });
+
+     cookie.save('itemid',id);
+     var cookies = cookie.load('sessionid');
+     var itemid = cookie.load('itemid');
 
 
-          var dateTo = new Date();
-          var time_fromDate = new Date();
-          time_fromDate.setMinutes(time_fromDate.getMinutes() - 720);
-            var dateFrom = time_fromDate;
-           dateFrom = formattedDate(dateFrom);
-           dateTo = formattedDate(dateTo);
-          //  alert("dateTo:"+dateTo);
-          //  alert("dateFrom:"+dateFrom);
+     var dateTo = new Date();
+     var time_fromDate = new Date();
+     time_fromDate.setMinutes(time_fromDate.getMinutes() - 720);
+       var dateFrom = time_fromDate;
+      dateFrom = formattedDate(dateFrom);
+      dateTo = formattedDate(dateTo);
+     //  alert("dateTo:"+dateTo);
+     //  alert("dateFrom:"+dateFrom);
 
-          // var dateFrom="2018-01-09 12:00:00";
-          // var dateTo="2018-01-09 24:00:00";
-        //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
-          axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
-            responseType: 'json'
-          }).then(response => {
-            var item_values = response.data.result.item_values;
-        //    alert(item_values.length);
-            console.log(item_values);
-            var chartgraphvalues = [];
-               for(let i=0;i<item_values.length;i++){
+     // var dateFrom="2018-01-09 12:00:00";
+     // var dateTo="2018-01-09 24:00:00";
 
-                 //console.log('item_values[i].value = '+item_values[i].value);
-                 chartgraphvalues.push({
-                   'timestamp' : item_values[i].timestamp,
-                   'value' : item_values[i].value
-                 });
-               }
+     this.setState({
+        graphloadingsitem:true,chartgraph:[]
+     });
+   //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
+     axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
+       responseType: 'json'
+     }).then(response => {
+       var item_values = response.data.result.item_values;
+   //    alert(item_values.length);
 
- //alert("DONE");
-               this.setState({
-                  graph: true,chartgraph: chartgraphvalues,graphloading:false
-               });
+ //  alert(JSON.stringify(response.data))
+if(response.data.status==false){
+this.setState({
+graphloading: false,graph: true,   noData: "No data Found",graphloadingsitem:false,
+});
+}
+     if(item_values == [] || item_values == ""){
+   //  alert("No data")
+   this.setState({
+      noData: "No data Found",graphloadingsitem:false,graphloading:false
+   });
+ }else{
+       console.log(item_values);
 
+       var chartgraphvalues = [];
+          for(let i=0;i<item_values.length;i++){
 
-
-
-            })
-
-          .catch(function (error) {
-            console.log(error);
-          });
-
-          var device_id = cookie.load('device_id');
-        //  const cookies = cookie.load('sessionid');
-
-          axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies +'/'+ id,{
-            responseType: 'json'
-          }).then(response => {
-            //alert(JSON.stringify(response.data.result))
-           // console.log(response.data.result.items[0]);
-            var item_name = response.data.result.item_name;
-            console.log(item_name);
-                this.setState({ item_name: item_name,  loading:false});
-            })
-          .catch(function (error) {
-            console.log(error);
-          });
+            //console.log('item_values[i].value = '+item_values[i].value);
+            chartgraphvalues.push({
+              'timestamp' : item_values[i].timestamp,
+              'value' : item_values[i].value
+            });
           }
+
+//alert("DONE");
+          this.setState({
+             graph: true,chartgraph: chartgraphvalues,graphloading:false,noData:"", graphloading:false,graphloadingsitem:false
+          });
+}
+
+
+
+       })
+
+     .catch(function (error) {
+       console.log(error);
+     });
+
+     var device_id = cookie.load('device_id');
+   //  const cookies = cookie.load('sessionid');
+
+     axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies +'/'+ id,{
+       responseType: 'json'
+     }).then(response => {
+       //alert(JSON.stringify(response.data.result))
+      // console.log(response.data.result.items[0]);
+       var item_name = response.data.result.item_name;
+       console.log(item_name);
+           this.setState({ item_name: item_name,  loading:false});
+       })
+     .catch(function (error) {
+       console.log(error);
+     });
+     }
 
        graphclose = (e) => {
        console.log(e);
@@ -700,7 +763,7 @@ addItems = <Button type="primary" onClick={this.addItems}>Add Items</Button>
 }else{
 addItems = null
 }
-  var {chartgraph, selectedRowKeys, itemsData,item_unit,item_oid, device_name,graphloading, application_id, interval_time,item_name, loading } = this.state;
+  var {chartgraph, selectedRowKeys, itemsData,item_unit,item_oid, device_name,graphloading, application_id, noData,interval_time,item_name, loading } = this.state;
   const rowSelection = {
        selectedRowKeys,
        onChange: this.onSelectChange,
@@ -746,10 +809,11 @@ const hasSelected = selectedRowKeys.length > 0;
 var user_role = cookie.load('user_role');
 let adminmenu = null;
 if(user_role === "dashboard_admin"){
-adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/admindashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }else{
-adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashboard</span></Breadcrumb.Item>
+adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashboard</span></Breadcrumb.Item>
 }
+var device_name = cookie.load('device_name');
      return (
        <div>
        <Modal
@@ -799,7 +863,7 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
    </Select>
     </FormItem>
     </Form>
-
+<Spin size="default" spinning={this.state.graphloadingsitem}>
         <ResponsiveContainer width={'100%'} height={350}>
         <LineChart width={600} height={200} data={chartgraph} syncId="anyId"
                 margin={{top: 10, right: 30, left: 0, bottom: 0}}>
@@ -811,6 +875,14 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
             <Brush />
           </LineChart>
      </ResponsiveContainer>
+     </Spin>
+     <h3 style={{    'position': 'absolute',
+     'top': '50%',
+     'margin':' 0 auto',
+     'textAlign': 'center',
+     'fontSize': '30px',
+     'left': 0,
+     'right': 0,}}>{this.state.noData} </h3>
        </Modal>
        <Modal
          visible={this.state.visible}
@@ -887,8 +959,8 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
             <option value="3600">3600</option>
            </select>
        </FormItem>
-       <FormItem label="Set Interval Time (in seconds):" required>
-       <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select a Device"
+       <FormItem label="Select Application:" required>
+       <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select an application"
         onChange={handleChange}
        >
        { this.state.comapnyrole }
@@ -898,8 +970,8 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type='home' /><span>Dashbo
        </Modal>
        <Breadcrumb>
           {adminmenu}
-          <Breadcrumb.Item><a href="#/devices">Devices</a></Breadcrumb.Item>
-            <Breadcrumb.Item>  {this.state.device_name}</Breadcrumb.Item>
+          <Breadcrumb.Item><a href="#/device">Devices</a></Breadcrumb.Item>
+            <Breadcrumb.Item>  {device_name}</Breadcrumb.Item>
   <Breadcrumb.Item>Items</Breadcrumb.Item>
         </Breadcrumb>
         <br />

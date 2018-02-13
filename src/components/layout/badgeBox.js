@@ -17,6 +17,8 @@ var sidebarcolor = cookie.load('sidebarcolor');
 var headercolor = cookie.load('headercolor');
 var content1 = cookie.load('content1');
 var content2 = cookie.load('content2');
+var first_name=cookie.load('first_name');
+var last_name=cookie.load('last_name');
 
 
 function openNotification() {
@@ -165,9 +167,9 @@ render(){
 
  <Menu mode="horizontal" style={{'backgroundColor': headercolor, 'zIndex': 999}}>
 
-        
 
-        <SubMenu  title={<p style={{'textTransform': 'none','color':'white'}}><Icon type="user" /><span style={{'textOverflow':'ellipsis'}}>{username} </span><Icon style={{'float': 'right','margin':'15px 20px 0 10px'}} type="down" /></p>}>
+
+        <SubMenu  title={<p style={{'textTransform': 'none','color':'white'}}><Icon type="user" /><span style={{'textOverflow':'ellipsis'}}>{first_name}&nbsp;{last_name} </span><Icon style={{'float': 'right','margin':'15px 20px 0 10px'}} type="down" /></p>}>
           <Menu.Item><a onClick={this.profile} className={styles.logoutbtn}>Profile</a></Menu.Item>
             <Menu.Item><a className={styles.logoutbtn} onClick={this.changepassword}>Change password</a></Menu.Item>
             <Menu.Item><a onClick={this.loggout} className={styles.logoutbtn}>Logout</a></Menu.Item>
