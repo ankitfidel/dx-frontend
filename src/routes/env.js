@@ -73,7 +73,7 @@ function formattedDate(currentDate){
 
    return newDate;
 }
-
+ var chartgraphvalues = [];
 class Environmental extends React.Component {
 
   constructor(props) {
@@ -143,6 +143,7 @@ this.state = {
       }
 
      componentDidMount() {
+
        var docTitle = "Environmental";
        document.title = docTitle;
        var cookies = cookie.load('sessionid');
@@ -150,7 +151,7 @@ this.state = {
          responseType: 'json'
        }).then(response => {
 
-         var chartgraphvalues = [];
+
          var env_values = response.data.result;
             for(let i=0;i<env_values.length;i++){
               chartgraphvalues.push({
@@ -189,13 +190,40 @@ this.state = {
      }
 
 
+     componentWillUnmount(){
+         clearInterval(this.timer);
+     }
 
+componentWillReceiveProps(){
 
-// componentWillMount(){
-//   alert(this.state.device_name);
-//     var dd = this.state.device_name;
-//
-// }
+var cookies = cookie.load('sessionid');
+  this.timer = setInterval( param => {
+    axios.get(axios.defaults.baseURL + '/api/environment/data/' + cookies + '/ENVIRONMENTAL' ,{
+      responseType: 'json'
+    }).then(response => {
+
+        if(response.data.status==true){
+          console.log(response.data.result.timestamp);
+          chartgraphvalues.push({
+            'timestamp' :response.data.result.timestamp,
+            'pressure' : response.data.result.pressure,
+            'humidity' : response.data.result.humidity,
+            'temperature' : response.data.result.temperature
+          });
+          this.setState({
+        envData: chartgraphvalues
+          });
+
+        }
+
+    })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+  },5000)
+
+}
 
 
 

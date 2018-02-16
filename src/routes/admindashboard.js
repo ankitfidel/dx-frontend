@@ -226,6 +226,22 @@ class Admin_dashboard extends React.Component {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
 
+      axios.get(axios.defaults.baseURL + '/api/environment/data/' + cookies + '/ENVIRONMENTAL' ,{
+        responseType: 'json'
+      }).then(response => {
+      //  alert(response.data.result.pressure)
+        var pressure = response.data.result.pressure;
+          if(response.data.status==true){
+            this.setState({
+              pressure:pressure,temperature:response.data.result.temperature,humidity:response.data.result.humidity,lastupdatedTime:response.data.result.timestamp
+            })
+
+          }
+
+      })
+    .catch(function (error) {
+      console.log(error);
+    });
       this.timer = setInterval( param => {
         axios.get(axios.defaults.baseURL + '/api/environment/data/' + cookies + '/ENVIRONMENTAL' ,{
           responseType: 'json'
@@ -244,7 +260,7 @@ class Admin_dashboard extends React.Component {
         console.log(error);
       });
 
-      },5000)
+    },30000)
 
 
       axios.get(axios.defaults.baseURL + '/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
@@ -263,6 +279,7 @@ class Admin_dashboard extends React.Component {
   }
   componentDidMount(){
     cookie.save("isAdminDashboardPage",true);
+
     this.countlist();
     axios.get(axios.defaults.baseURL + '/api/token/refresh',{
       responseType: 'json'

@@ -238,6 +238,22 @@ class Dashboard_3  extends React.Component {
     //     console.log(error);
     //   });
     //  alert()
+    axios.get(axios.defaults.baseURL + '/api/environment/data/' + cookies + '/ENVIRONMENTAL' ,{
+      responseType: 'json'
+    }).then(response => {
+    //  alert()
+        var pressure = response.data.result.pressure;
+        if(response.data.status==true){
+          this.setState({
+            pressure:pressure,temperature:response.data.result.temperature,humidity:response.data.result.humidity,lastupdatedTime:response.data.result.timestamp
+          })
+
+        }
+
+    })
+  .catch(function (error) {
+    console.log(error);
+  });
 
     this.timer = setInterval( param => {
       axios.get(axios.defaults.baseURL + '/api/environment/data/' + cookies + '/ENVIRONMENTAL' ,{
@@ -257,7 +273,7 @@ class Dashboard_3  extends React.Component {
       console.log(error);
     });
 
-    },5000)
+  },30000)
 
   }
   componentWillUnmount(){

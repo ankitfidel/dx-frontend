@@ -456,7 +456,7 @@ this.filterselectDate = this.filterselectDate.bind(this);
 
               var dateTo = new Date();
               var time_fromDate = new Date();
-              time_fromDate.setMinutes(time_fromDate.getMinutes() - 720);
+              time_fromDate.setMinutes(time_fromDate.getMinutes() - 60);
                 var dateFrom = time_fromDate;
                dateFrom = formattedDate(dateFrom);
                dateTo = formattedDate(dateTo);
@@ -587,7 +587,7 @@ application(){
        dataIndex: 'item_oid',
           className: styles.textleft
      },
-  
+
        {
          title:'Graph',
          dataIndex:'id',

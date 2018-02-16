@@ -12,7 +12,7 @@ import { browserHistory, hashHistory } from 'dva/router';
 import { axiosrequest } from './axiosrequest';
 
 const {  RangePicker } = DatePicker;
-
+ var chartgraphvalues = [];
 //
 // <FormItem label="item_key:">
 //     <Input placeholder="item_key" defaultValue="" id="item_key"/>
@@ -165,7 +165,7 @@ class Users extends React.Component {
     });
   }else{
        console.log(item_values);
-       var chartgraphvalues = [];
+        chartgraphvalues = [];
           for(let i=0;i<item_values.length;i++){
             chartgraphvalues.push({
               'timestamp' : item_values[i].timestamp,
@@ -402,7 +402,7 @@ filterselectDate(value){
     var item_values = response.data.result.item_values;
   //  alert(item_values.length);
     console.log(item_values);
-    var chartgraphvalues = [];
+     chartgraphvalues = [];
     this.setState({
        graphloadingsitem:false,
     });
@@ -485,7 +485,7 @@ deleteItem(id){
 
           var dateTo = new Date();
           var time_fromDate = new Date();
-          time_fromDate.setMinutes(time_fromDate.getMinutes() - 720);
+          time_fromDate.setMinutes(time_fromDate.getMinutes() - 60);
             var dateFrom = time_fromDate;
            dateFrom = formattedDate(dateFrom);
            dateTo = formattedDate(dateTo);
@@ -498,7 +498,9 @@ deleteItem(id){
           this.setState({
              graphloadingsitem:true,chartgraph:[]
           });
+        //   setInterval(function(){
         //  {sessionId}/{itemId}/start_date/{startDate}/end_date/{endDate}/page={page}/per_page={per_page}
+  //setInterval(() => {
           axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
             responseType: 'json'
           }).then(response => {
@@ -512,13 +514,13 @@ if(response.data.status==false){
   });
 }
           if(item_values == [] || item_values == ""){
-        //  alert("No data")
+      //        alert("No data")
         this.setState({
            noData: "No data Found",graphloadingsitem:false,graphloading:false,graph: true
         });
       }else{
             console.log(item_values);
-            var chartgraphvalues = [];
+             chartgraphvalues = [];
                for(let i=0;i<item_values.length;i++){
 
                  //console.log('item_values[i].value = '+item_values[i].value);
@@ -529,12 +531,11 @@ if(response.data.status==false){
                }
 
  //alert("DONE");
-               this.setState({
-                  graph: true,chartgraph: chartgraphvalues,graphloading:false,noData:"",graphloadingsitem:false
-               });
+
 }
-
-
+this.setState({
+   graph: true,chartgraph: chartgraphvalues,graphloading:false,noData:"",graphloadingsitem:false
+});
 
             })
 
@@ -542,21 +543,36 @@ if(response.data.status==false){
             console.log(error);
           });
 
-          var device_id = cookie.load('device_id');
-        //  const cookies = cookie.load('sessionid');
+        //   var i = 10;
+        //
+        //   this.timer = setInterval( param => {
+        // chartgraphvalues.push({
+        //        'timestamp' :i,
+        //        'value' : i+10
+        //      });
+        //      i=i+10;
+        // this.setState({
+        //    chartgraph: chartgraphvalues
+        // });
+        //   },5000)
+      //  },6000)
 
-          axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies +'/'+ id,{
-            responseType: 'json'
-          }).then(response => {
-            //alert(JSON.stringify(response.data.result))
-           // console.log(response.data.result.items[0]);
-            var item_name = response.data.result.item_name;
-            console.log(item_name);
-                this.setState({ item_name: item_name,  loading:false});
-            })
-          .catch(function (error) {
-            console.log(error);
-          });
+  //},1000)
+        //   var device_id = cookie.load('device_id');
+        // //  const cookies = cookie.load('sessionid');
+        //
+        //   axios.get(axios.defaults.baseURL + '/api/front/item/' + cookies +'/'+ id,{
+        //     responseType: 'json'
+        //   }).then(response => {
+        //     //alert(JSON.stringify(response.data.result))
+        //    // console.log(response.data.result.items[0]);
+        //     var item_name = response.data.result.item_name;
+        //     console.log(item_name);
+        //         this.setState({ item_name: item_name,  loading:false});
+        //     })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
           }
 
        graphclose = (e) => {
@@ -621,8 +637,84 @@ if(response.data.status==false){
       componentDidMount() {
 this.listapps();
          this.itemslist();
+
+
+
+
   }
 
+
+
+                // componentWillMount(){
+                //   var i = 10;
+                //   this.timer = setInterval( param => {
+                //     i = i+10;
+                //       chartgraphvalues.push({
+                //         'timestamp' :i,
+                //         'value' : i+10
+                //       });
+                //
+                //     this.setState({
+                //   envData: chartgraphvalues
+                //     });
+                //
+                //   },1000)
+                //
+                // }
+ //      var dateTo = new Date();
+ //      var time_fromDate = new Date();
+ //      time_fromDate.setMinutes(time_fromDate.getMinutes() - 1);
+ //        var dateFrom = time_fromDate;
+ //       dateFrom = formattedDate(dateFrom);
+ //       dateTo = formattedDate(dateTo);
+ //
+ //      axios.get(axios.defaults.baseURL + '/api/front/item/values/' + cookies+'/'+id+'/start_date/'+dateFrom+'/end_date/' +dateTo ,{
+ //        responseType: 'json'
+ //      }).then(response => {
+ //        var item_values = response.data.result.item_values;
+ //
+ //
+ //      if(item_values == [] || item_values == "" || response.data.status==false){
+ //        console.log("ITEM NULL : ");
+ //
+ //        chartgraphvalues.push({
+ //        'timestamp' :i,
+ //        'value' : i+10
+ //        });
+ //      i=i+10;
+ //      this.setState({
+ //       chartgraph: chartgraphvalues
+ //      });
+ //    }else{
+ //   console.log("ITEM VALUES : ");
+ //
+ //
+ //   chartgraphvalues.push({
+ //   'timestamp' :i,
+ //   'value' : i+10
+ //   });
+ // i=i+10;
+ //
+ //
+ //           this.setState({
+ //            chartgraph: chartgraphvalues
+ //           });
+ //    }
+ //
+ //
+ //
+ //        })
+ //
+ //      .catch(function (error) {
+ //        console.log(error);
+ //      });
+ //
+ //
+ //
+
+  //   },6000)
+  //
+  // }
   addItems = () => {
     this.setState({
     visible: true,
@@ -841,7 +933,7 @@ var device_name = cookie.load('device_name');
    />
    </FormItem>
     <FormItem label="Select time:" >
-   <Select className={styles.selectopt} onSelect={(value, event) => this.filterselectDate(value, event)}  id="gettime" defaultValue="last 12 hours" style={{'margin':'5px 20px', 'width':'300px'}}>
+   <Select className={styles.selectopt} onSelect={(value, event) => this.filterselectDate(value, event)}  id="gettime" defaultValue="last 1 hours" style={{'margin':'5px 20px', 'width':'300px'}}>
     <Option value="last 5 mins">last 5 mins</Option>
     <Option value="last 15 mins">last 15 mins</Option>
     <Option value="last 30 mins">last 30 mins</Option>

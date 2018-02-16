@@ -165,7 +165,7 @@ visible: false,
          //962af983-c90c-44fe-b939-a20052409b8f/severity/0/start_date/2018-01-01%2012%3A12%3A12/end_date/2018-01-20%2020%3A20%3A20?page=1&per_page=100
          var dateTo = new Date();
          var time_fromDate = new Date();
-         time_fromDate.setMinutes(time_fromDate.getMinutes() - 720);
+         time_fromDate.setMinutes(time_fromDate.getMinutes() - 60);
            var dateFrom = time_fromDate;
           dateFrom = formattedDate(dateFrom);
           dateTo = formattedDate(dateTo);
