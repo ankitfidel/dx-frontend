@@ -35,7 +35,9 @@ class Themes extends React.Component {
    setModal1Visible(modal1Visible) {
      this.setState({modal1Visible})
    };
-
+componentDidMount(){
+  cookie.save("isAdminDashboardPage",false);
+}
 headerTheme(themess){
   var cookies = cookie.load('sessionid');
   var company_id = cookie.load('company_id');

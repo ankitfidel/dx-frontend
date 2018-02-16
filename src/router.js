@@ -314,6 +314,15 @@ export default function ({ app}) {
                      })
                  }
              },
+             {
+                 path: '/environmental',
+                 name: 'environmental',
+                 getComponent(nextState, cb) {
+                     require.ensure([], require => {
+                         cb(null, require('./routes/env'))
+                     })
+                 }
+             },
 
              {
                  path: '/devicedetails',

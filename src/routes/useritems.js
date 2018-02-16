@@ -1000,11 +1000,6 @@ var device_name = cookie.load('device_name');
   dataIndex: 'item_oid',
    className: styles.textleft
 },
-{
- title: 'Interval Time (in seconds)',
- dataIndex: 'interval_time',
-  className: styles.textleft
-},
 
 {
  title: 'Action',

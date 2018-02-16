@@ -132,6 +132,9 @@ function MenusAdmin({
       <Menu.Item key="alerts" className="menulink" style={{'overflow': 'hidden'}}>
          <Link activeClassName="selected"  to="/alerts" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <i className="fa fa-exclamation-triangle"></i> &nbsp;&nbsp;Alerts</Link>
       </Menu.Item>
+      <Menu.Item key="env" className="menulink" style={{'overflow': 'hidden'}}>
+         <Link activeClassName="selected"  to="/environmental" style={{'padding': '0px 20px'}} activeStyle={{ background: headercolor }}> <i className="fa fa-thermometer-half"></i> &nbsp;&nbsp;Environmental</Link>
+      </Menu.Item>
 
 
 

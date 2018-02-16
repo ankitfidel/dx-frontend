@@ -72,6 +72,7 @@ class Groups extends React.Component {
     }
 
       componentDidMount() {
+        cookie.save("isAdminDashboardPage",false);
          this.grouplist();
   }
   addgroup = () => {

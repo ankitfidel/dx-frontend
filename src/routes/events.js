@@ -18,6 +18,57 @@ function error(msg) {
   });
 }
 
+function formattedDate(currentDate){
+  var year = currentDate.getFullYear();
+    var month = currentDate.getMonth();//start from 0
+    var date = currentDate.getDate();
+    var hours = currentDate.getHours();
+    var mins = currentDate.getMinutes();//start from 0
+    var secs = currentDate.getSeconds();
+
+
+   if(month=='0'){
+     month='01';
+   }
+   else if(month=='1'){
+     month='02';
+   }
+   else if(month=='2'){
+     month='03';
+   }
+   else if(month=='3'){
+     month='04';
+   }
+   else if(month=='4'){
+     month='05';
+   }
+   else if(month=='5'){
+     month='06';
+   }
+   else if(month=='6'){
+     month='07';
+   }
+   else if(month=='7'){
+     month='08';
+   }
+   else if(month=='8'){
+     month='09';
+   }
+   else if(month=='9'){
+     month='10';
+   }
+   else if(month=='10'){
+     month='11';
+   }
+   else if(month=='11'){
+     month='12';
+   }
+   var newDate = year + "-"+month+"-"+date+" "+hours+":"+mins+":"+secs;
+
+   return newDate;
+}
+
+
 class Events extends React.Component {
 
   constructor(props) {
@@ -28,7 +79,7 @@ class Events extends React.Component {
           description:'',
           active:'',
           active_time:'',
-          active_time:'',
+          event_time:'',
           id:''
                }],
            pagination: {},
@@ -112,7 +163,13 @@ visible: false,
          var cookies = cookie.load('sessionid');
          var device_id = cookie.load('device_id');
          //962af983-c90c-44fe-b939-a20052409b8f/severity/0/start_date/2018-01-01%2012%3A12%3A12/end_date/2018-01-20%2020%3A20%3A20?page=1&per_page=100
-         axios.get(axios.defaults.baseURL + '/api/front/trigger/history/' + cookies + '/severity/'+ 0 + '/start_date/' + '2018-01-01 12:12:12' + '/end_date/' + '2018-01-20 20:20:20' + '?page=1&per_page=100',{
+         var dateTo = new Date();
+         var time_fromDate = new Date();
+         time_fromDate.setMinutes(time_fromDate.getMinutes() - 720);
+           var dateFrom = time_fromDate;
+          dateFrom = formattedDate(dateFrom);
+          dateTo = formattedDate(dateTo);
+         axios.get(axios.defaults.baseURL + '/api/front/trigger/history/' + cookies + '/severity/'+ 0 + '/start_date/' + dateFrom + '/end_date/' + dateTo + '?page=1&per_page=100',{
            responseType: 'json'
          }).then(response => {
            //alert(JSON.stringify(response.data.result))
@@ -299,29 +356,34 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashb
 {
    title: 'Name',
    dataIndex: 'name',
+   width:300,
    className: styles.textleft,
    render: name => <span>{name === null ? "-" : name}</span>
  }, {
    title: 'Description',
    dataIndex: 'description',
+   width:450,
    className: styles.textleft,
   render: description => <span>{description === null ? "-" : description}</span>
  },
  {
   title: 'Active Time',
-  dataIndex: 'active_time',
+  dataIndex: 'event_time',
+  width:200,
   className: styles.textleft,
- render: active_time => <span>{active_time === null ? "-" : active_time}</span>
+ render: event_time => <span>{event_time === null ? "-" : event_time}</span>
 },
 {
  title: 'Type',
  dataIndex: 'type',
+
  className: styles.textleft,
   render: type => <span>{type === null ? "-" : type}</span>
 },
 {
  title: 'Active',
  dataIndex: 'active',
+
  render: active => <p>{active === true ? "True" :"False"}</p>
 },
 

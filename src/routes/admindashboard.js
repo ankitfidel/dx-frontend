@@ -13,6 +13,7 @@ import { Label, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Reference
 import {color} from '../utils'
 import './dashboard.less'
 import cookie from 'react-cookies'
+import Loader from 'react-loaders'
 
 const axios = require('axios');
 import { axiosrequest } from './axiosrequest';
@@ -169,10 +170,11 @@ class Admin_dashboard extends React.Component {
 	constructor(props) {
     super(props);
     this.state = initialState,{
-      devicelist:'',
-      itemslist:'',
-      userslist:'',
+      pressure:'',
+      temperature:'',
+      humidity:'',
       dashboardspin:true,
+      lastupdatedTime:''
 
     };
   }
@@ -223,6 +225,28 @@ class Admin_dashboard extends React.Component {
   countlist = (params = {}) => {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
+
+      this.timer = setInterval( param => {
+        axios.get(axios.defaults.baseURL + '/api/environment/data/' + cookies + '/ENVIRONMENTAL' ,{
+          responseType: 'json'
+        }).then(response => {
+        //  alert(response.data.result.pressure)
+          var pressure = response.data.result.pressure;
+            if(response.data.status==true){
+              this.setState({
+                pressure:pressure,temperature:response.data.result.temperature,humidity:response.data.result.humidity,lastupdatedTime:response.data.result.timestamp
+              })
+
+            }
+
+        })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+      },5000)
+
+
       axios.get(axios.defaults.baseURL + '/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
         responseType: 'json'
       }).then(response => {
@@ -234,51 +258,66 @@ class Admin_dashboard extends React.Component {
         console.log(error);
       });
   }
+  componentWillUnmount(){
+      clearInterval(this.timer);
+  }
   componentDidMount(){
+    cookie.save("isAdminDashboardPage",true);
     this.countlist();
-    var accessToken = cookie.load('powerbiaccesstoken');
+    axios.get(axios.defaults.baseURL + '/api/token/refresh',{
+      responseType: 'json'
+    }).then(response => {
+      var userdata = response.data.result;
+        cookie.save('powerbiaccesstoken', response.data.token);
+        var accessToken = cookie.load('powerbiaccesstoken');
+        var embedUrl = "https://app.powerbi.com/dashboardEmbed?dashboardId=0ba99506-dfba-4f60-8449-3bb9f1679111";
+        if (embedUrl === "")
+            return;
+
+        // get the access token.
+        //accessToken = document.getElementById('MainContent_accessTokenTextbox').value;
+
+        // Embed configuration used to describe the what and how to embed.
+        // This object is used when calling powerbi.embed.
+        // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+        var config = {
+            type: 'dashboard',
+            accessToken: accessToken,
+            embedUrl: embedUrl
+        };
+
+        // Grab the reference to the div HTML element that will host the dashboard.
+        var dashboardContainer = document.getElementById('dashboardContainer');
+
+        // Embed the dashboard and display it within the div container.
+        var dashboard = powerbi.embed(dashboardContainer, config);
+
+        // dashboard.on will add an event handler which prints to Log window.
+        dashboard.on("tileClicked", function (event) {
+            var logView = document.getElementById('logView');
+            logView.innerHTML = logView.innerHTML + "Tile Clicked<br/>";
+            logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
+            logView.innerHTML = logView.innerHTML + "---------<br/>";
+        });
+
+        // dashboard.on will add an event handler which prints to Log window.
+        dashboard.on("error", function (event) {
+            var logView = document.getElementById('logView');
+            logView.innerHTML = logView.innerHTML + "Error<br/>";
+            logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
+            logView.innerHTML = logView.innerHTML + "---------<br/>";
+        });
+        this.setState({
+          dashboardspin:false
+        })
+      })
+    .catch(function (error) {
+      console.log(error);
+    });
+
 //alert(accessToken)
                 // check if the embed url was selected
-                var embedUrl = "https://app.powerbi.com/dashboardEmbed?dashboardId=0ba99506-dfba-4f60-8449-3bb9f1679111";
-                if (embedUrl === "")
-                    return;
 
-                // get the access token.
-                //accessToken = document.getElementById('MainContent_accessTokenTextbox').value;
-
-                // Embed configuration used to describe the what and how to embed.
-                // This object is used when calling powerbi.embed.
-                // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
-                var config = {
-                    type: 'dashboard',
-                    accessToken: accessToken,
-                    embedUrl: embedUrl
-                };
-
-                // Grab the reference to the div HTML element that will host the dashboard.
-                var dashboardContainer = document.getElementById('dashboardContainer');
-
-                // Embed the dashboard and display it within the div container.
-                var dashboard = powerbi.embed(dashboardContainer, config);
-
-                // dashboard.on will add an event handler which prints to Log window.
-                dashboard.on("tileClicked", function (event) {
-                    var logView = document.getElementById('logView');
-                    logView.innerHTML = logView.innerHTML + "Tile Clicked<br/>";
-                    logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
-                    logView.innerHTML = logView.innerHTML + "---------<br/>";
-                });
-
-                // dashboard.on will add an event handler which prints to Log window.
-                dashboard.on("error", function (event) {
-                    var logView = document.getElementById('logView');
-                    logView.innerHTML = logView.innerHTML + "Error<br/>";
-                    logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
-                    logView.innerHTML = logView.innerHTML + "---------<br/>";
-                });
-                this.setState({
-                  dashboardspin:false
-                })
   }
   // componentWillUnmount(){
   //   this.setState({
@@ -287,39 +326,7 @@ class Admin_dashboard extends React.Component {
   // }
   render() {
     document.title = "Admin Dashboard";
-    // <Row gutter={32} justify="space-around" align="middle">
-    // <Col lg={8} md={8}>
-    //
-    // <Card className="bleedblue" style={{ padding: '30px' }}>
-    //
-    //   <Col span={12}>
-    //
-    //   <i className="fa fa-code-fork fa-5x text-primary"></i></Col>
-    //  <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.devicelist}</span><br />
-    //  <span className="text-primary" style={{ fontSize: 18 }}>No. of Devices </span>
-    //
-    //  </Col>
-    // </Card>
-    //
-    // </Col>
-    // <Col lg={8} md={8}>
-    //
-    // <Card className="bleedblue" style={{ padding: '30px' }}>
-    //   <Col span={12}><i className="fa fa-cubes fa-5x text-primary"></i></Col>
-    // <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.itemslist}</span><br />
-    // <span style={{ fontSize: 18 }} className="text-primary">No. of Items </span></Col>
-    // </Card>
-    // </Col>
-    //
-    // <Col lg={8} md={8}>
-    //
-    // <Card className="bleedblue" style={{ padding: '30px' }}>
-    //   <Col span={12}><i className="fa fa-users fa-5x text-primary"></i></Col>
-    // <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.userslist}</span><br />
-    // <span style={{ fontSize: 18 }} className="text-primary">No. of Users </span></Col>
-    // </Card>
-    // </Col>
-    // </Row><br />
+
 //     <Row gutter={24}>
 //       <Col xs={24} sm={24} md={24} lg={24}>
 //
@@ -372,13 +379,41 @@ class Admin_dashboard extends React.Component {
 //
 //
 //     </Row>
-    const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2,userslist,devicelist,itemslist, bottom2 } = this.state;
+    const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2,humidity,temperature,pressure, bottom2 } = this.state;
 
     return (
 
       <div className="dashboard-3">
 <Spin size="default"  spinning={this.state.dashboardspin}>
+<Row gutter={32} justify="space-around" align="middle">
+<p  className="valuetime">Last updated: <span>{this.state.lastupdatedTime}</span> </p><br />
+<Col lg={8} md={8}>
+<Card className="bleedblue" style={{ padding: '30px' }}>
+  <Col span={12}>
+  <i className="fa fa-tint fa-5x text-primary"></i></Col>
+ <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.humidity}<span className="text-primary" style={{ fontSize: 14 }}> %</span></span><br />
+ <span className="text-primary" style={{ fontSize: 18 }}>Humidity </span>
+ </Col>
+</Card>
+</Col>
+<Col lg={8} md={8}>
 
+<Card className="bleedblue" style={{ padding: '30px' }}>
+  <Col span={12}><i className="fa fa-thermometer-half fa-5x text-primary"></i></Col>
+<Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.temperature} <span className="text-primary" style={{ fontSize: 14 }}> °C</span></span><br />
+<span style={{ fontSize: 18 }} className="text-primary">Temperature </span></Col>
+</Card>
+</Col>
+
+<Col lg={8} md={8}>
+<Card className="bleedblue" style={{ padding: '30px' }}>
+  <Col span={12}><i className="fa fa-dashboard fa-5x" ></i></Col>
+<Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.pressure} <span className="text-primary" style={{ fontSize: 14 }}> Pa</span></span><br />
+<span style={{ fontSize: 18 }} className="text-primary">Pressure </span></Col>
+</Card>
+
+</Col>
+</Row><br />
       <div id="dashboardContainer" style={{'height':'100vh'}}></div>
 
 

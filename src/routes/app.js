@@ -230,6 +230,9 @@ var lightestColor = LightenDarkenColor(headercolor, 90);
       <div>
       <Style>
       {`
+        .ball-pulse-sync>div, .ball-pulse>div, .ball-scale-random>div, .ball-scale>div{background: ` + headercolor + `}
+        .valuetime{color:` + headercolor + `; font-size:12px}
+          .ant-menu-submenu > .ant-menu{background:` + sidebarcolor + ` }
         .profile{background-color:` + headercolor + `50}
         .ant-card:hover{overflow:hidden}
         .ant-breadcrumb a{font-weight:bold}

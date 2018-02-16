@@ -62,6 +62,7 @@ class Devices extends React.Component {
           device_ip:'',
           group_name:'',
           connected:'',
+          group_id:'',
           is_connected:''
         }],
         loading:true,
@@ -102,38 +103,21 @@ class Devices extends React.Component {
       var cookies = cookie.load('sessionid');
       var company_id = cookie.load('company_id');
       var deviceStatus = cookie.load('device_is_connected');
-    //  alert("deviceStatus:"+deviceStatus);
+    //    alert("deviceStatus:"+deviceStatus);
       axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/company/'+ company_id,{
         responseType: 'json'
       }).then(response => {
           //alert(response.data.result[0].device_id)
             this.setState({devicelist: response.data.result, connected:response.data.result.is_connected, loading:false});
 
-            var deviceKey = cookie.load('deviceKey');
-            var deviceMsg = null;
-            for (var i = 0; i < response.data.result.length; i++) {
-              if(response.data.result[i].device_key==deviceKey){
+            var deviceMsg = cookie.load('device_connect_msg');
+        //    alert(deviceMsg)
 
-
-
-
-                if(response.data.result[i].is_connected==false){
-
-                  if(deviceStatus===false){
-                      deviceMsg = response.data.result[i].device_name +" Device connection failed. Check device details and try connecting again";
-                  }else{
-                    deviceMsg = response.data.result[i].device_name +" is disconnected";
-                  }
-                }else{
-                    deviceMsg = response.data.result[i].device_name +" is connected";
-                }
-              }
-            }
-            if(deviceKey == null){
+            if(deviceMsg == null || deviceMsg==undefined || deviceMsg == ""){
               return false;
             }
               openNotification(deviceMsg);
-              cookie.remove('deviceKey');
+              cookie.remove('device_connect_msg');
 
         })
       .catch(function (error) {
@@ -243,6 +227,7 @@ class Devices extends React.Component {
    this.devicelistparam();
    var cookies = cookie.load('sessionid');
    var company_id = cookie.load('company_id');
+   cookie.save("isAdminDashboardPage",false);
    axios.get(axios.defaults.baseURL + '/api/front/group/' + cookies + '/company/' + company_id,{
      responseType: 'json'
    }) .then(response => {
@@ -252,6 +237,7 @@ class Devices extends React.Component {
         )
       })
         this.setState({grouplist:grouplist});
+        cookie.save('grouplist',grouplist);
       //  console.log("state:", this.state.grouplist[4].props.children)
     })
    .catch(function (error) {
@@ -267,6 +253,11 @@ class Devices extends React.Component {
 editdevice(device_id){
   console.log("company_id:" + device_id)
   cookie.save('deviceid', device_id);
+  // var grpList = cookie.load('grouplist');
+  // var tempGroupList = [];
+  // for (var i = 0; i < grpList; i++) {
+  //   console.log("group: "+grpList[i])
+  // }
   console.log("from cookies company_id:" + cookie.load('deviceid'))
 //  hashHistory.push("/viewdevices")
 var cookies = cookie.load('sessionid');
@@ -276,8 +267,12 @@ axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies +'/'+ device_i
   responseType: 'json'
 }).then(response => {
   var companydata = response.data.result;
-  console.log( "device edit"+ JSON.stringify(response.data.result))
-      this.setState({device_name: companydata.device_name, device_ip:companydata.device_ip, background_image_url:companydata.background_image_url,  device_port:companydata.device_port});
+  //console.log( "device edit"+ JSON.stringify(response.data.result))
+      this.setState({device_name: companydata.device_name, device_ip:companydata.device_ip, background_image_url:companydata.background_image_url,  device_port:companydata.device_port,group_id:companydata.group_id,group_name:companydata.group_name});
+
+//alert(companydata.group_name)
+
+
   })
 .catch(function (error) {
   console.log(error);
@@ -414,7 +409,7 @@ deletedevice(device_id){
 axios.get(axios.defaults.baseURL + '/api/front/device/' + cookies + '/key/' + device_key,{
      responseType: 'json'
    }).then(response => {
-cookie.save("device_is_connected",response.data.result.is_connected);
+
    if(response.data.result.is_connected == true){
 
       axios.get(axios.defaults.baseURL + '/api/front/device/disconnect/' + cookies + '/' + device_key,{
@@ -424,6 +419,8 @@ cookie.save("device_is_connected",response.data.result.is_connected);
   this.setState({
     graphloading:false
   })
+
+  cookie.save("device_connect_msg",response.data.result);
     window.location.reload()
 
           })
@@ -435,7 +432,7 @@ cookie.save("device_is_connected",response.data.result.is_connected);
      axios.get(axios.defaults.baseURL + '/api/front/device/connect/' + cookies + '/' + device_key,{
       responseType: 'json'
     }).then(response => {
-
+      cookie.save("device_connect_msg",response.data.result);
  window.location.reload()
 
 
@@ -586,7 +583,8 @@ adminmenu = <Breadcrumb.Item href='#/dashboard'><Icon type="home" /><span> Dashb
            <Input style={{'width':'100%'}} placeholder="Enter IP"  value={this.state.device_ip} id="ip" onChange={e => this.onTodoChange_device_ip(e.target.value)}/>
        </FormItem>
        <FormItem label="Select Groups:" required>
-       <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}}  onChange={e => this.onTodoChange_group_id(e.target.value)}>
+       <select id= "selectedGroupId" className={styles.selectopt} style= {{ width :200}} value={this.state.group_id}  onChange={e => this.onTodoChange_group_id(e.target.value)}>
+
     { this.state.grouplist }
       </select>
        </FormItem>

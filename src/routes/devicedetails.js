@@ -1,5 +1,5 @@
 import React from 'react'
-import {Menu, Icon, Popover, Badge,Breadcrumb, M,Avatar,Row, Col, Button,Card,Spin, Table, Modal,Select, Switch, Radio, Form, DatePicker,Tabs } from 'antd'
+import {Menu, Icon, Popover, Badge,Breadcrumb, M,Avatar,Row, Col, Button,Card,Spin, Table, Modal,Select,Pagination,  Switch, Radio, Form, DatePicker,Tabs } from 'antd'
 //const {LineChart, Line, AreaChart, Area, Brush, XAxis, YAxis, CartesianGrid, Tooltip} = Recharts;
 const FormItem = Form.Item;
 import {LineChart, Line, AreaChart, Area, Brush, XAxis,Label, YAxis,ResponsiveContainer, CartesianGrid, Tooltip} from 'recharts';
@@ -96,7 +96,7 @@ this.state = {
   device_port:'',
   chartgraph:[],
   bordered: true,
-  pagination: true,
+  pagination: {},
   size: 'default',
   expandedRowRender:true,
   title:true,
@@ -397,7 +397,7 @@ this.filterselectDate = this.filterselectDate.bind(this);
            if(dateString[1]==null || dateString[1] == ""){
              alert()
              error("Please select date or time");
-          
+
            }
            var cookies = cookie.load('sessionid');
            var itemid = cookie.load('itemid');
@@ -536,6 +536,7 @@ this.filterselectDate = this.filterselectDate.bind(this);
 
      componentDidMount() {
        var device_name = cookie.load('device_name');
+       cookie.save("isAdminDashboardPage",false);
     //   alert(device_name)
        var docTitle = device_name +  " | Device Details";
        document.title = docTitle;
@@ -578,7 +579,11 @@ application(){
 
   axios.get(axios.defaults.baseURL + '/api/front/application/' + cookies + '/device/' + device_id ,{
     responseType: 'json'
-  }).then(response => {
+  }).then(response => {4
+    const pagination = { ...this.state.pagination };
+    // Read total count from server
+    // pagination.total = data.totalCount;
+    pagination.total = 20;
   //  alert(" ::"+ JSON.stringify(response.data.result[0].items))
     let hostss = response.data.result.map((pic,i,demo) => {
        const hostsdetailstables = [
@@ -598,14 +603,7 @@ application(){
        dataIndex: 'item_oid',
           className: styles.textleft
      },
-       {
-         title: 'Interval Time',
-         dataIndex: 'interval_time',
-            className: styles.textleft,
-            props: {
-            style: { background: headercolor },
-          },
-       },
+    
        {
          title:'Graph',
          dataIndex:'id',
@@ -616,9 +614,11 @@ application(){
          <TabPane tab={<span><Icon type="clock-circle" /> {pic.application_name}</span>} key={i}>
          <Card noHovering="true" bodyStyle={{ padding: 0 }}>
          <Table columns={hostsdetailstables}
+         pagination={{ pageSize: 10,  showSizeChanger:true}}
         rowKey={pic.items.id}
         dataSource={pic.items}
         />
+
                   </Card>
          </TabPane>
 

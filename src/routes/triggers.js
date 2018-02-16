@@ -107,7 +107,6 @@ editTrigger:false,
        });
      }
       componentDidMount() {
-
          this.triggerlist();
         this.fetchSeverity();
         this.fetchExpression();
@@ -195,6 +194,8 @@ editTrigger:false,
     //var items = response.data.result.items[0];
     //alert(response.data.result.name)
        this.setState({ name: response.data.result.name, description: response.data.result.description, trigger_value: response.data.result.trigger_value, severity_id: response.data.result.severity_id, expression_id: response.data.result.expression_id});
+
+
     })
   .catch(function (error) {
     console.log(error);
@@ -415,7 +416,7 @@ var device_name = cookie.load('device_name');
          footer={[
            <Button key="back" onClick={this.editTriggerCancel}>Cancel</Button>,
            <Button key="submit" type="primary"  onClick={this.editItemssave}>
-             Save Trigger
+             Save
            </Button>,
          ]}
        >

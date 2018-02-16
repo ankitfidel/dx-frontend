@@ -113,6 +113,7 @@ header,
         });
       }
       componentDidMount() {
+        cookie.save("isAdminDashboardPage",false);
        this.fetch();
   }
       addcompany(company_id) {

@@ -587,14 +587,7 @@ application(){
        dataIndex: 'item_oid',
           className: styles.textleft
      },
-       {
-         title: 'Interval Time',
-         dataIndex: 'interval_time',
-            className: styles.textleft,
-            props: {
-            style: { background: headercolor },
-          },
-       },
+  
        {
          title:'Graph',
          dataIndex:'id',

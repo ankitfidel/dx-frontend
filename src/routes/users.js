@@ -93,6 +93,7 @@ class Users extends React.Component {
       }
 
       componentDidMount() {
+        cookie.save("isAdminDashboardPage",false);
        this.fetch();
          // console.log('params:', params);
          //  this.setState({ loading: true });

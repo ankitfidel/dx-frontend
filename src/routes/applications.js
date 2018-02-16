@@ -284,7 +284,7 @@ const hasSelected = selectedRowKeys.length > 0;
               Close
             </Button>
             <Button key="editapplicationsave" type="primary" loading={loading} onClick={this.editapplicationsave}>
-              Save Application
+              Save
             </Button></div>
           ]}
        >

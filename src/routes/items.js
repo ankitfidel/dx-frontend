@@ -175,7 +175,7 @@ class Users extends React.Component {
 
 
           this.setState({
-            chartgraph:chartgraphvalues,noData:""
+            chartgraph:chartgraphvalues,noData:"",graphloadingsitem:false
           });
         }
 
@@ -514,7 +514,7 @@ if(response.data.status==false){
           if(item_values == [] || item_values == ""){
         //  alert("No data")
         this.setState({
-           noData: "No data Found",graphloadingsitem:false,
+           noData: "No data Found",graphloadingsitem:false,graphloading:false,graph: true
         });
       }else{
             console.log(item_values);
@@ -530,7 +530,7 @@ if(response.data.status==false){
 
  //alert("DONE");
                this.setState({
-                  graph: true,chartgraph: chartgraphvalues,graphloading:false,noData:"", graphloading:false
+                  graph: true,chartgraph: chartgraphvalues,graphloading:false,noData:"",graphloadingsitem:false
                });
 }
 
@@ -697,10 +697,13 @@ var device_id = cookie.load('device_id');
   axios.get(axios.defaults.baseURL + '/api/front/item/' +cookies+"/"+ id,{
   responseType: 'json'
 }).then(response => {
-  //alert(JSON.stringify(response.data.result))
- // console.log(response.data.result.items[0]);
+
+console.log(JSON.stringify(response.data.result));
   //var items = response.data.result.items[0];
-      this.setState({ item_name: response.data.result.item_name, item_unit:response.data.result.item_unit, item_oid:response.data.result.item_oid, interval_time:response.data.result.interval_time,  loading:false});
+  var nameapps = response.data.result.applicationResponses[0].application_id;
+      this.setState({ item_name: response.data.result.item_name, item_unit:response.data.result.item_unit, item_oid:response.data.result.item_oid, interval_time:response.data.result.interval_time, application_ids: nameapps, loading:false});
+
+//alert()
   })
 .catch(function (error) {
   console.log(error);
@@ -962,7 +965,7 @@ var device_name = cookie.load('device_name');
            </select>
        </FormItem>
        <FormItem label="Select Application:" required>
-       <select className={styles.selectopt} style={{ width: '100%'   }} id="application_ids" placeholder="Select an application"
+       <select className={styles.selectopt} value={this.state.application_ids} style={{ width: '100%'   }} id="application_ids" placeholder="Select an application"
         onChange={handleChange}
        >
        { this.state.comapnyrole }
@@ -1002,11 +1005,6 @@ var device_name = cookie.load('device_name');
   title: 'Item OID',
   dataIndex: 'item_oid',
    className: styles.textleft
-},
-{
- title: 'Interval Time (in seconds)',
- dataIndex: 'interval_time',
-  className: styles.textleft
 },
 
 {

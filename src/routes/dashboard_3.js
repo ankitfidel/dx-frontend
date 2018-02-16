@@ -171,7 +171,12 @@ class Dashboard_3  extends React.Component {
     this.state = initialState,{
       devicelist:'',
       itemslist:'',
-      userslist:''
+      userslist:'',
+      pressure:'',
+      temperature:'',
+      humidity:'',
+      dashboardspin:true,
+      lastupdatedTime:''
 
     };
   }
@@ -221,62 +226,97 @@ class Dashboard_3  extends React.Component {
   }
   countlist = (params = {}) => {
       var cookies = cookie.load('sessionid');
-      var company_id = cookie.load('company_id');
-      axios.get(axios.defaults.baseURL + '/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
+    //   var company_id = cookie.load('company_id');
+    //   axios.get(axios.defaults.baseURL + '/api/front/dashboard/count/' + cookies + '/company/' + company_id ,{
+    //     responseType: 'json'
+    //   }).then(response => {
+    // // alert( response.data.result)
+    //   var counts = response.data.result;
+    //         this.setState({devicelist: counts.devices,itemslist: counts.items,userslist: counts.users,  loading:false});
+    //     })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+    //  alert()
+
+    this.timer = setInterval( param => {
+      axios.get(axios.defaults.baseURL + '/api/environment/data/' + cookies + '/ENVIRONMENTAL' ,{
         responseType: 'json'
       }).then(response => {
-    // alert( response.data.result)
-      var counts = response.data.result;
-            this.setState({devicelist: counts.devices,itemslist: counts.items,userslist: counts.users,  loading:false});
-        })
-      .catch(function (error) {
-        console.log(error);
-      });
+      //  alert()
+          var pressure = response.data.result.pressure;
+          if(response.data.status==true){
+            this.setState({
+              pressure:pressure,temperature:response.data.result.temperature,humidity:response.data.result.humidity,lastupdatedTime:response.data.result.timestamp
+            })
+
+          }
+
+      })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+    },5000)
+
+  }
+  componentWillUnmount(){
+  //  this.countlist();
+      clearInterval(this.timer);
   }
   componentDidMount(){
     this.countlist();
 
+    axios.get(axios.defaults.baseURL + '/api/token/refresh',{
+      responseType: 'json'
+    }).then(response => {
+      var userdata = response.data.result;
+        cookie.save('powerbiaccesstoken', response.data.token);
+        var accessToken = cookie.load('powerbiaccesstoken');
+        var embedUrl = "https://app.powerbi.com/dashboardEmbed?dashboardId=0ba99506-dfba-4f60-8449-3bb9f1679111";
+        if (embedUrl === "")
+            return;
 
-    var accessToken = cookie.load('powerbiaccesstoken');
-//alert(accessToken)
-                // check if the embed url was selected
-                var embedUrl = "https://app.powerbi.com/dashboardEmbed?dashboardId=0ba99506-dfba-4f60-8449-3bb9f1679111";
-                if (embedUrl === "")
-                    return;
+        // get the access token.
+        //accessToken = document.getElementById('MainContent_accessTokenTextbox').value;
 
-                // get the access token.
-                //accessToken = document.getElementById('MainContent_accessTokenTextbox').value;
+        // Embed configuration used to describe the what and how to embed.
+        // This object is used when calling powerbi.embed.
+        // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+        var config = {
+            type: 'dashboard',
+            accessToken: accessToken,
+            embedUrl: embedUrl
+        };
 
-                // Embed configuration used to describe the what and how to embed.
-                // This object is used when calling powerbi.embed.
-                // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
-                var config = {
-                    type: 'dashboard',
-                    accessToken: accessToken,
-                    embedUrl: embedUrl
-                };
+        // Grab the reference to the div HTML element that will host the dashboard.
+        var dashboardContainer = document.getElementById('dashboardContainer');
 
-                // Grab the reference to the div HTML element that will host the dashboard.
-                var dashboardContainer = document.getElementById('dashboardContainer');
+        // Embed the dashboard and display it within the div container.
+        var dashboard = powerbi.embed(dashboardContainer, config);
 
-                // Embed the dashboard and display it within the div container.
-                var dashboard = powerbi.embed(dashboardContainer, config);
-console.log(dashboard)
-                // dashboard.on will add an event handler which prints to Log window.
-                dashboard.on("tileClicked", function (event) {
-                    var logView = document.getElementById('logView');
-                    logView.innerHTML = logView.innerHTML + "Tile Clicked<br/>";
-                    logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
-                    logView.innerHTML = logView.innerHTML + "---------<br/>";
-                });
+        // dashboard.on will add an event handler which prints to Log window.
+        dashboard.on("tileClicked", function (event) {
+            var logView = document.getElementById('logView');
+            logView.innerHTML = logView.innerHTML + "Tile Clicked<br/>";
+            logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
+            logView.innerHTML = logView.innerHTML + "---------<br/>";
+        });
 
-                // dashboard.on will add an event handler which prints to Log window.
-                dashboard.on("error", function (event) {
-                    var logView = document.getElementById('logView');
-                    logView.innerHTML = logView.innerHTML + "Error<br/>";
-                    logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
-                    logView.innerHTML = logView.innerHTML + "---------<br/>";
-                });
+        // dashboard.on will add an event handler which prints to Log window.
+        dashboard.on("error", function (event) {
+            var logView = document.getElementById('logView');
+            logView.innerHTML = logView.innerHTML + "Error<br/>";
+            logView.innerHTML = logView.innerHTML + JSON.stringify(event.detail, null, "  ") + "<br/>";
+            logView.innerHTML = logView.innerHTML + "---------<br/>";
+        });
+        this.setState({
+          dashboardspin:false
+        })
+      })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
   render() {
     document.title = "Dashboard";
@@ -370,7 +410,35 @@ console.log(dashboard)
     return (
 
       <div className="dashboard-3">
+      <Row gutter={32} justify="space-around" align="middle">
+      <p  className="valuetime">Last updated: <span>{this.state.lastupdatedTime}</span> </p><br />
+      <Col lg={8} md={8}>
+      <Card className="bleedblue" style={{ padding: '30px' }}>
+        <Col span={12}>
+        <i className="fa fa-tint fa-5x text-primary"></i></Col>
+       <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.humidity}<span className="text-primary" style={{ fontSize: 14 }}> %</span></span><br />
+       <span className="text-primary" style={{ fontSize: 18 }}>Humidity </span>
+       </Col>
+      </Card>
+      </Col>
+      <Col lg={8} md={8}>
 
+      <Card className="bleedblue" style={{ padding: '30px' }}>
+        <Col span={12}><i className="fa fa-thermometer-half fa-5x text-primary"></i></Col>
+      <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.temperature} <span className="text-primary" style={{ fontSize: 14 }}> °C</span></span><br />
+      <span style={{ fontSize: 18 }} className="text-primary">Temperature </span></Col>
+      </Card>
+      </Col>
+
+      <Col lg={8} md={8}>
+      <Card className="bleedblue" style={{ padding: '30px' }}>
+        <Col span={12}><i className="fa fa-dashboard fa-5x" ></i></Col>
+      <Col style={styles.textAlign} span={12}><span className="text-primary" style={{ fontSize: 32 }}>{this.state.pressure} <span className="text-primary" style={{ fontSize: 14 }}> Pa</span></span><br />
+      <span style={{ fontSize: 18 }} className="text-primary">Pressure </span></Col>
+      </Card>
+
+      </Col>
+      </Row><br />
 
       <div id="dashboardContainer" style={{'height':'100vh'}}></div>
 
